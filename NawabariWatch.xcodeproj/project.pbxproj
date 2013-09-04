@@ -1,0 +1,306 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		E9DA459117D741320028B94C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9DA459017D741320028B94C /* UIKit.framework */; };
+		E9DA459317D741320028B94C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9DA459217D741320028B94C /* Foundation.framework */; };
+		E9DA459517D741320028B94C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9DA459417D741320028B94C /* CoreGraphics.framework */; };
+		E9DA459B17D741320028B94C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E9DA459917D741320028B94C /* InfoPlist.strings */; };
+		E9DA459D17D741320028B94C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E9DA459C17D741320028B94C /* main.m */; };
+		E9DA45A117D741330028B94C /* NawabariAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E9DA45A017D741330028B94C /* NawabariAppDelegate.m */; };
+		E9DA45A317D741330028B94C /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = E9DA45A217D741330028B94C /* Default.png */; };
+		E9DA45A517D741330028B94C /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E9DA45A417D741330028B94C /* Default@2x.png */; };
+		E9DA45A717D741330028B94C /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E9DA45A617D741330028B94C /* Default-568h@2x.png */; };
+		E9DA45AA17D741330028B94C /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E9DA45A817D741330028B94C /* MainStoryboard.storyboard */; };
+		E9DA45AD17D741330028B94C /* NawabariViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E9DA45AC17D741330028B94C /* NawabariViewController.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		E9DA458D17D741320028B94C /* NawabariWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NawabariWatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E9DA459017D741320028B94C /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		E9DA459217D741320028B94C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		E9DA459417D741320028B94C /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		E9DA459817D741320028B94C /* NawabariWatch-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "NawabariWatch-Info.plist"; sourceTree = "<group>"; };
+		E9DA459A17D741320028B94C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		E9DA459C17D741320028B94C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		E9DA459E17D741320028B94C /* NawabariWatch-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NawabariWatch-Prefix.pch"; sourceTree = "<group>"; };
+		E9DA459F17D741320028B94C /* NawabariAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NawabariAppDelegate.h; sourceTree = "<group>"; };
+		E9DA45A017D741330028B94C /* NawabariAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NawabariAppDelegate.m; sourceTree = "<group>"; };
+		E9DA45A217D741330028B94C /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		E9DA45A417D741330028B94C /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		E9DA45A617D741330028B94C /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		E9DA45A917D741330028B94C /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
+		E9DA45AB17D741330028B94C /* NawabariViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NawabariViewController.h; sourceTree = "<group>"; };
+		E9DA45AC17D741330028B94C /* NawabariViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NawabariViewController.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		E9DA458A17D741320028B94C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E9DA459117D741320028B94C /* UIKit.framework in Frameworks */,
+				E9DA459317D741320028B94C /* Foundation.framework in Frameworks */,
+				E9DA459517D741320028B94C /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		E9DA458417D741320028B94C = {
+			isa = PBXGroup;
+			children = (
+				E9DA459617D741320028B94C /* NawabariWatch */,
+				E9DA458F17D741320028B94C /* Frameworks */,
+				E9DA458E17D741320028B94C /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		E9DA458E17D741320028B94C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E9DA458D17D741320028B94C /* NawabariWatch.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E9DA458F17D741320028B94C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E9DA459017D741320028B94C /* UIKit.framework */,
+				E9DA459217D741320028B94C /* Foundation.framework */,
+				E9DA459417D741320028B94C /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E9DA459617D741320028B94C /* NawabariWatch */ = {
+			isa = PBXGroup;
+			children = (
+				E9DA459F17D741320028B94C /* NawabariAppDelegate.h */,
+				E9DA45A017D741330028B94C /* NawabariAppDelegate.m */,
+				E9DA45A817D741330028B94C /* MainStoryboard.storyboard */,
+				E9DA45AB17D741330028B94C /* NawabariViewController.h */,
+				E9DA45AC17D741330028B94C /* NawabariViewController.m */,
+				E9DA459717D741320028B94C /* Supporting Files */,
+			);
+			path = NawabariWatch;
+			sourceTree = "<group>";
+		};
+		E9DA459717D741320028B94C /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				E9DA459817D741320028B94C /* NawabariWatch-Info.plist */,
+				E9DA459917D741320028B94C /* InfoPlist.strings */,
+				E9DA459C17D741320028B94C /* main.m */,
+				E9DA459E17D741320028B94C /* NawabariWatch-Prefix.pch */,
+				E9DA45A217D741330028B94C /* Default.png */,
+				E9DA45A417D741330028B94C /* Default@2x.png */,
+				E9DA45A617D741330028B94C /* Default-568h@2x.png */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		E9DA458C17D741320028B94C /* NawabariWatch */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E9DA45B017D741330028B94C /* Build configuration list for PBXNativeTarget "NawabariWatch" */;
+			buildPhases = (
+				E9DA458917D741320028B94C /* Sources */,
+				E9DA458A17D741320028B94C /* Frameworks */,
+				E9DA458B17D741320028B94C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = NawabariWatch;
+			productName = NawabariWatch;
+			productReference = E9DA458D17D741320028B94C /* NawabariWatch.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		E9DA458517D741320028B94C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = Nawabari;
+				LastUpgradeCheck = 0460;
+				ORGANIZATIONNAME = "Nao Minami";
+			};
+			buildConfigurationList = E9DA458817D741320028B94C /* Build configuration list for PBXProject "NawabariWatch" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = E9DA458417D741320028B94C;
+			productRefGroup = E9DA458E17D741320028B94C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				E9DA458C17D741320028B94C /* NawabariWatch */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		E9DA458B17D741320028B94C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E9DA459B17D741320028B94C /* InfoPlist.strings in Resources */,
+				E9DA45A317D741330028B94C /* Default.png in Resources */,
+				E9DA45A517D741330028B94C /* Default@2x.png in Resources */,
+				E9DA45A717D741330028B94C /* Default-568h@2x.png in Resources */,
+				E9DA45AA17D741330028B94C /* MainStoryboard.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		E9DA458917D741320028B94C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E9DA459D17D741320028B94C /* main.m in Sources */,
+				E9DA45A117D741330028B94C /* NawabariAppDelegate.m in Sources */,
+				E9DA45AD17D741330028B94C /* NawabariViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		E9DA459917D741320028B94C /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E9DA459A17D741320028B94C /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		E9DA45A817D741330028B94C /* MainStoryboard.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E9DA45A917D741330028B94C /* en */,
+			);
+			name = MainStoryboard.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		E9DA45AE17D741330028B94C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		E9DA45AF17D741330028B94C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		E9DA45B117D741330028B94C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "NawabariWatch/NawabariWatch-Prefix.pch";
+				INFOPLIST_FILE = "NawabariWatch/NawabariWatch-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		E9DA45B217D741330028B94C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "NawabariWatch/NawabariWatch-Prefix.pch";
+				INFOPLIST_FILE = "NawabariWatch/NawabariWatch-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		E9DA458817D741320028B94C /* Build configuration list for PBXProject "NawabariWatch" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E9DA45AE17D741330028B94C /* Debug */,
+				E9DA45AF17D741330028B94C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E9DA45B017D741330028B94C /* Build configuration list for PBXNativeTarget "NawabariWatch" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E9DA45B117D741330028B94C /* Debug */,
+				E9DA45B217D741330028B94C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = E9DA458517D741320028B94C /* Project object */;
+}
