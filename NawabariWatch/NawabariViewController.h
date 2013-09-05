@@ -7,7 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <CoreLocation/CoreLocation.h>
 
-@interface NawabariViewController : UIViewController
+@interface NawabariViewController : UIViewController <CLLocationManagerDelegate> {
+	// ロケーションマネージャー
+	CLLocationManager* locationManager;
+    
+	// 現在位置記録用
+	CLLocationDegrees _longitude;
+	CLLocationDegrees _latitude;
+}
 
 @end
