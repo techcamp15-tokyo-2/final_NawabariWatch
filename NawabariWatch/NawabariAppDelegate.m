@@ -7,12 +7,14 @@
 //
 
 #import "NawabariAppDelegate.h"
+#import <GoogleMaps/GoogleMaps.h>
 
 @implementation NawabariAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+    [GMSServices provideAPIKey:@"AIzaSyD3Y0TIv8v17IVH-yw3Huvz8rk7kvxnkiE"];
     return YES;
 }
 							
