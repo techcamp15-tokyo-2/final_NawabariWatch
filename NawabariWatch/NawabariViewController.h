@@ -20,6 +20,9 @@
     
     // Google Map View
     GMSMapView* mapView_;
+    
+    // circle
+    GMSCircle* circ;
 }
 
 - (void)viewDidLoad;

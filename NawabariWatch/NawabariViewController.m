@@ -49,7 +49,7 @@
     // Do any additional setup after loading the view, typically from a nib.
     GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:_latitude
                                                             longitude:_longitude
-                                                                 zoom:15];
+                                                                 zoom:13];
     mapView_ = [GMSMapView mapWithFrame:CGRectZero camera:camera];
     mapView_.delegate = self;
     mapView_.mapType = kGMSTypeHybrid;
@@ -62,7 +62,7 @@
     marker.position = CLLocationCoordinate2DMake(_latitude, _longitude);
     //    marker.icon = [UIImage imageNamed:@"tokyo_tower64"];
     marker.title   = [NSString stringWithFormat:@"longitude%f",_longitude];
-    marker.snippet = [NSString stringWithFormat:@"latitude%f",_latitude];
+    marker.snippet = [NSString stringWithFormat:@"latitude%f" ,_latitude];
     marker.map = mapView_;
     
     [self drawNawabari];
@@ -71,7 +71,7 @@
 // なわばり(markerのまわりの円)を描く
 - (void)drawNawabari {
     CLLocationCoordinate2D circleCenter = CLLocationCoordinate2DMake(_latitude, _longitude);
-    GMSCircle* circ  = [GMSCircle circleWithPosition:circleCenter radius:300];
+    circ  = [GMSCircle circleWithPosition:circleCenter radius:100];
     circ.fillColor   = [UIColor colorWithRed:1 green:0 blue:0 alpha:0.3];
     circ.strokeColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:0];
     circ.map = mapView_;
@@ -123,6 +123,16 @@
             break;
         default:
             break;
+    }
+}
+
+- (void) mapView:(GMSMapView *)mapView didChangeCameraPosition:(GMSCameraPosition *)position {
+    CGFloat zoom = mapView_.camera.zoom;
+    CGFloat tmpRadius = 100 * 8192 / pow(2, zoom);
+    if (tmpRadius > 100) {
+        circ.radius = tmpRadius;
+    } else {
+        circ.radius = 100;
     }
 }
 
