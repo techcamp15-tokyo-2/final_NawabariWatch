@@ -7,15 +7,16 @@
 //
 
 #import "NawabariViewController.h"
-#import <GoogleMaps/GoogleMaps.h>
 
-@implementation NawabariViewController {
-    GMSMapView *mapView_;
-}
+@implementation NawabariViewController 
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    //foursquareの汎用クラスを作成&認証
+    foursquare = [[Foursquare alloc] init];
+    [foursquare startAuthorization];
     
 	_longitude = 0.0;
 	_latitude = 0.0;
