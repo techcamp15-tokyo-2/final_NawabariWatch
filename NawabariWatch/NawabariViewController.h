@@ -11,7 +11,7 @@
 #import <GoogleMaps/GoogleMaps.h>
 #import "Foursquare.h"
 
-@interface NawabariViewController : UIViewController <CLLocationManagerDelegate> {
+@interface NawabariViewController : UIViewController <CLLocationManagerDelegate, FoursquareDelegate> {
 	// ロケーションマネージャー
 	CLLocationManager* locationManager;
     
@@ -24,5 +24,5 @@
     
     GMSMapView *mapView_;
 }
-
+- (void)requestDidSending;
 @end

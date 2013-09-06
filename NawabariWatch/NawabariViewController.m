@@ -16,7 +16,8 @@
     
     //foursquareの汎用クラスを作成&認証
     foursquare = [[Foursquare alloc] init];
-    [foursquare startAuthorization];
+    foursquare.delegate = self;
+    NSLog(@"%@", ([foursquare startAuthorization]? @"OK": @"NG"));
     
 	_longitude = 0.0;
 	_latitude = 0.0;
@@ -93,4 +94,13 @@
 		}
 	}
 }
+
+#pragma mark -
+#pragma mark FourSquareDelegate
+- (void)requestDidSending
+{
+    NSDictionary *response = [foursquare getResponse];
+    NSLog(@"%@", [response description]);
+}
+
 @end

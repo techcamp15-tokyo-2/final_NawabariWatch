@@ -113,6 +113,7 @@
         NSString *val = [[kv objectAtIndex:1] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         [parameters setObject:val forKey:key];
     }
+
     self.accessToken = [parameters objectForKey:@"access_token"];
     if (accessToken_) {
         if ([sessionDelegate_ respondsToSelector:@selector(foursquareDidAuthorize:)]) {

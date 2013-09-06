@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "BZFoursquare.h"
 
+@protocol FoursquareDelegate;
 @interface Foursquare : NSObject <BZFoursquareRequestDelegate, BZFoursquareSessionDelegate>{
     BZFoursquare        *foursquare_;
     BZFoursquareRequest *request_;
@@ -17,10 +18,16 @@
     NSDictionary        *response_;
 }
 @property(nonatomic,readonly,strong) BZFoursquare *foursquare;
+@property (nonatomic, strong) id<FoursquareDelegate> delegate;
 -(BOOL)isAuthenticated;
--(void)startAuthorization;
+-(BOOL)startAuthorization;
 -(void)prepareForRequest;
 -(void)cancelRequest;
--(NSDictionary*)getVenueHistory;
--(NSDictionary*)getcheckinHistory;
+-(void)requestVenueHistory;
+-(void)requestCheckinHistory;
+-(NSDictionary*) getResponse;
+@end
+
+@protocol FoursquareDelegate
+- (void)requestDidSending;
 @end

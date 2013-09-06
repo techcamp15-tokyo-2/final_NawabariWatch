@@ -17,11 +17,12 @@
 @property(nonatomic,copy) NSArray *notifications;
 @property(nonatomic,copy) NSDictionary *response;
 -(BOOL)isAuthenticated;
--(void)startAuthorization;
+-(BOOL)startAuthorization;
 -(void)prepareForRequest;
 -(void)cancelRequest;
--(NSDictionary*)getVenueHistory;
--(NSDictionary*)getcheckinHistory;
+-(void)requestVenueHistory;
+-(void)requestCheckinHistory;
+-(NSDictionary*) getResponse;
 @end
 
 @implementation Foursquare
@@ -51,8 +52,8 @@
     return [foursquare_ isSessionValid];
 }
 
--(void)startAuthorization {
-    [foursquare_ startAuthorization];
+-(BOOL)startAuthorization {
+    return [foursquare_ startAuthorization];
 }
 
 - (void)cancelRequest {
@@ -71,24 +72,60 @@
     self.response = nil;
 }
 
--(NSDictionary*) getVenueHistory {
+-(void) requestVenueHistory {
     [self prepareForRequest];
     NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:@"40.7,-74", @"ll", nil];
     self.request = [foursquare_ requestWithPath:@"venues/search" HTTPMethod:@"GET" parameters:parameters delegate:self];
     [request_ start];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-    NSLog(@"%@¥n", [request_.response description]);
-    return self.response;
 }
 
--(NSDictionary*) getcheckinHistory {
+-(void) requestCheckinHistory {
     [self prepareForRequest];
     NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:@"4d341a00306160fcf0fc6a88", @"venueId", @"public", @"broadcast", nil];
     self.request = [foursquare_ requestWithPath:@"checkins/add" HTTPMethod:@"POST" parameters:parameters delegate:self];
     [request_ start];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-    NSLog(@"%@¥n", [self.response description]);
-    return self.response;
+}
+
+-(NSDictionary*) getResponse {
+    return response_;
+}
+
+#pragma mark -
+#pragma mark BZFoursquareRequestDelegate
+
+- (void)requestDidFinishLoading:(BZFoursquareRequest *)request {
+    self.meta = request.meta;
+    self.notifications = request.notifications;
+    self.response = request.response;
+    self.request = nil;
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    
+    [_delegate requestDidSending];
+}
+
+- (void)request:(BZFoursquareRequest *)request didFailWithError:(NSError *)error {
+    NSLog(@"%s: %@", __PRETTY_FUNCTION__, error);
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:[[error userInfo] objectForKey:@"errorDetail"] delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"") otherButtonTitles:nil];
+    [alertView show];
+    self.meta = request.meta;
+    self.notifications = request.notifications;
+    self.response = request.response;
+    self.request = nil;
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+}
+
+#pragma mark -
+#pragma mark BZFoursquareSessionDelegate
+
+- (void)foursquareDidAuthorize:(BZFoursquare *)foursquare {
+    NSLog(@"認証");
+    [self requestCheckinHistory];
+}
+
+- (void)foursquareDidNotAuthorize:(BZFoursquare *)foursquare error:(NSDictionary *)errorInfo {
+    NSLog(@"%s: %@", __PRETTY_FUNCTION__, errorInfo);
 }
 
 @end
