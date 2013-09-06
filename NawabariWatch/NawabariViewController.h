@@ -21,8 +21,11 @@
     // Google Map View
     GMSMapView* mapView_;
     
-    // circle
+    // なわばり
     GMSCircle* circ;
+    
+    // なわばりの合計
+    CGFloat nawabariSum;
 }
 
 - (void)viewDidLoad;

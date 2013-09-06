@@ -15,8 +15,10 @@
 {
     [super viewDidLoad];
     
+    // 変数初期化
 	_longitude = 0.0;
-	_latitude = 0.0;
+	_latitude  = 0.0;
+    nawabariSum = 0;
     
 	// ロケーションマネージャーを作成
 	BOOL locationServicesEnabled;
@@ -36,7 +38,7 @@
 		[locationManager startUpdatingLocation];
 	}
     
-    [self performSelector:@selector(loadView) withObject:nil afterDelay:0.1];
+    [self performSelector:@selector(loadView) withObject:nil afterDelay:0.2];
 }
 
 - (void)didReceiveMemoryWarning
@@ -52,7 +54,6 @@
                                                                  zoom:13];
     mapView_ = [GMSMapView mapWithFrame:CGRectZero camera:camera];
     mapView_.delegate = self;
-    mapView_.mapType = kGMSTypeHybrid;
     mapView_.myLocationEnabled = YES;
     mapView_.settings.myLocationButton = YES;
     self.view = mapView_;
@@ -72,9 +73,12 @@
 - (void)drawNawabari {
     CLLocationCoordinate2D circleCenter = CLLocationCoordinate2DMake(_latitude, _longitude);
     circ  = [GMSCircle circleWithPosition:circleCenter radius:100];
-    circ.fillColor   = [UIColor colorWithRed:1 green:0 blue:0 alpha:0.3];
+    circ.fillColor   = [UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.2];
     circ.strokeColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:0];
     circ.map = mapView_;
+    
+    nawabariSum += pow(circ.radius/2, 2) * M_PI;
+    NSLog([NSString stringWithFormat:@"%f", nawabariSum]);
 }
 
 /*
