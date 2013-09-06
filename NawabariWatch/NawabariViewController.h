@@ -20,9 +20,17 @@
     
     // Google Map View
     GMSMapView* mapView_;
-    
-    // 最初に現在地を取得した時だけloadViewを呼び出すため
-    _Bool isFirstLoad;
 }
 
+- (void)viewDidLoad;
+- (void)didReceiveMemoryWarning;
+- (void)loadView;
+- (void)drawNawabari;
+- (void)mapView:(GMSMapView *)mapView didTapInfoWindowOfMarker:(id)marker;
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex;
+@end
+
+@interface NawabariViewController (Location)
+- (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation;
+- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error;
 @end
