@@ -90,18 +90,19 @@
     mapView_.settings.myLocationButton = YES;
     self.view = mapView_;
     
-    [self drawNawabari];
-}
-
--(void)drawNawabari {
     // Creates a marker in the center of the map.
     GMSMarker *marker = [[GMSMarker alloc] init];
     marker.position = CLLocationCoordinate2DMake(_latitude, _longitude);
-//    marker.icon = [UIImage imageNamed:@"tokyo_tower64"];
+    //    marker.icon = [UIImage imageNamed:@"tokyo_tower64"];
     marker.title = [NSString stringWithFormat:@"longitude%f",_longitude];
     marker.snippet = [NSString stringWithFormat:@"latitude%f",_latitude];
     marker.map = mapView_;
     
+    [self drawNawabari];
+}
+
+// なわばり(markerのまわりの円)を描く
+-(void)drawNawabari {
     CLLocationCoordinate2D circleCenter = CLLocationCoordinate2DMake(_latitude, _longitude);
     GMSCircle* circ  = [GMSCircle circleWithPosition:circleCenter radius:1000];
     circ.fillColor   = [UIColor colorWithRed:0 green:0 blue:1 alpha:0.3];
@@ -109,11 +110,12 @@
     circ.map = mapView_;
 }
 
-- (UIView *)mapView:(GMSMapView *)mapView markerInfoWindow:(id)marker {
+/*
+(UIView *)mapView:(GMSMapView *)mapView markerInfoWindow:(id)marker {
     // infoWindowを作る
     UIView *infoWindow = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 140, 40)];
     infoWindow.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.45];
-    
+
     UILabel *titleLabel = [[UILabel alloc] init];
     titleLabel.frame = CGRectMake(4, 2, 96, 20);
     titleLabel.font  = [UIFont boldSystemFontOfSize:18];
@@ -121,7 +123,7 @@
     titleLabel.textColor = [UIColor whiteColor];
     titleLabel.backgroundColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0];
     [infoWindow addSubview:titleLabel];
-    
+
     UILabel *snippetLabel = [[UILabel alloc] init];
     snippetLabel.frame = CGRectMake(4, 24, 96, 14);
     snippetLabel.font  = [UIFont boldSystemFontOfSize:12];
@@ -129,11 +131,32 @@
     snippetLabel.textColor = [UIColor whiteColor];
     snippetLabel.backgroundColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0];
     [infoWindow addSubview:snippetLabel];
-    
+ 
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
     btn.frame = CGRectMake(100, 0, 40, 40);
     [infoWindow addSubview:btn];
-    
+
     return infoWindow;
+}
+*/
+
+-(void)mapView:(GMSMapView *)mapView didTapInfoWindowOfMarker:(id)marker {
+    NSString* message = [NSString stringWithFormat:@"チェックインしますか?"];
+    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"title" message:message delegate:self
+                                        cancelButtonTitle:@"キャンセル" otherButtonTitles:@"チェックイン", nil];
+    [alert show];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    switch (buttonIndex) {
+        case 0:
+            break;
+        case 1:
+            NSLog(@"ここでチェックインの処理");
+            break;
+        default:
+            break;
+    }
 }
 @end

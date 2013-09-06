@@ -19,7 +19,7 @@
 	CLLocationDegrees _latitude;
     
     // Google Map View
-    GMSMapView *mapView_;
+    GMSMapView* mapView_;
     
     // 最初に現在地を取得した時だけloadViewを呼び出すため
     _Bool isFirstLoad;
