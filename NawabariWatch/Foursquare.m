@@ -80,7 +80,7 @@
 -(void) requestVenueHistory {
     [self prepareForRequest];
     NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:@"40.7,-74", @"ll", nil];
-    self.request = [foursquare_ requestWithPath:@"venuehistory/search" HTTPMethod:@"GET" parameters:parameters delegate:self];
+    self.request = [foursquare_ requestWithPath:@"users/self/venuehistory" HTTPMethod:@"GET" parameters:parameters delegate:self];
     [request_ start];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 }
@@ -96,13 +96,26 @@
 -(void) requestUserProfile {
     [self prepareForRequest];
     NSDictionary * parameters = [NSDictionary dictionaryWithObjectsAndKeys: nil];
-    self.request = [foursquare_ requestWithPath:@"user/requests" HTTPMethod:@"GET" parameters:parameters delegate:self];
+    self.request = [foursquare_ requestWithPath:@"users/self" HTTPMethod:@"GET" parameters:parameters delegate:self];
     [request_ start];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 }
 
 -(NSDictionary*) getResponse {
     return response_;
+}
+
+//実装中
+-(NSDictionary *) convertResponse: (NSDictionary *)response {
+    NSMutableArray *items = [NSMutableArray array];
+    for (id item in (NSArray *)[response objectForKey:@"items"]) {
+        NSDictionary *tmp = (NSDictionary *)[item objectForKey:@"venue"];
+        NSDictionary *venue = [NSDictionary dictionaryWithObjectsAndKeys:[tmp objectForKey:@"name"],@"name",
+                               [tmp objectForKey:@"location"], @"location", nil];
+        [items addObject:venue];
+    }
+    
+    return [NSDictionary dictionaryWithObjectsAndKeys: @"1", @"responseType", items, @"venues", nil];
 }
 
 #pragma mark -
@@ -115,7 +128,7 @@
     self.request = nil;
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     
-    [_delegate requestDidSending];
+    [_delegate requestDidSending: self.response];
 }
 
 - (void)request:(BZFoursquareRequest *)request didFailWithError:(NSError *)error {
@@ -133,7 +146,7 @@
 #pragma mark BZFoursquareSessionDelegate
 
 - (void)foursquareDidAuthorize:(BZFoursquare *)foursquare {
-    [self requestUserProfile];
+    [self requestVenueHistory];
     
 }
 

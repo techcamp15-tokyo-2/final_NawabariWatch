@@ -16,6 +16,7 @@
     NSDictionary        *meta_;
     NSArray             *notifications_;
     NSDictionary        *response_;
+    int                 responseType;
 }
 @property(nonatomic,readonly,strong) BZFoursquare *foursquare;
 @property (nonatomic, strong) id<FoursquareDelegate> delegate;
@@ -28,7 +29,11 @@
 -(void)requestCheckinHistory;
 -(NSDictionary *) getResponse;
 @end
+enum {
+    venueHistory = 0,
+    SearchVenues = 1
+};
 
 @protocol FoursquareDelegate
-- (void)requestDidSending;
+- (void)requestDidSending:(NSDictionary *) response;
 @end

@@ -92,8 +92,7 @@
     // 認証が終わり、ユーザーIDも取得したとこ
 }
 
-- (void)requestDidSending {
-    NSDictionary *response = [foursquare getResponse];
+- (void)requestDidSending: (NSDictionary *) response {
     NSLog(@"%@", [response description]);
 }
 /*
