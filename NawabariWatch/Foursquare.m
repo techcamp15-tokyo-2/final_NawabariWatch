@@ -80,7 +80,7 @@
 -(void) requestVenueHistory {
     [self prepareForRequest];
     NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:@"40.7,-74", @"ll", nil];
-    self.request = [foursquare_ requestWithPath:@"venues/search" HTTPMethod:@"GET" parameters:parameters delegate:self];
+    self.request = [foursquare_ requestWithPath:@"venuehistory/search" HTTPMethod:@"GET" parameters:parameters delegate:self];
     [request_ start];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 }
@@ -89,6 +89,14 @@
     [self prepareForRequest];
     NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:@"4d341a00306160fcf0fc6a88", @"venueId", @"public", @"broadcast", nil];
     self.request = [foursquare_ requestWithPath:@"checkins/add" HTTPMethod:@"POST" parameters:parameters delegate:self];
+    [request_ start];
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+}
+
+-(void) requestUserProfile {
+    [self prepareForRequest];
+    NSDictionary * parameters = [NSDictionary dictionaryWithObjectsAndKeys: nil];
+    self.request = [foursquare_ requestWithPath:@"user/requests" HTTPMethod:@"GET" parameters:parameters delegate:self];
     [request_ start];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 }
@@ -125,7 +133,8 @@
 #pragma mark BZFoursquareSessionDelegate
 
 - (void)foursquareDidAuthorize:(BZFoursquare *)foursquare {
-    [self requestCheckinHistory];
+    [self requestUserProfile];
+    
 }
 
 - (void)foursquareDidNotAuthorize:(BZFoursquare *)foursquare error:(NSDictionary *)errorInfo {

@@ -120,7 +120,6 @@
 		E9DA458417D741320028B94C = {
 			isa = PBXGroup;
 			children = (
-				43DF31E517D96E1D0033ACB1 /* MobileCoreServices.framework */,
 				43DF31DE17D9636E0033ACB1 /* BZFoursquare */,
 				E9DA459617D741320028B94C /* NawabariWatch */,
 				E9DA458F17D741320028B94C /* Frameworks */,
@@ -139,6 +138,7 @@
 		E9DA458F17D741320028B94C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				43DF31E517D96E1D0033ACB1 /* MobileCoreServices.framework */,
 				E96FECEA17D85C4800D6CB8B /* AVFoundation.framework */,
 				E96FECEC17D85C5100D6CB8B /* CoreData.framework */,
 				E96FECEE17D85C5800D6CB8B /* CoreLocation.framework */,
