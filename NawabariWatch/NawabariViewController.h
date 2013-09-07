@@ -22,8 +22,27 @@
 	CLLocationDegrees _longitude;
 	CLLocationDegrees _latitude;
     
-    GMSMapView *mapView_;
+    // Google Map View
+    GMSMapView* mapView_;
+    
+    // なわばり
+    GMSCircle* circ;
+    
+    // なわばりの合計
+    CGFloat nawabariSum;
 }
+
 @property(nonatomic,readonly,strong) Foursquare *foursquare;
 - (void)requestDidSending;
+- (void)viewDidLoad;
+- (void)didReceiveMemoryWarning;
+- (void)loadView;
+- (void)drawNawabari;
+- (void)mapView:(GMSMapView *)mapView didTapInfoWindowOfMarker:(id)marker;
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex;
+@end
+
+@interface NawabariViewController (Location)
+- (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation;
+- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error;
 @end
