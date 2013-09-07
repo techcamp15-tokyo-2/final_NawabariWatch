@@ -25,6 +25,9 @@
 		E96FECFD17D85C9D00D6CB8B /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E96FECFC17D85C9D00D6CB8B /* OpenGLES.framework */; };
 		E96FECFF17D85CA700D6CB8B /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E96FECFE17D85CA700D6CB8B /* QuartzCore.framework */; };
 		E96FED0117D85CAF00D6CB8B /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E96FED0017D85CAF00D6CB8B /* SystemConfiguration.framework */; };
+		E96FED0317D97BD500D6CB8B /* tokyo_tower32.png in Resources */ = {isa = PBXBuildFile; fileRef = E96FED0217D97BD500D6CB8B /* tokyo_tower32.png */; };
+		E96FED0517D97DC700D6CB8B /* tokyo_tower64.png in Resources */ = {isa = PBXBuildFile; fileRef = E96FED0417D97DC700D6CB8B /* tokyo_tower64.png */; };
+		E96FED0817D9B5CF00D6CB8B /* NawabariViewController+Location.m in Sources */ = {isa = PBXBuildFile; fileRef = E96FED0717D9B5CF00D6CB8B /* NawabariViewController+Location.m */; };
 		E9DA459117D741320028B94C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9DA459017D741320028B94C /* UIKit.framework */; };
 		E9DA459317D741320028B94C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9DA459217D741320028B94C /* Foundation.framework */; };
 		E9DA459517D741320028B94C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9DA459417D741320028B94C /* CoreGraphics.framework */; };
@@ -60,6 +63,9 @@
 		E96FECFC17D85C9D00D6CB8B /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		E96FECFE17D85CA700D6CB8B /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		E96FED0017D85CAF00D6CB8B /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		E96FED0217D97BD500D6CB8B /* tokyo_tower32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = tokyo_tower32.png; path = ../../../../../Downloads/tokyo_tower32.png; sourceTree = "<group>"; };
+		E96FED0417D97DC700D6CB8B /* tokyo_tower64.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = tokyo_tower64.png; path = ../../../../../Downloads/tokyo_tower64.png; sourceTree = "<group>"; };
+		E96FED0717D9B5CF00D6CB8B /* NawabariViewController+Location.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NawabariViewController+Location.m"; sourceTree = "<group>"; };
 		E9DA458D17D741320028B94C /* NawabariWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NawabariWatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E9DA459017D741320028B94C /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		E9DA459217D741320028B94C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -163,11 +169,14 @@
 		E9DA459617D741320028B94C /* NawabariWatch */ = {
 			isa = PBXGroup;
 			children = (
+				E96FED0417D97DC700D6CB8B /* tokyo_tower64.png */,
+				E96FED0217D97BD500D6CB8B /* tokyo_tower32.png */,
 				E9DA459F17D741320028B94C /* NawabariAppDelegate.h */,
 				E9DA45A017D741330028B94C /* NawabariAppDelegate.m */,
 				E9DA45A817D741330028B94C /* MainStoryboard.storyboard */,
 				E9DA45AB17D741330028B94C /* NawabariViewController.h */,
 				E9DA45AC17D741330028B94C /* NawabariViewController.m */,
+				E96FED0717D9B5CF00D6CB8B /* NawabariViewController+Location.m */,
 				E9DA459717D741320028B94C /* Supporting Files */,
 				43DF31E717D96F8B0033ACB1 /* Foursquare.h */,
 				43DF31E817D96F8B0033ACB1 /* Foursquare.m */,
@@ -247,6 +256,8 @@
 				E9DA45A717D741330028B94C /* Default-568h@2x.png in Resources */,
 				E9DA45AA17D741330028B94C /* MainStoryboard.storyboard in Resources */,
 				E96FECE917D85BE900D6CB8B /* GoogleMaps.bundle in Resources */,
+				E96FED0317D97BD500D6CB8B /* tokyo_tower32.png in Resources */,
+				E96FED0517D97DC700D6CB8B /* tokyo_tower64.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -263,6 +274,7 @@
 				43DF31E317D9636E0033ACB1 /* BZFoursquare.m in Sources */,
 				43DF31E417D9636E0033ACB1 /* BZFoursquareRequest.m in Sources */,
 				43DF31E917D96F8B0033ACB1 /* Foursquare.m in Sources */,
+				E96FED0817D9B5CF00D6CB8B /* NawabariViewController+Location.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
