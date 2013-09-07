@@ -9,8 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "BZFoursquare.h"
 
-@protocol FoursquareDelegate;
-@interface Foursquare : NSObject <BZFoursquareRequestDelegate, BZFoursquareSessionDelegate>{
+@protocol FoursquareAPIDelegate;
+@interface FoursquareAPI : NSObject <BZFoursquareRequestDelegate, BZFoursquareSessionDelegate>{
     BZFoursquare        *foursquare_;
     BZFoursquareRequest *request_;
     NSDictionary        *meta_;
@@ -19,11 +19,12 @@
     int                 responseType;
 }
 @property(nonatomic,readonly,strong) BZFoursquare *foursquare;
-@property (nonatomic, strong) id<FoursquareDelegate> delegate;
+@property (nonatomic, strong) id<FoursquareAPIDelegate> delegate;
 -(BOOL)isAuthenticated;
 -(BOOL)startAuthorization;
 -(BOOL)handleOpenURL:(NSURL *)url;
 -(void)prepareForRequest;
+
 -(void)cancelRequest;
 -(void)requestVenueHistory;
 -(void)requestCheckinHistory;
@@ -34,6 +35,6 @@ enum {
     SearchVenues = 1
 };
 
-@protocol FoursquareDelegate
+@protocol FoursquareAPIDelegate
 - (void)requestDidSending:(NSDictionary *) response;
 @end

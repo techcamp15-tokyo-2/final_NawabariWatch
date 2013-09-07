@@ -6,11 +6,11 @@
 //  Copyright (c) 2013年 Nao Minami. All rights reserved.
 //
 
-#import "Foursquare.h"
+#import "FoursquareAPI.h"
 #define kClientID       @"CEZDNWYSVK05PX2EHTOB1WJJ5PUEOF0GRUBTASMG0K2E1IGF"
 #define kCallbackURL    @"nawabariwatch://foursquare"
 
-@interface Foursquare()
+@interface FoursquareAPI()
 @property(nonatomic,readwrite,strong) BZFoursquare *foursquare;
 @property(nonatomic,strong) BZFoursquareRequest *request;
 @property(nonatomic,copy) NSDictionary *meta;
@@ -26,7 +26,7 @@
 -(NSDictionary *) getResponse;
 @end
 
-@implementation Foursquare
+@implementation FoursquareAPI
 @synthesize foursquare = foursquare_;
 @synthesize request = request_;
 @synthesize meta = meta_;

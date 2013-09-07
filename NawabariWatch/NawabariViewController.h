@@ -9,11 +9,11 @@
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
 #import <GoogleMaps/GoogleMaps.h>
-#import "Foursquare.h"
+#import "FoursquareAPI.h"
 
-@interface NawabariViewController : UIViewController <CLLocationManagerDelegate, FoursquareDelegate> {
-    //foursquare
-    Foursquare *foursquare;
+@interface NawabariViewController : UIViewController <CLLocationManagerDelegate, FoursquareAPIDelegate> {
+    //foursquareAPI
+    FoursquareAPI *foursquareAPI;
 	
     // ロケーションマネージャー
 	CLLocationManager* locationManager;
@@ -32,7 +32,7 @@
     CGFloat nawabariSum;
 }
 
-@property(nonatomic,readonly,strong) Foursquare *foursquare;
+@property(nonatomic,readonly,strong) FoursquareAPI *foursquareAPI;
 - (void)requestDidSending;
 - (void)viewDidLoad;
 - (void)didReceiveMemoryWarning;

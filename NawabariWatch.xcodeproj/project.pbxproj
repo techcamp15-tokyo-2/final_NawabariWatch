@@ -10,7 +10,7 @@
 		43DF31E317D9636E0033ACB1 /* BZFoursquare.m in Sources */ = {isa = PBXBuildFile; fileRef = 43DF31E017D9636E0033ACB1 /* BZFoursquare.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		43DF31E417D9636E0033ACB1 /* BZFoursquareRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 43DF31E217D9636E0033ACB1 /* BZFoursquareRequest.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		43DF31E617D96E1D0033ACB1 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43DF31E517D96E1D0033ACB1 /* MobileCoreServices.framework */; };
-		43DF31E917D96F8B0033ACB1 /* Foursquare.m in Sources */ = {isa = PBXBuildFile; fileRef = 43DF31E817D96F8B0033ACB1 /* Foursquare.m */; settings = {COMPILER_FLAGS = "-D'FOURSQUARE_CLIENT_ID=@\"$(FOURSQUARE_CLIENT_ID)\"' -D'FOURSQUARE_CALLBACK_URL=@\"$(FOURSQUARE_CALLBACK_URL)\"'"; }; };
+		43DF31E917D96F8B0033ACB1 /* FoursquareAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 43DF31E817D96F8B0033ACB1 /* FoursquareAPI.m */; settings = {COMPILER_FLAGS = "-D'FOURSQUARE_CLIENT_ID=@\"$(FOURSQUARE_CLIENT_ID)\"' -D'FOURSQUARE_CALLBACK_URL=@\"$(FOURSQUARE_CALLBACK_URL)\"'"; }; };
 		E96FECE717D85ACB00D6CB8B /* GoogleMaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E96FECE617D85ACB00D6CB8B /* GoogleMaps.framework */; };
 		E96FECE917D85BE900D6CB8B /* GoogleMaps.bundle in Resources */ = {isa = PBXBuildFile; fileRef = E96FECE817D85BE900D6CB8B /* GoogleMaps.bundle */; };
 		E96FECEB17D85C4800D6CB8B /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E96FECEA17D85C4800D6CB8B /* AVFoundation.framework */; };
@@ -45,8 +45,8 @@
 		43DF31E117D9636E0033ACB1 /* BZFoursquareRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZFoursquareRequest.h; sourceTree = "<group>"; };
 		43DF31E217D9636E0033ACB1 /* BZFoursquareRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BZFoursquareRequest.m; sourceTree = "<group>"; };
 		43DF31E517D96E1D0033ACB1 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
-		43DF31E717D96F8B0033ACB1 /* Foursquare.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Foursquare.h; sourceTree = "<group>"; };
-		43DF31E817D96F8B0033ACB1 /* Foursquare.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Foursquare.m; sourceTree = "<group>"; };
+		43DF31E717D96F8B0033ACB1 /* FoursquareAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FoursquareAPI.h; sourceTree = "<group>"; };
+		43DF31E817D96F8B0033ACB1 /* FoursquareAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FoursquareAPI.m; sourceTree = "<group>"; };
 		E96FECE617D85ACB00D6CB8B /* GoogleMaps.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleMaps.framework; sourceTree = "<group>"; };
 		E96FECE817D85BE900D6CB8B /* GoogleMaps.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = GoogleMaps.bundle; path = GoogleMaps.framework/Versions/A/Resources/GoogleMaps.bundle; sourceTree = "<group>"; };
 		E96FECEA17D85C4800D6CB8B /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -172,8 +172,8 @@
 				E9DA45AC17D741330028B94C /* NawabariViewController.m */,
 				E96FED0717D9B5CF00D6CB8B /* NawabariViewController+Location.m */,
 				E9DA459717D741320028B94C /* Supporting Files */,
-				43DF31E717D96F8B0033ACB1 /* Foursquare.h */,
-				43DF31E817D96F8B0033ACB1 /* Foursquare.m */,
+				43DF31E717D96F8B0033ACB1 /* FoursquareAPI.h */,
+				43DF31E817D96F8B0033ACB1 /* FoursquareAPI.m */,
 			);
 			path = NawabariWatch;
 			sourceTree = "<group>";
@@ -265,7 +265,7 @@
 				E9DA45AD17D741330028B94C /* NawabariViewController.m in Sources */,
 				43DF31E317D9636E0033ACB1 /* BZFoursquare.m in Sources */,
 				43DF31E417D9636E0033ACB1 /* BZFoursquareRequest.m in Sources */,
-				43DF31E917D96F8B0033ACB1 /* Foursquare.m in Sources */,
+				43DF31E917D96F8B0033ACB1 /* FoursquareAPI.m in Sources */,
 				E96FED0817D9B5CF00D6CB8B /* NawabariViewController+Location.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

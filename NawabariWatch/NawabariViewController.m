@@ -10,15 +10,15 @@
 #import "NawabariViewController+Location.m"
 
 @implementation NawabariViewController 
-@synthesize foursquare = foursquare;
+@synthesize foursquareAPI = foursquareAPI;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
     //foursquareの汎用クラスを作成&認証
-    foursquare = [[Foursquare alloc] init];
-    foursquare.delegate = self;
-    [foursquare startAuthorization];
+    foursquareAPI = [[FoursquareAPI alloc] init];
+    foursquareAPI.delegate = self;
+    [foursquareAPI startAuthorization];
     
     // 変数初期化
 	_longitude = 0.0;
@@ -87,7 +87,7 @@
 }
 
 #pragma mark -
-#pragma mark FourSquareDelegate
+#pragma mark FourSquareAPIDelegate
 - (void)didAuthorize {
     // 認証が終わり、ユーザーIDも取得したとこ
 }
