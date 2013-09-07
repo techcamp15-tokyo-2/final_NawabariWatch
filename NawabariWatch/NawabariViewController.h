@@ -15,14 +15,15 @@
 	// ロケーションマネージャー
 	CLLocationManager* locationManager;
     
+    //foursquare
+    Foursquare *foursquare;
+    
 	// 現在位置記録用
 	CLLocationDegrees _longitude;
 	CLLocationDegrees _latitude;
     
-    //foursquareAPI実行用
-    Foursquare *foursquare;
-    
     GMSMapView *mapView_;
 }
+@property(nonatomic,readonly,strong) Foursquare *foursquare;
 - (void)requestDidSending;
 @end

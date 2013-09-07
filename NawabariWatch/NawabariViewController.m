@@ -9,7 +9,7 @@
 #import "NawabariViewController.h"
 
 @implementation NawabariViewController 
-
+@synthesize foursquare = foursquare;
 - (void)viewDidLoad
 {
     [super viewDidLoad];

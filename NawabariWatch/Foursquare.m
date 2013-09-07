@@ -18,11 +18,12 @@
 @property(nonatomic,copy) NSDictionary *response;
 -(BOOL)isAuthenticated;
 -(BOOL)startAuthorization;
+-(BOOL)handleOpenURL:(NSURL *)url;
 -(void)prepareForRequest;
 -(void)cancelRequest;
 -(void)requestVenueHistory;
 -(void)requestCheckinHistory;
--(NSDictionary*) getResponse;
+-(NSDictionary *) getResponse;
 @end
 
 @implementation Foursquare
@@ -54,6 +55,10 @@
 
 -(BOOL)startAuthorization {
     return [foursquare_ startAuthorization];
+}
+
+-(BOOL)handleOpenURL:(NSURL *)url {
+    return [foursquare_ handleOpenURL:url];
 }
 
 - (void)cancelRequest {
@@ -120,7 +125,6 @@
 #pragma mark BZFoursquareSessionDelegate
 
 - (void)foursquareDidAuthorize:(BZFoursquare *)foursquare {
-    NSLog(@"認証");
     [self requestCheckinHistory];
 }
 

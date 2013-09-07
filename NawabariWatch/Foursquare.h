@@ -21,11 +21,12 @@
 @property (nonatomic, strong) id<FoursquareDelegate> delegate;
 -(BOOL)isAuthenticated;
 -(BOOL)startAuthorization;
+-(BOOL)handleOpenURL:(NSURL *)url;
 -(void)prepareForRequest;
 -(void)cancelRequest;
 -(void)requestVenueHistory;
 -(void)requestCheckinHistory;
--(NSDictionary*) getResponse;
+-(NSDictionary *) getResponse;
 @end
 
 @protocol FoursquareDelegate

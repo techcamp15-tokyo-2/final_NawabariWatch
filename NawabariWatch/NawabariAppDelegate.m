@@ -8,14 +8,21 @@
 
 #import "NawabariAppDelegate.h"
 #import <GoogleMaps/GoogleMaps.h>
-
+#import "NawabariViewController.h"
+#import "Foursquare.h"
 @implementation NawabariAppDelegate
-
+@synthesize window = window_;
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
     [GMSServices provideAPIKey:@"AIzaSyD3Y0TIv8v17IVH-yw3Huvz8rk7kvxnkiE"];
     return YES;
+}
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    NawabariViewController *nawabariViewController = (NawabariViewController *)window_.rootViewController;
+    Foursquare *foursquare = nawabariViewController.foursquare;
+    return [foursquare handleOpenURL:url];
 }
 							
 - (void)applicationWillResignActive:(UIApplication *)application
