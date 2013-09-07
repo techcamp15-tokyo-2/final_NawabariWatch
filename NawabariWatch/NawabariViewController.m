@@ -18,7 +18,7 @@
     //foursquareの汎用クラスを作成&認証
     foursquare = [[Foursquare alloc] init];
     foursquare.delegate = self;
-    NSLog(@"%@", ([foursquare startAuthorization]? @"OK": @"NG"));
+    [foursquare startAuthorization];
     
     // 変数初期化
 	_longitude = 0.0;
@@ -88,6 +88,10 @@
 
 #pragma mark -
 #pragma mark FourSquareDelegate
+- (void)didAuthorize {
+    // 認証が終わり、ユーザーIDも取得したとこ
+}
+
 - (void)requestDidSending {
     NSDictionary *response = [foursquare getResponse];
     NSLog(@"%@", [response description]);
