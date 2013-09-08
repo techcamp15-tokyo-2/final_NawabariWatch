@@ -12,9 +12,6 @@
 #import "FoursquareAPI.h"
 
 @interface NawabariViewController : UIViewController <CLLocationManagerDelegate, FoursquareAPIDelegate> {
-    //foursquareAPI
-    FoursquareAPI *foursquareAPI;
-	
     // ロケーションマネージャー
 	CLLocationManager* locationManager;
     
@@ -25,8 +22,11 @@
     // Google Map View
     GMSMapView* mapView_;
     
+    //foursquareAPI
+    FoursquareAPI *foursquareAPI;
+    
     // なわばり
-    GMSCircle* circ;
+    NSMutableArray* nawabaris;
     
     // なわばりの合計
     CGFloat nawabariSum;
