@@ -62,28 +62,31 @@
     mapView_.myLocationEnabled = YES;
     mapView_.settings.myLocationButton = YES;
     self.view = mapView_;
-    
-    // Creates a marker in the center of the map.
-    GMSMarker* marker = [[GMSMarker alloc] init];
-    marker.position = CLLocationCoordinate2DMake(_latitude, _longitude);
-    //    marker.icon = [UIImage imageNamed:@"tokyo_tower64"];
-    marker.title   = [NSString stringWithFormat:@"longitude%f",_longitude];
-    marker.snippet = [NSString stringWithFormat:@"latitude%f" ,_latitude];
-    marker.map = mapView_;
-    
-    [self drawNawabari];
 }
 
 // なわばり(markerのまわりの円)を描く
-- (void)drawNawabari {
-    CLLocationCoordinate2D circleCenter = CLLocationCoordinate2DMake(_latitude, _longitude);
-    circ  = [GMSCircle circleWithPosition:circleCenter radius:100];
-    circ.fillColor   = [UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.2];
-    circ.strokeColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:0];
-    circ.map = mapView_;
-    
-    nawabariSum += pow(circ.radius/2, 2) * M_PI;
-    NSLog([NSString stringWithFormat:@"%f", nawabariSum]);
+- (void)drawNawabari:(NSArray *)venues {
+    for (id venue in venues) {
+        CLLocationDegrees lat = [(NSString *)[venue objectForKey:@"lat"] doubleValue];
+        CLLocationDegrees lng = [(NSString *)[venue objectForKey:@"lng"] doubleValue];
+        NSString *name = (NSString *)[venue objectForKey:@"name"];
+        
+        // Creates a marker in the center of the map.
+        GMSMarker* marker = [[GMSMarker alloc] init];
+        marker.position = CLLocationCoordinate2DMake(lat, lng);
+        //    marker.icon = [UIImage imageNamed:@"tokyo_tower64"];
+        marker.title   = name;
+        marker.map = mapView_;
+        
+        CLLocationCoordinate2D circleCenter = CLLocationCoordinate2DMake(lat, lng);
+        circ  = [GMSCircle circleWithPosition:circleCenter radius:100];
+        circ.fillColor   = [UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.5];
+        circ.strokeColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:0];
+        circ.map = mapView_;
+    }
+
+//    nawabariSum += pow(circ.radius/2, 2) * M_PI;
+//    NSLog([NSString stringWithFormat:@"%f", nawabariSum]);
 }
 
 #pragma mark -
@@ -93,7 +96,9 @@
 }
 
 - (void)requestDidSending: (NSDictionary *) response {
-    NSLog(@"%@", [response description]);
+    NSLog(@"%@", [[response objectForKey:@"venues"] description]);
+    NSArray *venues = (NSArray *)[response objectForKey:@"venues"];
+    [self drawNawabari:venues];
 }
 /*
 - (UIView *)mapView:(GMSMapView *)mapView markerInfoWindow:(id)marker {

@@ -37,7 +37,7 @@
 - (void)viewDidLoad;
 - (void)didReceiveMemoryWarning;
 - (void)loadView;
-- (void)drawNawabari;
+- (void)drawNawabari:(NSArray *)venues;
 - (void)mapView:(GMSMapView *)mapView didTapInfoWindowOfMarker:(id)marker;
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex;
 @end

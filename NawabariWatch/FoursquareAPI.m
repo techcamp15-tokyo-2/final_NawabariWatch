@@ -110,7 +110,6 @@
 //responseから、必要なvenue情報（@name、@venueid、@lat、@lng、@beenHere）を取り出す。
 -(NSDictionary *) convertResponse: (NSDictionary *)response {
     //venueのリスト
-NSLog(@"%@", [response description]);
     NSDictionary *venues = (NSDictionary *)[response objectForKey:@"venues"];
     NSMutableArray *useVenues = [NSMutableArray array];
     for (id item in (NSArray *)[venues objectForKey:@"items"]) {
