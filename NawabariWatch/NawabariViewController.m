@@ -79,10 +79,12 @@
         marker.map = mapView_;
         
         CLLocationCoordinate2D circleCenter = CLLocationCoordinate2DMake(lat, lng);
-        circ  = [GMSCircle circleWithPosition:circleCenter radius:100];
+        GMSCircle* circ  = [GMSCircle circleWithPosition:circleCenter radius:100];
         circ.fillColor   = [UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.5];
         circ.strokeColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:0];
         circ.map = mapView_;
+        
+        [nawabaris addObject:circ];
     }
 
 //    nawabariSum += pow(circ.radius/2, 2) * M_PI;
@@ -96,8 +98,7 @@
 }
 
 - (void)requestDidSending: (NSDictionary *) response {
-    NSLog(@"%@", [[response objectForKey:@"venues"] description]);
-    NSArray *venues = (NSArray *)[response objectForKey:@"venues"];
+    NSArray* venues = (NSArray *)[response objectForKey:@"venues"];
     [self drawNawabari:venues];
 }
 /*
@@ -152,10 +153,13 @@
 - (void) mapView:(GMSMapView *)mapView didChangeCameraPosition:(GMSCameraPosition *)position {
     CGFloat zoom = mapView_.camera.zoom;
     CGFloat tmpRadius = 100 * 8192 / pow(2, zoom);
-    if (tmpRadius > 100) {
-        circ.radius = tmpRadius;
-    } else {
-        circ.radius = 100;
+    for (id nawabari in nawabaris) {
+        GMSCircle* circ = (GMSCircle*)nawabari;
+        if (tmpRadius > 100) {
+            circ.radius = tmpRadius;
+        } else {
+            circ.radius = 100;
+        }
     }
 }
 
