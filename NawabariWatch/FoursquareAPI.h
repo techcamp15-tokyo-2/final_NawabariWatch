@@ -27,7 +27,7 @@
 
 -(void)cancelRequest;
 -(void)requestVenueHistory;
--(void)requestCheckinHistory;
+-(void)requestSearchVenues;
 -(NSDictionary *) getResponse;
 @end
 enum {

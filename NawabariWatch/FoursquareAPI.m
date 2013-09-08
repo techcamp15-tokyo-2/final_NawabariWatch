@@ -22,7 +22,7 @@
 -(void)prepareForRequest;
 -(void)cancelRequest;
 -(void)requestVenueHistory;
--(void)requestCheckinHistory;
+-(void)requestSearchVenues;
 -(NSDictionary *) getResponse;
 @end
 
@@ -77,18 +77,20 @@
     self.response = nil;
 }
 
+//userのvenueHistoryを取得する
 -(void) requestVenueHistory {
     [self prepareForRequest];
-    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:@"40.7,-74", @"ll", nil];
+    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys: nil];
     self.request = [foursquare_ requestWithPath:@"users/self/venuehistory" HTTPMethod:@"GET" parameters:parameters delegate:self];
     [request_ start];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 }
 
--(void) requestCheckinHistory {
+//現在地を元に周辺のvenueを取得する
+-(void) requestSearchVenues {
     [self prepareForRequest];
-    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:@"4d341a00306160fcf0fc6a88", @"venueId", @"public", @"broadcast", nil];
-    self.request = [foursquare_ requestWithPath:@"checkins/add" HTTPMethod:@"POST" parameters:parameters delegate:self];
+    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:@"40.7,-74", @"ll", nil];
+    self.request = [foursquare_ requestWithPath:@"venues/search" HTTPMethod:@"GET" parameters:parameters delegate:self];
     [request_ start];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 }
@@ -105,17 +107,28 @@
     return response_;
 }
 
-//実装中
+//responseから、必要なvenue情報（@name、@venueid、@lat、@lng、@beenHere）を取り出す。
 -(NSDictionary *) convertResponse: (NSDictionary *)response {
-    NSMutableArray *items = [NSMutableArray array];
-    for (id item in (NSArray *)[response objectForKey:@"items"]) {
-        NSDictionary *tmp = (NSDictionary *)[item objectForKey:@"venue"];
-        NSDictionary *venue = [NSDictionary dictionaryWithObjectsAndKeys:[tmp objectForKey:@"name"],@"name",
-                               [tmp objectForKey:@"location"], @"location", nil];
-        [items addObject:venue];
+    //venueのリスト
+NSLog(@"%@", [response description]);
+    NSDictionary *venues = (NSDictionary *)[response objectForKey:@"venues"];
+    NSMutableArray *useVenues = [NSMutableArray array];
+    for (id item in (NSArray *)[venues objectForKey:@"items"]) {
+        NSDictionary *venue = (NSDictionary *)[item objectForKey:@"venue"];
+        NSDictionary *location = (NSDictionary *)[venue objectForKey:@"location"];
+        
+        NSDictionary *useVenue =  [NSDictionary dictionaryWithObjectsAndKeys:
+                                   (NSString *)[venue objectForKey:@"name"],        @"name",
+                                   (NSString *)[venue objectForKey:@"id"],          @"venueId",
+                                   (NSString *)[location objectForKey:@"lat"],      @"lat",
+                                   (NSString *)[location objectForKey:@"lng"],      @"lng",
+                                   (NSString *)[item objectForKey:@"beenHere"],    @"beenHere",
+                                   nil];
+        
+        [useVenues addObject:useVenue];
     }
     
-    return [NSDictionary dictionaryWithObjectsAndKeys: @"1", @"responseType", items, @"venues", nil];
+    return [NSDictionary dictionaryWithObjectsAndKeys: @"1", @"responseType", useVenues, @"venues", nil];
 }
 
 #pragma mark -
@@ -128,7 +141,7 @@
     self.request = nil;
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     
-    [_delegate requestDidSending: self.response];
+    [_delegate requestDidSending: [self convertResponse: self.response]];
 }
 
 - (void)request:(BZFoursquareRequest *)request didFailWithError:(NSError *)error {
