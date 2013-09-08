@@ -53,13 +53,19 @@
 #pragma mark FourSquareAPIDelegate
 // 認証が終わったタイミングで呼ばれる
 - (void)didAuthorize {
+    [self loadView];
+    
     [foursquareAPI requestVenueHistory];
 //    [foursquareAPI requestSearchVenuesWithLatitude:latitude_ Longitude:longitude_];
+    
+    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:1
+                                                      target:self
+                                                    selector:@selector(modifyNawabariRadius)
+                                                    userInfo:nil
+                                                     repeats:YES];
 }
 
 - (void)requestDidSending:(NSDictionary *)response {
-    [self loadView];
-    
     NSArray* venues = (NSArray *)[response objectForKey:@"venues"];
     [self drawNawabaris:venues];
 }
@@ -181,14 +187,17 @@
     }
 }
 
-- (void) mapView:(GMSMapView *)mapView didChangeCameraPosition:(GMSCameraPosition *)position {
+//- (void) mapView:(GMSMapView *)mapView didChangeCameraPosition:(GMSCameraPosition *)position {
+//}
+
+- (void)modifyNawabariRadius {
     CGFloat zoom = mapView_.camera.zoom;
     CGFloat minRadius = 100 * 8192 / pow(2, zoom);
     for (id nawabari in nawabaris) {
         GMSCircle* circ = (GMSCircle*)[(NSDictionary*)nawabari objectForKey:@"circ"];
         CGFloat defaultRadius = [[(NSDictionary*)nawabari objectForKey:@"defaultRadius"] floatValue];
         
-        if (circ.radius < minRadius) {
+        if (circ.radius <= minRadius) {
             circ.radius = minRadius;
         } else {
             circ.radius = defaultRadius;
