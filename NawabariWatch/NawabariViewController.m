@@ -23,7 +23,6 @@
     // 変数初期化
 	_longitude = 0.0;
 	_latitude  = 0.0;
-    nawabariSum = 0;
     
 	// ロケーションマネージャーを作成
 	BOOL locationServicesEnabled;
@@ -42,8 +41,6 @@
 		// 位置情報取得開始
 		[locationManager startUpdatingLocation];
 	}
-    
-    [self performSelector:@selector(loadView) withObject:nil afterDelay:0.2];
 }
 
 - (void)didReceiveMemoryWarning
@@ -66,10 +63,14 @@
 
 // なわばり(markerのまわりの円)を描く
 - (void)drawNawabari:(NSArray *)venues {
+    nawabaris = [[NSMutableArray alloc] init];
+    nawabariSum = 0;
+    
     for (id venue in venues) {
         CLLocationDegrees lat = [(NSString *)[venue objectForKey:@"lat"] doubleValue];
         CLLocationDegrees lng = [(NSString *)[venue objectForKey:@"lng"] doubleValue];
         NSString *name = (NSString *)[venue objectForKey:@"name"];
+        int beenHere = [(NSString *)[venue objectForKey:@"beenHere"] intValue];
         
         // Creates a marker in the center of the map.
         GMSMarker* marker = [[GMSMarker alloc] init];
@@ -79,17 +80,22 @@
         marker.map = mapView_;
         
         CLLocationCoordinate2D circleCenter = CLLocationCoordinate2DMake(lat, lng);
-        GMSCircle* circ  = [GMSCircle circleWithPosition:circleCenter radius:100];
+        GMSCircle* circ  = [GMSCircle circleWithPosition:circleCenter radius:(100 * beenHere)];
         circ.fillColor   = [UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.5];
         circ.strokeColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:0];
         circ.map = mapView_;
         
-        NSDictionary* nawabari = @{@"marker": marker, @"circ": circ};
+        NSDictionary* nawabari = @{
+            @"marker": marker,
+            @"circ": circ,
+            @"defaultRadius": [NSString stringWithFormat:@"%f", circ.radius]
+        };
         [nawabaris addObject:nawabari];
+        
+        nawabariSum += pow(circ.radius/2, 2) * M_PI;
     }
 
-//    nawabariSum += pow(circ.radius/2, 2) * M_PI;
-//    NSLog([NSString stringWithFormat:@"%f", nawabariSum]);
+
 }
 
 #pragma mark -
@@ -99,6 +105,8 @@
 }
 
 - (void)requestDidSending: (NSDictionary *) response {
+    [self loadView];
+    
     NSArray* venues = (NSArray *)[response objectForKey:@"venues"];
     [self drawNawabari:venues];
 }
@@ -153,13 +161,15 @@
 
 - (void) mapView:(GMSMapView *)mapView didChangeCameraPosition:(GMSCameraPosition *)position {
     CGFloat zoom = mapView_.camera.zoom;
-    CGFloat tmpRadius = 100 * 8192 / pow(2, zoom);
+    CGFloat minRadius = 100 * 8192 / pow(2, zoom);
     for (id nawabari in nawabaris) {
         GMSCircle* circ = (GMSCircle*)[(NSDictionary*)nawabari objectForKey:@"circ"];
-        if (tmpRadius > 100) {
-            circ.radius = tmpRadius;
+        CGFloat defaultRadius = [[(NSDictionary*)nawabari objectForKey:@"defaultRadius"] floatValue];
+        
+        if (circ.radius < minRadius) {
+            circ.radius = minRadius;
         } else {
-            circ.radius = 100;
+            circ.radius = defaultRadius;
         }
     }
 }
