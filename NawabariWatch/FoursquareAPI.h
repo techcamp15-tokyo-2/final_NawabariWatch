@@ -9,7 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "BZFoursquare.h"
 
-@protocol FoursquareAPIDelegate;
+@protocol FoursquareAPIDelegate
+- (void)didAuthorize;
+- (void)requestDidSending:(NSDictionary *) response;
+@end
+
 @interface FoursquareAPI : NSObject <BZFoursquareRequestDelegate, BZFoursquareSessionDelegate>{
     BZFoursquare        *foursquare_;
     BZFoursquareRequest *request_;
@@ -30,9 +34,5 @@
 @end
 enum {
     venueHistory = 0,
-    searchVenues
+    searchVenues = 1
 };
-
-@protocol FoursquareAPIDelegate
-- (void)requestDidSending:(NSDictionary *) response;
-@end

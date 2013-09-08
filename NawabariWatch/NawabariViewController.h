@@ -33,9 +33,13 @@
 }
 
 @property(nonatomic,readonly,strong) FoursquareAPI *foursquareAPI;
-- (void)requestDidSending;
+
 - (void)viewDidLoad;
 - (void)didReceiveMemoryWarning;
+
+- (void)didAuthorize;
+- (void)requestDidSending;
+
 - (void)loadView;
 - (void)drawNawabari:(NSArray *)venues;
 - (void)mapView:(GMSMapView *)mapView didTapInfoWindowOfMarker:(id)marker;

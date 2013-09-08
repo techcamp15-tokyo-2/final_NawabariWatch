@@ -49,6 +49,22 @@
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark -
+#pragma mark FourSquareAPIDelegate
+// 認証が終わったタイミングで呼ばれる
+- (void)didAuthorize {
+    [foursquareAPI requestVenueHistory];
+}
+
+- (void)requestDidSending:(NSDictionary *)response {
+    NSLog([response description]);
+    [self loadView];
+    
+    NSArray* venues = (NSArray *)[response objectForKey:@"venues"];
+    [self drawNawabari:venues];
+}
+
+// google map 関連の処理
 - (void)loadView {
     // Do any additional setup after loading the view, typically from a nib.
     GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:_latitude
@@ -98,18 +114,6 @@
 
 }
 
-#pragma mark -
-#pragma mark FourSquareAPIDelegate
-- (void)didAuthorize {
-    // 認証が終わり、ユーザーIDも取得したとこ
-}
-
-- (void)requestDidSending: (NSDictionary *) response {
-    [self loadView];
-    
-    NSArray* venues = (NSArray *)[response objectForKey:@"venues"];
-    [self drawNawabari:venues];
-}
 /*
 - (UIView *)mapView:(GMSMapView *)mapView markerInfoWindow:(id)marker {
     // infoWindowを作る
