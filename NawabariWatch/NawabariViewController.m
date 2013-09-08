@@ -84,7 +84,8 @@
         circ.strokeColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:0];
         circ.map = mapView_;
         
-        [nawabaris addObject:circ];
+        NSDictionary* nawabari = @{@"marker": marker, @"circ": circ};
+        [nawabaris addObject:nawabari];
     }
 
 //    nawabariSum += pow(circ.radius/2, 2) * M_PI;
@@ -154,7 +155,7 @@
     CGFloat zoom = mapView_.camera.zoom;
     CGFloat tmpRadius = 100 * 8192 / pow(2, zoom);
     for (id nawabari in nawabaris) {
-        GMSCircle* circ = (GMSCircle*)nawabari;
+        GMSCircle* circ = (GMSCircle*)[(NSDictionary*)nawabari objectForKey:@"circ"];
         if (tmpRadius > 100) {
             circ.radius = tmpRadius;
         } else {
