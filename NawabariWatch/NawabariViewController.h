@@ -28,8 +28,8 @@
     // なわばり
     NSMutableArray* nawabaris;
     
-    // なわばりの合計
-    CGFloat nawabariSum;
+    // なわばりの合計面積
+    CGFloat nawabariAreaSum;
 }
 
 @property(nonatomic,readonly,strong) FoursquareAPI *foursquareAPI;

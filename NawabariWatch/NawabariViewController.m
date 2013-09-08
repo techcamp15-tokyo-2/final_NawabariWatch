@@ -64,7 +64,7 @@
 // なわばり(markerのまわりの円)を描く
 - (void)drawNawabari:(NSArray *)venues {
     nawabaris = [[NSMutableArray alloc] init];
-    nawabariSum = 0;
+    nawabariAreaSum = 0;
     
     for (id venue in venues) {
         CLLocationDegrees lat = [(NSString *)[venue objectForKey:@"lat"] doubleValue];
@@ -92,7 +92,7 @@
         };
         [nawabaris addObject:nawabari];
         
-        nawabariSum += pow(circ.radius/2, 2) * M_PI;
+        nawabariAreaSum += pow(circ.radius/2, 2) * M_PI;
     }
 
 
