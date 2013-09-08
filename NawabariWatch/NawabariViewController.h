@@ -41,7 +41,8 @@
 - (void)requestDidSending;
 
 - (void)loadView;
-- (void)drawNawabari:(NSArray *)venues;
+- (void)drawNawabaris:(NSArray *)venues;
+- (void)drawSurroundingNawabaris:(NSArray *)venues;
 - (void)mapView:(GMSMapView *)mapView didTapInfoWindowOfMarker:(id)marker;
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex;
 @end

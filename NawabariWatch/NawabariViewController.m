@@ -61,7 +61,7 @@
     [self loadView];
     
     NSArray* venues = (NSArray *)[response objectForKey:@"venues"];
-    [self drawNawabari:venues];
+    [self drawNawabaris:venues];
 }
 
 // google map 関連の処理
@@ -77,8 +77,8 @@
     self.view = mapView_;
 }
 
-// なわばり(markerのまわりの円)を描く
-- (void)drawNawabari:(NSArray *)venues {
+// なわばり(markerとそのまわりの円)を描く
+- (void)drawNawabaris:(NSArray *)venues {
     nawabaris = [[NSMutableArray alloc] init];
     nawabariAreaSum = 0;
     
@@ -109,6 +109,26 @@
         [nawabaris addObject:nawabari];
         
         nawabariAreaSum += pow(circ.radius/2, 2) * M_PI;
+    }
+}
+
+- (void)drawSurroundingNawabaris:(NSArray *)venues {
+    for (id venue in venues) {
+        CLLocationDegrees lat = [(NSString *)[venue objectForKey:@"lat"] doubleValue];
+        CLLocationDegrees lng = [(NSString *)[venue objectForKey:@"lng"] doubleValue];
+        NSString *name = (NSString *)[venue objectForKey:@"name"];
+        
+        // Creates a marker in the center of the map.
+        GMSMarker* marker = [[GMSMarker alloc] init];
+        marker.position = CLLocationCoordinate2DMake(lat, lng);
+        marker.title   = name;
+        marker.map = mapView_;
+        
+        CLLocationCoordinate2D circleCenter = CLLocationCoordinate2DMake(lat, lng);
+        GMSCircle* circ  = [GMSCircle circleWithPosition:circleCenter radius:100];
+        circ.fillColor   = [UIColor colorWithRed:1 green:0 blue:0 alpha:0.5];
+        circ.strokeColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:0];
+        circ.map = mapView_;
     }
 }
 
