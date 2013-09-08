@@ -14,8 +14,8 @@
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
     
 	// 位置情報更新
-	_longitude = newLocation.coordinate.longitude;
-	_latitude  = newLocation.coordinate.latitude;
+	longitude_ = newLocation.coordinate.longitude;
+	latitude_  = newLocation.coordinate.latitude;
 }
 
 // 位置情報が取得失敗した場合にコールされる。

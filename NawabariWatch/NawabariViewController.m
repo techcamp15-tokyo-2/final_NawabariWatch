@@ -21,8 +21,8 @@
     [foursquareAPI startAuthorization];
     
     // 変数初期化
-	_longitude = 0.0;
-	_latitude  = 0.0;
+	longitude_ = 0.0;
+	latitude_  = 0.0;
     
 	// ロケーションマネージャーを作成
 	BOOL locationServicesEnabled;
@@ -54,10 +54,10 @@
 // 認証が終わったタイミングで呼ばれる
 - (void)didAuthorize {
     [foursquareAPI requestVenueHistory];
+//    [foursquareAPI requestSearchVenuesWithLatitude:latitude_ Longitude:longitude_];
 }
 
 - (void)requestDidSending:(NSDictionary *)response {
-    NSLog([response description]);
     [self loadView];
     
     NSArray* venues = (NSArray *)[response objectForKey:@"venues"];
@@ -67,8 +67,8 @@
 // google map 関連の処理
 - (void)loadView {
     // Do any additional setup after loading the view, typically from a nib.
-    GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:_latitude
-                                                            longitude:_longitude
+    GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:latitude_
+                                                            longitude:longitude_
                                                                  zoom:13];
     mapView_ = [GMSMapView mapWithFrame:CGRectZero camera:camera];
     mapView_.delegate = self;
@@ -110,8 +110,6 @@
         
         nawabariAreaSum += pow(circ.radius/2, 2) * M_PI;
     }
-
-
 }
 
 /*

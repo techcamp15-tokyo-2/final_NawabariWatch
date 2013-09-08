@@ -16,8 +16,8 @@
 	CLLocationManager* locationManager;
     
 	// 現在位置記録用
-	CLLocationDegrees _longitude;
-	CLLocationDegrees _latitude;
+	CLLocationDegrees longitude_;
+	CLLocationDegrees latitude_;
     
     // Google Map View
     GMSMapView* mapView_;
