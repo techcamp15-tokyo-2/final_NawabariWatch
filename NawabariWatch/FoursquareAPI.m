@@ -16,14 +16,14 @@
 @property(nonatomic,copy) NSDictionary *meta;
 @property(nonatomic,copy) NSArray *notifications;
 @property(nonatomic,copy) NSDictionary *response;
+@property(nonatomic) int responseType;
 -(BOOL)isAuthenticated;
 -(BOOL)startAuthorization;
 -(BOOL)handleOpenURL:(NSURL *)url;
--(void)prepareForRequest;
+-(void)prepareForRequestWithType:(int)type;
 -(void)cancelRequest;
 -(void)requestVenueHistory;
--(void)requestSearchVenues;
--(NSDictionary *) getResponse;
+-(void)requestSearchVenuesWithLatitude:(double)lat Longitude:(double)lng;
 @end
 
 @implementation FoursquareAPI
@@ -66,20 +66,22 @@
         request_.delegate = nil;
         [request_ cancel];
         self.request = nil;
+        self.responseType = -1;
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     }
 }
 
-- (void)prepareForRequest {
+- (void)prepareForRequestWithType:(int)type {
     [self cancelRequest];
     self.meta = nil;
     self.notifications = nil;
     self.response = nil;
+    self.responseType = type;
 }
 
 //userのvenueHistoryを取得する
 -(void) requestVenueHistory {
-    [self prepareForRequest];
+    [self prepareForRequestWithType: venueHistory];
     NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys: nil];
     self.request = [foursquare_ requestWithPath:@"users/self/venuehistory" HTTPMethod:@"GET" parameters:parameters delegate:self];
     [request_ start];
@@ -87,24 +89,22 @@
 }
 
 //現在地を元に周辺のvenueを取得する
--(void) requestSearchVenues {
-    [self prepareForRequest];
-    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:@"40.7,-74", @"ll", nil];
+-(void) requestSearchVenuesWithLatitude:(double)lat Longitude:(double)lng {
+    [self prepareForRequestWithType: searchVenues];
+    NSString *ll = [NSString stringWithFormat:@"%f,%f", lat, lng];
+    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:ll, @"ll", nil];
     self.request = [foursquare_ requestWithPath:@"venues/search" HTTPMethod:@"GET" parameters:parameters delegate:self];
     [request_ start];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 }
 
+//userのプロファイルを取得
 -(void) requestUserProfile {
-    [self prepareForRequest];
+//    [self prepareForRequest: ];
     NSDictionary * parameters = [NSDictionary dictionaryWithObjectsAndKeys: nil];
     self.request = [foursquare_ requestWithPath:@"users/self" HTTPMethod:@"GET" parameters:parameters delegate:self];
     [request_ start];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-}
-
--(NSDictionary*) getResponse {
-    return response_;
 }
 
 //responseから、必要なvenue情報（@name、@venueid、@lat、@lng、@beenHere）を取り出す。
@@ -128,7 +128,7 @@ NSLog(@"%@", [response description]);
         [useVenues addObject:useVenue];
     }
     
-    return [NSDictionary dictionaryWithObjectsAndKeys: @"1", @"responseType", useVenues, @"venues", nil];
+    return [NSDictionary dictionaryWithObjectsAndKeys: [NSString stringWithFormat:@"%d", self.responseType ], @"responseType", useVenues, @"venues", nil];
 }
 
 #pragma mark -

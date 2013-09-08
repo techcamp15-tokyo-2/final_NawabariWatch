@@ -23,16 +23,14 @@
 -(BOOL)isAuthenticated;
 -(BOOL)startAuthorization;
 -(BOOL)handleOpenURL:(NSURL *)url;
--(void)prepareForRequest;
-
+-(void)prepareForRequestWithType:(int)type;
 -(void)cancelRequest;
 -(void)requestVenueHistory;
--(void)requestSearchVenues;
--(NSDictionary *) getResponse;
+-(void)requestSearchVenuesWithLatitude:(double)lat Longitude:(double)lng;
 @end
 enum {
     venueHistory = 0,
-    SearchVenues = 1
+    searchVenues
 };
 
 @protocol FoursquareAPIDelegate
