@@ -275,7 +275,7 @@
     UILabel *rankLabel = [[UILabel alloc] init];
     rankLabel.frame = CGRectMake(4, 24, 70, 46);
     rankLabel.font  = [UIFont boldSystemFontOfSize:32];
-    NSDictionary *dict = [self getRankAndUsersNum:1];
+    NSDictionary *dict = [self getRankAndUsersNumById:1 andTerritory:nawabariAreaSum];
     NSString *rank     = [dict objectForKey:@"rank"];
     NSString *usersNum = [dict objectForKey:@"users_num"];
     rankLabel.text  = [NSString stringWithFormat:@"%@位", rank];
@@ -294,8 +294,8 @@
     [self.view addSubview:infoWindow];
 }
 
-- (NSDictionary *)getRankAndUsersNum:(int)id {
-    NSString *urlStr = [@"http://quiet-wave-3026.herokuapp.com/users/rank/" stringByAppendingFormat:@"%i", id];
+- (NSDictionary *)getRankAndUsersNumById:(int)id andTerritory:(double)territory {
+    NSString *urlStr = [NSString stringWithFormat:@"http://quiet-wave-3026.herokuapp.com/users/update/%d?territory=%f", id, territory];
     NSURL *url = [NSURL URLWithString:urlStr];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     

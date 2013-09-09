@@ -55,7 +55,7 @@
 - (void)mapView:(GMSMapView *)mapView didChangeCameraPosition:(GMSCameraPosition *)position;
 
 - (void)drawRankInfoWindow;
-- (int)getRank:(int)id;
+- (NSDictionary *)getRankAndUsersNumById:(int)id andTerritory:(double)territory;
 @end
 
 @interface NawabariViewController (Location)
