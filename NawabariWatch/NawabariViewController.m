@@ -284,7 +284,7 @@
     UILabel *rankLabel2 = [[UILabel alloc] init];
     rankLabel2.frame = CGRectMake(76, 46, 44, 16);
     rankLabel2.font  = [UIFont boldSystemFontOfSize:14];
-    rankLabel2.text  = @"/136人";
+    rankLabel2.text  = [NSString stringWithFormat:@"/%d人", 136];
     rankLabel2.textColor = [UIColor whiteColor];
     rankLabel2.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
     [infoWindow addSubview:rankLabel2];
