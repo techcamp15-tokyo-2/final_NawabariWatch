@@ -46,6 +46,7 @@
 @property(nonatomic,copy) NSString *accessToken;
 
 - (id)initWithClientID:(NSString *)clientID callbackURL:(NSString *)callbackURL;
+- (id)initWithClientID:(NSString *)clientID clientSecret:(NSString *) clientSecret callbackURL:(NSString *)callbackURL;
 
 - (BOOL)startAuthorization;
 - (BOOL)handleOpenURL:(NSURL *)url;
