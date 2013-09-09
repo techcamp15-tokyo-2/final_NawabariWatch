@@ -43,8 +43,11 @@
 - (void)loadView;
 - (void)drawNawabaris:(NSArray *)venues;
 - (void)drawSurroundingNawabaris:(NSArray *)venues;
+- (void)drawInfoWindow;
+
 - (void)mapView:(GMSMapView *)mapView didTapInfoWindowOfMarker:(id)marker;
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex;
+- (void) mapView:(GMSMapView *)mapView didChangeCameraPosition:(GMSCameraPosition *)position;
 @end
 
 @interface NawabariViewController (Location)

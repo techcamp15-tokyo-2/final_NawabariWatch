@@ -62,6 +62,8 @@
 - (void)requestDidSending:(NSDictionary *)response {
     NSArray* venues = (NSArray *)[response objectForKey:@"venues"];
     [self drawNawabaris:venues];
+    
+    [self drawInfoWindow];
 }
 
 // google map 関連の処理
@@ -130,6 +132,29 @@
         circ.strokeColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:0];
         circ.map = mapView_;
     }
+}
+
+- (void)drawInfoWindow {
+    UIView *infoWindow = [[UIView alloc] initWithFrame:CGRectMake(4, 4, 90, 40)];
+    infoWindow.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.45];
+    
+    UILabel *titleLabel = [[UILabel alloc] init];
+    titleLabel.frame = CGRectMake(4, 2, 86, 14);
+    titleLabel.font  = [UIFont boldSystemFontOfSize:12];
+    titleLabel.text  = @"あなたの領土";
+    titleLabel.textColor = [UIColor whiteColor];
+    titleLabel.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
+    [infoWindow addSubview:titleLabel];
+    
+    UILabel *snippetLabel = [[UILabel alloc] init];
+    snippetLabel.frame = CGRectMake(4, 16, 86, 22);
+    snippetLabel.font  = [UIFont boldSystemFontOfSize:20];
+    snippetLabel.text  = [NSString stringWithFormat:@"%.0f坪", nawabariAreaSum/3.30578512];
+    snippetLabel.textColor = [UIColor whiteColor];
+    snippetLabel.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
+    [infoWindow addSubview:snippetLabel];
+    
+    [self.view addSubview:infoWindow];
 }
 
 /*
