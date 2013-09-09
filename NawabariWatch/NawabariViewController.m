@@ -57,12 +57,6 @@
     
     [foursquareAPI requestVenueHistory];
 //    [foursquareAPI requestSearchVenuesWithLatitude:latitude_ Longitude:longitude_];
-    
-    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:1
-                                                      target:self
-                                                    selector:@selector(modifyNawabariRadius)
-                                                    userInfo:nil
-                                                     repeats:YES];
 }
 
 - (void)requestDidSending:(NSDictionary *)response {
@@ -187,17 +181,14 @@
     }
 }
 
-//- (void) mapView:(GMSMapView *)mapView didChangeCameraPosition:(GMSCameraPosition *)position {
-//}
-
-- (void)modifyNawabariRadius {
+- (void) mapView:(GMSMapView *)mapView didChangeCameraPosition:(GMSCameraPosition *)position {
     CGFloat zoom = mapView_.camera.zoom;
     CGFloat minRadius = 100 * 8192 / pow(2, zoom);
     for (id nawabari in nawabaris) {
         GMSCircle* circ = (GMSCircle*)[(NSDictionary*)nawabari objectForKey:@"circ"];
         CGFloat defaultRadius = [[(NSDictionary*)nawabari objectForKey:@"defaultRadius"] floatValue];
         
-        if (circ.radius <= minRadius) {
+        if (minRadius >= defaultRadius) {
             circ.radius = minRadius;
         } else {
             circ.radius = defaultRadius;
