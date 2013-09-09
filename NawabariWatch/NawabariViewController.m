@@ -259,10 +259,10 @@
     [infoWindow addSubview:titleLabel];
     
     UILabel *snippetLabel = [[UILabel alloc] init];
-    snippetLabel.frame = CGRectMake(4, 20, 116, 46);
-    snippetLabel.font  = [UIFont boldSystemFontOfSize:44];
+    snippetLabel.frame = CGRectMake(4, 24, 94, 46);
+    snippetLabel.font  = [UIFont boldSystemFontOfSize:32];
     int rank = [self getRank:1];
-    snippetLabel.text  = [NSString stringWithFormat:@"%d位", rank];
+    snippetLabel.text  = [NSString stringWithFormat:@"%d位", 14];
     snippetLabel.textColor = [UIColor whiteColor];
     snippetLabel.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
     [infoWindow addSubview:snippetLabel];
