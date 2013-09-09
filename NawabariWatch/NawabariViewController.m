@@ -41,6 +41,27 @@
 		// 位置情報取得開始
 		[locationManager startUpdatingLocation];
 	}
+    
+/*
+    [self loadView];
+    NSArray *venues = @[@{
+                            @"beenHere": @"2",
+                            @"lat": @"35.65682575139073",
+                            @"lng": @"139.694968886065",
+                            @"name": @"ああああ",
+                            @"venueId": @"4b4e9440f964a520f8f126e3"
+                            },
+                          @{
+                              @"beenHere": @"1",
+                              @"lat": @"35.65775608829579",
+                              @"lng": @"139.700348675251",
+                              @"name": @"いいいい",
+                              @"venueId": @"4b5530abf964a52021de27e3"
+                              }
+                          ];
+    NSDictionary *response = @{@"venues": venues};
+    [self requestDidSending:response];
+*/
 }
 
 - (void)didReceiveMemoryWarning
@@ -54,15 +75,14 @@
 // 認証が終わったタイミングで呼ばれる
 - (void)didAuthorize {
     [self loadView];
-    
     [foursquareAPI requestVenueHistory];
 }
 
 - (void)getVenueHistory:(NSDictionary *)response {
     NSArray* venues = (NSArray *)[response objectForKey:@"venues"];
     [self drawNawabaris:venues];
-    [foursquareAPI requestSearchVenuesWithLatitude:latitude_ Longitude:longitude_];
     [self drawAreaInfoWindow];
+    [foursquareAPI requestSearchVenuesWithLatitude:latitude_ Longitude:longitude_];
 }
 
 - (void)getSearchVenues:(NSDictionary *)response {
@@ -103,9 +123,9 @@
         CLLocationCoordinate2D circleCenter = CLLocationCoordinate2DMake(lat, lng);
         GMSCircle* circ  = [GMSCircle circleWithPosition:circleCenter radius:(100 * beenHere)];
         circ.fillColor   = [UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.5];
-        circ.strokeColor = [UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0];
-//        circ.map = mapView_;
-
+        circ.strokeColor = [UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.8];
+        circ.map = mapView_;
+/*
         GMSMutablePath *rect = [GMSMutablePath path];
         double halfWidth = 0.001;
         [rect addCoordinate:CLLocationCoordinate2DMake(lat - halfWidth, lng - halfWidth)];
@@ -119,18 +139,7 @@
         polygon.strokeColor = [UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.8];
         polygon.strokeWidth = 2;
         polygon.map = mapView_;
-        
-        for (int i = -4; i < 5; i++) {
-            GMSMutablePath *path = [GMSMutablePath path];
-            double width = halfWidth * i / 5;
-            [path addCoordinate:CLLocationCoordinate2DMake(lat - width, lng - halfWidth)];
-            [path addCoordinate:CLLocationCoordinate2DMake(lat - width, lng + halfWidth)];
-            GMSPolyline *polyline = [GMSPolyline polylineWithPath:path];
-            polyline.strokeColor = [UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.8];
-            polyline.strokeWidth = 10;
-            polyline.map = mapView_;
-        }
-
+*/
         NSDictionary* nawabari = @{
             @"marker": marker,
             @"circ": circ,
@@ -164,20 +173,20 @@
 }
 
 - (void)drawAreaInfoWindow {
-    UIView *infoWindow = [[UIView alloc] initWithFrame:CGRectMake(4, 4, 90, 40)];
+    UIView *infoWindow = [[UIView alloc] initWithFrame:CGRectMake(4, 4, 180, 70)];
     infoWindow.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.45];
     
     UILabel *titleLabel = [[UILabel alloc] init];
-    titleLabel.frame = CGRectMake(4, 2, 86, 14);
-    titleLabel.font  = [UIFont boldSystemFontOfSize:12];
+    titleLabel.frame = CGRectMake(4, 4, 176, 18);
+    titleLabel.font  = [UIFont boldSystemFontOfSize:16];
     titleLabel.text  = @"あなたの領土";
     titleLabel.textColor = [UIColor whiteColor];
     titleLabel.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
     [infoWindow addSubview:titleLabel];
     
     UILabel *snippetLabel = [[UILabel alloc] init];
-    snippetLabel.frame = CGRectMake(4, 16, 86, 22);
-    snippetLabel.font  = [UIFont boldSystemFontOfSize:20];
+    snippetLabel.frame = CGRectMake(4, 20, 176, 46);
+    snippetLabel.font  = [UIFont boldSystemFontOfSize:44];
     snippetLabel.text  = [NSString stringWithFormat:@"%.0f坪", nawabariAreaSum/3.30578512];
     snippetLabel.textColor = [UIColor whiteColor];
     snippetLabel.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
