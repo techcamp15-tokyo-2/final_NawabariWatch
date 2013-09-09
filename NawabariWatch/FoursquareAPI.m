@@ -32,6 +32,7 @@
 @synthesize meta = meta_;
 @synthesize notifications = notifications_;
 @synthesize response = response_;
+@synthesize responseType = responseType_;
 
 - (id)init {
     self = [super init];
@@ -119,7 +120,6 @@
         venues = ([venueの情報], [venueの情報], ...)
 */
 -(NSDictionary *) convertResponse: (NSDictionary *)response {
-NSLog(@"%@", [response description]);
     //venueのリスト
     id venues = [response objectForKey:@"venues"];
     NSMutableArray *useVenues = [NSMutableArray array];
@@ -140,7 +140,6 @@ NSLog(@"%@", [response description]);
                                        @"", @"beenHere",
                                        (NSArray *)venue, @"venue",
                                        nil];
-NSLog(@"%@", [item description]);
                 [items insertObject:item atIndex: [items count]];
             }
             break;

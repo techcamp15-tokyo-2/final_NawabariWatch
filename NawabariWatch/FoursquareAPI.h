@@ -21,7 +21,7 @@
     NSDictionary        *meta_;
     NSArray             *notifications_;
     NSDictionary        *response_;
-    int                 responseType;
+    int                 responseType_;
 }
 @property(nonatomic,readonly,strong) BZFoursquare *foursquare;
 @property (nonatomic, strong) id<FoursquareAPIDelegate> delegate;

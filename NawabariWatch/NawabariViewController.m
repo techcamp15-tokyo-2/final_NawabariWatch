@@ -62,7 +62,7 @@
     NSArray* venues = (NSArray *)[response objectForKey:@"venues"];
     [self drawNawabaris:venues];
     [foursquareAPI requestSearchVenuesWithLatitude:latitude_ Longitude:longitude_];
-    [self drawInfoWindow];
+    [self drawAreaInfoWindow];
 }
 
 - (void)getSearchVenues:(NSDictionary *)response {
