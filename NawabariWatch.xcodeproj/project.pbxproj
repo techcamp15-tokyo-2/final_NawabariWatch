@@ -37,6 +37,7 @@
 		E9DA45A717D741330028B94C /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E9DA45A617D741330028B94C /* Default-568h@2x.png */; };
 		E9DA45AA17D741330028B94C /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E9DA45A817D741330028B94C /* MainStoryboard.storyboard */; };
 		E9DA45AD17D741330028B94C /* NawabariViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E9DA45AC17D741330028B94C /* NawabariViewController.m */; };
+		E9F5366717DD871F002D3DD9 /* pig32.png in Resources */ = {isa = PBXBuildFile; fileRef = E9F5366617DD871F002D3DD9 /* pig32.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -78,6 +79,7 @@
 		E9DA45A917D741330028B94C /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
 		E9DA45AB17D741330028B94C /* NawabariViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NawabariViewController.h; sourceTree = "<group>"; };
 		E9DA45AC17D741330028B94C /* NawabariViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NawabariViewController.m; sourceTree = "<group>"; };
+		E9F5366617DD871F002D3DD9 /* pig32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = pig32.png; path = ../../../../../Downloads/pig32.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -165,6 +167,7 @@
 		E9DA459617D741320028B94C /* NawabariWatch */ = {
 			isa = PBXGroup;
 			children = (
+				E9F5366617DD871F002D3DD9 /* pig32.png */,
 				E9DA459F17D741320028B94C /* NawabariAppDelegate.h */,
 				E9DA45A017D741330028B94C /* NawabariAppDelegate.m */,
 				E9DA45A817D741330028B94C /* MainStoryboard.storyboard */,
@@ -250,6 +253,7 @@
 				E9DA45A717D741330028B94C /* Default-568h@2x.png in Resources */,
 				E9DA45AA17D741330028B94C /* MainStoryboard.storyboard in Resources */,
 				E96FECE917D85BE900D6CB8B /* GoogleMaps.bundle in Resources */,
+				E9F5366717DD871F002D3DD9 /* pig32.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

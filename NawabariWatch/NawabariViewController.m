@@ -100,9 +100,34 @@
         CLLocationCoordinate2D circleCenter = CLLocationCoordinate2DMake(lat, lng);
         GMSCircle* circ  = [GMSCircle circleWithPosition:circleCenter radius:(100 * beenHere)];
         circ.fillColor   = [UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.5];
-        circ.strokeColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:0];
-        circ.map = mapView_;
+        circ.strokeColor = [UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0];
+//        circ.map = mapView_;
+
+        GMSMutablePath *rect = [GMSMutablePath path];
+        double halfWidth = 0.001;
+        [rect addCoordinate:CLLocationCoordinate2DMake(lat - halfWidth, lng - halfWidth)];
+        [rect addCoordinate:CLLocationCoordinate2DMake(lat + halfWidth, lng - halfWidth)];
+        [rect addCoordinate:CLLocationCoordinate2DMake(lat + halfWidth, lng + halfWidth)];
+        [rect addCoordinate:CLLocationCoordinate2DMake(lat - halfWidth, lng + halfWidth)];
+        [rect addCoordinate:CLLocationCoordinate2DMake(lat - halfWidth, lng - halfWidth)];
         
+        GMSPolygon *polygon = [GMSPolygon polygonWithPath:rect];
+        polygon.fillColor = [UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.2];
+        polygon.strokeColor = [UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.8];
+        polygon.strokeWidth = 2;
+        polygon.map = mapView_;
+        
+        for (int i = -4; i < 5; i++) {
+            GMSMutablePath *path = [GMSMutablePath path];
+            double width = halfWidth * i / 5;
+            [path addCoordinate:CLLocationCoordinate2DMake(lat - width, lng - halfWidth)];
+            [path addCoordinate:CLLocationCoordinate2DMake(lat - width, lng + halfWidth)];
+            GMSPolyline *polyline = [GMSPolyline polylineWithPath:path];
+            polyline.strokeColor = [UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.8];
+            polyline.strokeWidth = 10;
+            polyline.map = mapView_;
+        }
+
         NSDictionary* nawabari = @{
             @"marker": marker,
             @"circ": circ,
@@ -126,6 +151,7 @@
         marker.title   = name;
         marker.map = mapView_;
         
+        
         CLLocationCoordinate2D circleCenter = CLLocationCoordinate2DMake(lat, lng);
         GMSCircle* circ  = [GMSCircle circleWithPosition:circleCenter radius:100];
         circ.fillColor   = [UIColor colorWithRed:1 green:0 blue:0 alpha:0.5];
@@ -134,7 +160,7 @@
     }
 }
 
-- (void)drawInfoWindow {
+- (void)drawAreaInfoWindow {
     UIView *infoWindow = [[UIView alloc] initWithFrame:CGRectMake(4, 4, 90, 40)];
     infoWindow.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.45];
     
@@ -157,27 +183,18 @@
     [self.view addSubview:infoWindow];
 }
 
-/*
 - (UIView *)mapView:(GMSMapView *)mapView markerInfoWindow:(id)marker {
     // infoWindowを作る
-    UIView *infoWindow = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 140, 40)];
+    UIView *infoWindow = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 180, 40)];
     infoWindow.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.45];
 
     UILabel *titleLabel = [[UILabel alloc] init];
-    titleLabel.frame = CGRectMake(4, 2, 96, 20);
+    titleLabel.frame = CGRectMake(10, 10, 160, 20);
     titleLabel.font  = [UIFont boldSystemFontOfSize:18];
     titleLabel.text  = [marker title];
     titleLabel.textColor = [UIColor whiteColor];
     titleLabel.backgroundColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0];
     [infoWindow addSubview:titleLabel];
-
-    UILabel *snippetLabel = [[UILabel alloc] init];
-    snippetLabel.frame = CGRectMake(4, 24, 96, 14);
-    snippetLabel.font  = [UIFont boldSystemFontOfSize:12];
-    snippetLabel.text  = [marker snippet];
-    snippetLabel.textColor = [UIColor whiteColor];
-    snippetLabel.backgroundColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0];
-    [infoWindow addSubview:snippetLabel];
  
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
     btn.frame = CGRectMake(100, 0, 40, 40);
@@ -185,7 +202,6 @@
 
     return infoWindow;
 }
-*/
 
 - (void)mapView:(GMSMapView *)mapView didTapInfoWindowOfMarker:(id)marker {
     NSString* message = [NSString stringWithFormat:@"チェックインしますか?"];
@@ -206,7 +222,7 @@
     }
 }
 
-- (void) mapView:(GMSMapView *)mapView didChangeCameraPosition:(GMSCameraPosition *)position {
+- (void)mapView:(GMSMapView *)mapView didChangeCameraPosition:(GMSCameraPosition *)position {
     CGFloat zoom = mapView_.camera.zoom;
     CGFloat minRadius = 100 * 8192 / pow(2, zoom);
     for (id nawabari in nawabaris) {
@@ -219,6 +235,17 @@
             circ.radius = defaultRadius;
         }
     }
+}
+
+- (void)getRank:(int)id {
+    NSString *urlStr = [@"http://quiet-wave-3026.herokuapp.com/users/rank/" stringByAppendingFormat:@"%i", id];
+    NSURL *url = [NSURL URLWithString:urlStr];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    
+    NSHTTPURLResponse *response;
+    NSError *error;
+    NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+    NSString *responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 }
 
 @end
