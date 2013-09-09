@@ -30,6 +30,9 @@
     
     // なわばりの合計面積
     CGFloat nawabariAreaSum;
+    
+    // 選択されたチェックイン待ちのvenue
+    NSString *tappedVenue;
 }
 
 @property(nonatomic,readonly,strong) FoursquareAPI *foursquareAPI;

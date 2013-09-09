@@ -94,7 +94,10 @@
 }
 
 - (void)getCheckin:(NSDictionary *)response {
-    NSLog([response description]);
+    NSString* message = [NSString stringWithFormat:@"チェックインしました!"];
+    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:nil message:message delegate:self
+                                          cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [alert show];
 }
 
 // google map 関連の処理
@@ -120,12 +123,14 @@
         CLLocationDegrees lng = [(NSString *)[venue objectForKey:@"lng"] doubleValue];
         NSString *name = (NSString *)[venue objectForKey:@"name"];
         int beenHere = [(NSString *)[venue objectForKey:@"beenHere"] intValue];
+        NSString *venueId = (NSString *)[venue objectForKey:@"venueId"];
         
         // Creates a marker in the center of the map.
         GMSMarker* marker = [[GMSMarker alloc] init];
         marker.position = CLLocationCoordinate2DMake(lat, lng);
         marker.icon = [UIImage imageNamed:@"blue_map_pin_17x32"];
         marker.title   = name;
+        marker.snippet = venueId;
         marker.map = mapView_;
         
         CLLocationCoordinate2D circleCenter = CLLocationCoordinate2DMake(lat, lng);
@@ -164,11 +169,13 @@
         CLLocationDegrees lat = [(NSString *)[venue objectForKey:@"lat"] doubleValue];
         CLLocationDegrees lng = [(NSString *)[venue objectForKey:@"lng"] doubleValue];
         NSString *name = (NSString *)[venue objectForKey:@"name"];
+        NSString *venueId = (NSString *)[venue objectForKey:@"venueId"];
         
         // Creates a marker in the center of the map.
         GMSMarker* marker = [[GMSMarker alloc] init];
         marker.position = CLLocationCoordinate2DMake(lat, lng);
         marker.title   = name;
+        marker.snippet = venueId;
         marker.map = mapView_;
         
         CLLocationCoordinate2D circleCenter = CLLocationCoordinate2DMake(lat, lng);
@@ -219,6 +226,7 @@
 }
 
 - (void)mapView:(GMSMapView *)mapView didTapInfoWindowOfMarker:(id)marker {
+    tappedVenue = [marker snippet];
     NSString* message = [NSString stringWithFormat:@"チェックインしますか?"];
     UIAlertView* alert = [[UIAlertView alloc] initWithTitle:[marker title] message:message delegate:self
                                         cancelButtonTitle:@"キャンセル" otherButtonTitles:@"チェックイン", nil];
@@ -230,7 +238,7 @@
         case 0:
             break;
         case 1:
-            NSLog(@"ここでチェックインの処理");
+            [foursquareAPI requestCheckin:tappedVenue];
             break;
         default:
             break;
@@ -253,25 +261,33 @@
 }
 
 - (void)drawRankInfoWindow {
-    UIView *infoWindow = [[UIView alloc] initWithFrame:CGRectMake(192, 6, 120, 70)];
+    UIView *infoWindow = [[UIView alloc] initWithFrame:CGRectMake(192, 6, 122, 70)];
     infoWindow.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.45];
     
     UILabel *titleLabel = [[UILabel alloc] init];
-    titleLabel.frame = CGRectMake(4, 4, 116, 18);
+    titleLabel.frame = CGRectMake(4, 4, 114, 18);
     titleLabel.font  = [UIFont boldSystemFontOfSize:16];
     titleLabel.text  = @"あなたの順位";
     titleLabel.textColor = [UIColor whiteColor];
     titleLabel.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
     [infoWindow addSubview:titleLabel];
     
-    UILabel *snippetLabel = [[UILabel alloc] init];
-    snippetLabel.frame = CGRectMake(4, 24, 94, 46);
-    snippetLabel.font  = [UIFont boldSystemFontOfSize:32];
+    UILabel *rankLabel = [[UILabel alloc] init];
+    rankLabel.frame = CGRectMake(4, 24, 70, 46);
+    rankLabel.font  = [UIFont boldSystemFontOfSize:32];
     int rank = [self getRank:1];
-    snippetLabel.text  = [NSString stringWithFormat:@"%d位", 14];
-    snippetLabel.textColor = [UIColor whiteColor];
-    snippetLabel.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
-    [infoWindow addSubview:snippetLabel];
+    rankLabel.text  = [NSString stringWithFormat:@"%d位", 14];
+    rankLabel.textColor = [UIColor whiteColor];
+    rankLabel.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
+    [infoWindow addSubview:rankLabel];
+    
+    UILabel *rankLabel2 = [[UILabel alloc] init];
+    rankLabel2.frame = CGRectMake(76, 46, 44, 16);
+    rankLabel2.font  = [UIFont boldSystemFontOfSize:14];
+    rankLabel2.text  = @"/136人";
+    rankLabel2.textColor = [UIColor whiteColor];
+    rankLabel2.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
+    [infoWindow addSubview:rankLabel2];
     
     [self.view addSubview:infoWindow];
 }
