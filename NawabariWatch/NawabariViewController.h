@@ -38,7 +38,8 @@
 - (void)didReceiveMemoryWarning;
 
 - (void)didAuthorize;
-- (void)requestDidSending;
+- (void)getVenueHistory:(NSDictionary *)response;
+- (void)getSearchVenues:(NSDictionary *)response;
 
 - (void)loadView;
 - (void)drawNawabaris:(NSArray *)venues;

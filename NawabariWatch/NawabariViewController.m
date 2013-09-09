@@ -56,14 +56,17 @@
     [self loadView];
     
     [foursquareAPI requestVenueHistory];
-//    [foursquareAPI requestSearchVenuesWithLatitude:latitude_ Longitude:longitude_];
 }
 
-- (void)requestDidSending:(NSDictionary *)response {
+- (void)getVenueHistory:(NSDictionary *)response {
     NSArray* venues = (NSArray *)[response objectForKey:@"venues"];
     [self drawNawabaris:venues];
-    
+    [foursquareAPI requestSearchVenuesWithLatitude:latitude_ Longitude:longitude_];
     [self drawInfoWindow];
+}
+
+- (void)getSearchVenues:(NSDictionary *)response {
+    NSLog(@"%@", [response description]);
 }
 
 // google map 関連の処理

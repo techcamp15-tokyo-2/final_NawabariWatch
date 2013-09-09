@@ -108,12 +108,47 @@
 }
 
 //responseから、必要なvenue情報（@name、@venueid、@lat、@lng、@beenHere）を取り出す。
+/*  venueHistoryの記述形式
+        venues = (
+            { beenHere = [回数], venue = [venueの情報] },
+            { beenHere = [回数], venue = [venueの情報] },
+            ...
+        )
+ 
+    searchVenuesの記述形式
+        venues = ([venueの情報], [venueの情報], ...)
+*/
 -(NSDictionary *) convertResponse: (NSDictionary *)response {
+NSLog(@"%@", [response description]);
     //venueのリスト
-    NSDictionary *venues = (NSDictionary *)[response objectForKey:@"venues"];
+    id venues = [response objectForKey:@"venues"];
     NSMutableArray *useVenues = [NSMutableArray array];
-    for (id item in (NSArray *)[venues objectForKey:@"items"]) {
-        NSDictionary *venue = (NSDictionary *)[item objectForKey:@"venue"];
+    
+    //venuesのリストの要素をarrayで取得
+    NSMutableArray *items = [NSMutableArray array];
+    
+    switch (self.responseType) {
+        case venueHistory:
+            items = (NSMutableArray *)[((NSDictionary *)venues) objectForKey:@"items"];
+            break;
+        
+        //searchVenuesのレスポンス記述形式をvenueHistoryにあわせる
+        case searchVenues:
+            items = [NSMutableArray array];
+            for( id venue in (NSArray *) venues) {
+                NSDictionary * item = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                       @"", @"beenHere",
+                                       (NSArray *)venue, @"venue",
+                                       nil];
+NSLog(@"%@", [item description]);
+                [items insertObject:item atIndex: [items count]];
+            }
+            break;
+    }
+    
+    //レスポンスから、必要な情報だけ切り抜いてuseVenueに格納
+    for (id item in items) {
+        NSDictionary *venue = [item objectForKey:@"venue"];
         NSDictionary *location = (NSDictionary *)[venue objectForKey:@"location"];
         
         NSDictionary *useVenue =  [NSDictionary dictionaryWithObjectsAndKeys:
@@ -133,6 +168,7 @@
 #pragma mark -
 #pragma mark BZFoursquareRequestDelegate
 
+//requestのレスポンスが帰ってくる
 - (void)requestDidFinishLoading:(BZFoursquareRequest *)request {
     self.meta = request.meta;
     self.notifications = request.notifications;
@@ -140,7 +176,15 @@
     self.request = nil;
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     
-    [_delegate requestDidSending: [self convertResponse: self.response]];
+    switch (self.responseType) {
+    case venueHistory:
+        [_delegate getVenueHistory: [self convertResponse: self.response]];
+        break;
+    case searchVenues:
+        [_delegate getSearchVenues: [self convertResponse: self.response]];
+        break;
+    }
+
 }
 
 - (void)request:(BZFoursquareRequest *)request didFailWithError:(NSError *)error {
