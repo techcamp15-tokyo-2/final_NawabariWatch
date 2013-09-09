@@ -65,6 +65,17 @@
     return self;
 }
 
+- (id)initWithClientID:(NSString *)clientID clientSecret:(NSString *)clientSecret callbackURL:(NSString *)callbackURL {
+    NSParameterAssert(clientID != nil && callbackURL != nil);
+    self = [super init];
+    if (self) {
+        self.clientID = clientID;
+        self.clientSecret = clientSecret;
+        self.callbackURL = callbackURL;
+    }
+    return self;
+}
+
 - (void)dealloc {
     self.clientID = nil;
     self.callbackURL = nil;

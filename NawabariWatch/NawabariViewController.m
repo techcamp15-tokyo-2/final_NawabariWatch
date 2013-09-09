@@ -88,6 +88,12 @@
 - (void)getSearchVenues:(NSDictionary *)response {
     NSArray* surroundingVenues = (NSArray *)[response objectForKey:@"venues"];
     [self drawSurroundingNawabaris:surroundingVenues];
+    NSLog(@"%@", [response description]);
+    NSLog(@"%d", [(NSArray *)[response objectForKey:@"venues"] count]);
+}
+
+- (void)getCheckin:(NSDictionary *)response {
+    NSLog([response description]);
 }
 
 // google map 関連の処理

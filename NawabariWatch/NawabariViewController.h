@@ -40,6 +40,7 @@
 - (void)didAuthorize;
 - (void)getVenueHistory:(NSDictionary *)response;
 - (void)getSearchVenues:(NSDictionary *)response;
+- (void)getCheckin:(NSDictionary *)response;
 
 - (void)loadView;
 - (void)drawNawabaris:(NSArray *)venues;

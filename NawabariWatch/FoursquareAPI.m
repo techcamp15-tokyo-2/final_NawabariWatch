@@ -8,6 +8,7 @@
 
 #import "FoursquareAPI.h"
 #define kClientID       @"CEZDNWYSVK05PX2EHTOB1WJJ5PUEOF0GRUBTASMG0K2E1IGF"
+#define kClientSecret   @"N1Y2QLO2JTCOILYFYRCTCHOWC3RMM5B0NHB13WMN0JVEDPFB"
 #define kCallbackURL    @"nawabariwatch://foursquare"
 
 @interface FoursquareAPI()
@@ -24,6 +25,7 @@
 -(void)cancelRequest;
 -(void)requestVenueHistory;
 -(void)requestSearchVenuesWithLatitude:(double)lat Longitude:(double)lng;
+-(void)requestCheckin:(NSString *)venueId;
 @end
 
 @implementation FoursquareAPI
@@ -37,7 +39,7 @@
 - (id)init {
     self = [super init];
     if (self) {
-        self.foursquare = [[BZFoursquare alloc] initWithClientID:kClientID callbackURL:kCallbackURL];
+        self.foursquare = [[BZFoursquare alloc] initWithClientID:kClientID clientSecret:kClientSecret callbackURL:kCallbackURL];
         foursquare_.version = @"20111119";
         foursquare_.locale = [[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode];
         foursquare_.sessionDelegate = self;
@@ -93,8 +95,16 @@
 -(void) requestSearchVenuesWithLatitude:(double)lat Longitude:(double)lng {
     [self prepareForRequestWithType: searchVenues];
     NSString *ll = [NSString stringWithFormat:@"%f,%f", lat, lng];
-    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:ll, @"ll", nil];
-    self.request = [foursquare_ requestWithPath:@"venues/search" HTTPMethod:@"GET" parameters:parameters delegate:self];
+    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:@"checkin", @"intent", @" ", @"query", ll, @"ll", nil];
+    self.request = [foursquare_ userlessRequestWithPath:@"venues/search" HTTPMethod:@"GET" parameters:parameters delegate:self];
+    [request_ start];
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+}
+
+-(void) requestCheckin:(NSString *)venueId {
+    [self prepareForRequestWithType: checkin];
+    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:venueId, @"venueId", @"public", @"broadcast", nil];
+    self.request = [foursquare_ requestWithPath:@"checkins/add" HTTPMethod:@"POST" parameters:parameters delegate:self];
     [request_ start];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 }
@@ -181,6 +191,9 @@
         break;
     case searchVenues:
         [_delegate getSearchVenues: [self convertResponse: self.response]];
+        break;
+    case checkin:
+        [_delegate getCheckin:self.response];
         break;
     }
 
