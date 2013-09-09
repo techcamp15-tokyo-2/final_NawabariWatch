@@ -69,7 +69,7 @@
     // Do any additional setup after loading the view, typically from a nib.
     GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:latitude_
                                                             longitude:longitude_
-                                                                 zoom:13];
+                                                                 zoom:16];
     mapView_ = [GMSMapView mapWithFrame:CGRectZero camera:camera];
     mapView_.delegate = self;
     mapView_.myLocationEnabled = YES;
