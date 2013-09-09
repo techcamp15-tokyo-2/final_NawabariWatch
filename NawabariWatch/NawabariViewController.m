@@ -275,8 +275,10 @@
     UILabel *rankLabel = [[UILabel alloc] init];
     rankLabel.frame = CGRectMake(4, 24, 70, 46);
     rankLabel.font  = [UIFont boldSystemFontOfSize:32];
-    int rank = [self getRank:1];
-    rankLabel.text  = [NSString stringWithFormat:@"%d位", 14];
+    NSDictionary *dict = [self getRankAndUsersNum:1];
+    NSString *rank     = [dict objectForKey:@"rank"];
+    NSString *usersNum = [dict objectForKey:@"users_num"];
+    rankLabel.text  = [NSString stringWithFormat:@"%@位", rank];
     rankLabel.textColor = [UIColor whiteColor];
     rankLabel.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
     [infoWindow addSubview:rankLabel];
@@ -284,7 +286,7 @@
     UILabel *rankLabel2 = [[UILabel alloc] init];
     rankLabel2.frame = CGRectMake(76, 46, 44, 16);
     rankLabel2.font  = [UIFont boldSystemFontOfSize:14];
-    rankLabel2.text  = [NSString stringWithFormat:@"/%d人", 136];
+    rankLabel2.text  = [NSString stringWithFormat:@"/%@人", usersNum];
     rankLabel2.textColor = [UIColor whiteColor];
     rankLabel2.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
     [infoWindow addSubview:rankLabel2];
@@ -292,7 +294,7 @@
     [self.view addSubview:infoWindow];
 }
 
-- (int)getRank:(int)id {
+- (NSDictionary *)getRankAndUsersNum:(int)id {
     NSString *urlStr = [@"http://quiet-wave-3026.herokuapp.com/users/rank/" stringByAppendingFormat:@"%i", id];
     NSURL *url = [NSURL URLWithString:urlStr];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
@@ -305,7 +307,7 @@
                                                      options:NSJSONReadingAllowFragments
                                                        error:&error];
     for (NSDictionary *dict in array) {
-        return [[dict objectForKey:@"rank"] intValue];
+        return dict;
     }
 }
 
