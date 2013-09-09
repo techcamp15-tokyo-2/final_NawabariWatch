@@ -49,7 +49,9 @@
 - (void)mapView:(GMSMapView *)mapView didTapInfoWindowOfMarker:(id)marker;
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex;
 - (void)mapView:(GMSMapView *)mapView didChangeCameraPosition:(GMSCameraPosition *)position;
-- (void)getRank:(int)id;
+
+- (void)drawRankInfoWindow;
+- (int)getRank:(int)id;
 @end
 
 @interface NawabariViewController (Location)

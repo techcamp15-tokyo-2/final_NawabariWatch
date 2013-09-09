@@ -82,6 +82,7 @@
     NSArray* venues = (NSArray *)[response objectForKey:@"venues"];
     [self drawNawabaris:venues];
     [self drawAreaInfoWindow];
+    [self drawRankInfoWindow];
     [foursquareAPI requestSearchVenuesWithLatitude:latitude_ Longitude:longitude_];
 }
 
@@ -117,7 +118,7 @@
         // Creates a marker in the center of the map.
         GMSMarker* marker = [[GMSMarker alloc] init];
         marker.position = CLLocationCoordinate2DMake(lat, lng);
-        //    marker.icon = [UIImage imageNamed:@"tokyo_tower64"];
+        marker.icon = [UIImage imageNamed:@"blue_map_pin_17x32"];
         marker.title   = name;
         marker.map = mapView_;
         
@@ -173,7 +174,7 @@
 }
 
 - (void)drawAreaInfoWindow {
-    UIView *infoWindow = [[UIView alloc] initWithFrame:CGRectMake(4, 4, 180, 70)];
+    UIView *infoWindow = [[UIView alloc] initWithFrame:CGRectMake(6, 6, 180, 70)];
     infoWindow.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.45];
     
     UILabel *titleLabel = [[UILabel alloc] init];
@@ -213,7 +214,7 @@
 
 - (void)mapView:(GMSMapView *)mapView didTapInfoWindowOfMarker:(id)marker {
     NSString* message = [NSString stringWithFormat:@"チェックインしますか?"];
-    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"title" message:message delegate:self
+    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:[marker title] message:message delegate:self
                                         cancelButtonTitle:@"キャンセル" otherButtonTitles:@"チェックイン", nil];
     [alert show];
 }
@@ -245,15 +246,45 @@
     }
 }
 
-- (void)getRank:(int)id {
+- (void)drawRankInfoWindow {
+    UIView *infoWindow = [[UIView alloc] initWithFrame:CGRectMake(192, 6, 120, 70)];
+    infoWindow.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.45];
+    
+    UILabel *titleLabel = [[UILabel alloc] init];
+    titleLabel.frame = CGRectMake(4, 4, 116, 18);
+    titleLabel.font  = [UIFont boldSystemFontOfSize:16];
+    titleLabel.text  = @"あなたの順位";
+    titleLabel.textColor = [UIColor whiteColor];
+    titleLabel.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
+    [infoWindow addSubview:titleLabel];
+    
+    UILabel *snippetLabel = [[UILabel alloc] init];
+    snippetLabel.frame = CGRectMake(4, 20, 116, 46);
+    snippetLabel.font  = [UIFont boldSystemFontOfSize:44];
+    int rank = [self getRank:1];
+    snippetLabel.text  = [NSString stringWithFormat:@"%d位", rank];
+    snippetLabel.textColor = [UIColor whiteColor];
+    snippetLabel.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
+    [infoWindow addSubview:snippetLabel];
+    
+    [self.view addSubview:infoWindow];
+}
+
+- (int)getRank:(int)id {
     NSString *urlStr = [@"http://quiet-wave-3026.herokuapp.com/users/rank/" stringByAppendingFormat:@"%i", id];
     NSURL *url = [NSURL URLWithString:urlStr];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     
     NSHTTPURLResponse *response;
     NSError *error;
-    NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
-    NSString *responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    NSData *jsonData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+
+    NSArray *array = [NSJSONSerialization JSONObjectWithData:jsonData
+                                                     options:NSJSONReadingAllowFragments
+                                                       error:&error];
+    for (NSDictionary *dict in array) {
+        return [[dict objectForKey:@"rank"] intValue];
+    }
 }
 
 @end
