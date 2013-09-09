@@ -11,7 +11,8 @@
 
 @protocol FoursquareAPIDelegate
 - (void)didAuthorize;
-- (void)requestDidSending:(NSDictionary *) response;
+- (void)getVenueHistory:(NSDictionary *) response;
+- (void)getSearchVenues:(NSDictionary *) response;
 @end
 
 @interface FoursquareAPI : NSObject <BZFoursquareRequestDelegate, BZFoursquareSessionDelegate>{
