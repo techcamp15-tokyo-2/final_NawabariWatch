@@ -86,7 +86,8 @@
 }
 
 - (void)getSearchVenues:(NSDictionary *)response {
-    NSLog(@"%@", [response description]);
+    NSArray* surroundingVenues = (NSArray *)[response objectForKey:@"venues"];
+    [self drawSurroundingNawabaris:surroundingVenues];
 }
 
 // google map 関連の処理
@@ -121,7 +122,7 @@
         marker.map = mapView_;
         
         CLLocationCoordinate2D circleCenter = CLLocationCoordinate2DMake(lat, lng);
-        GMSCircle* circ  = [GMSCircle circleWithPosition:circleCenter radius:(100 * beenHere)];
+        GMSCircle* circ  = [GMSCircle circleWithPosition:circleCenter radius:(70 * beenHere)];
         circ.fillColor   = [UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.5];
         circ.strokeColor = [UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.8];
         circ.map = mapView_;
@@ -163,10 +164,9 @@
         marker.title   = name;
         marker.map = mapView_;
         
-        
         CLLocationCoordinate2D circleCenter = CLLocationCoordinate2DMake(lat, lng);
-        GMSCircle* circ  = [GMSCircle circleWithPosition:circleCenter radius:100];
-        circ.fillColor   = [UIColor colorWithRed:1 green:0 blue:0 alpha:0.5];
+        GMSCircle* circ  = [GMSCircle circleWithPosition:circleCenter radius:30];
+        circ.fillColor   = [UIColor colorWithRed:1 green:0 blue:0 alpha:0.2];
         circ.strokeColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:0];
         circ.map = mapView_;
     }
@@ -207,10 +207,6 @@
     titleLabel.textColor = [UIColor whiteColor];
     titleLabel.backgroundColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0];
     [infoWindow addSubview:titleLabel];
- 
-    UIButton *btn = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
-    btn.frame = CGRectMake(100, 0, 40, 40);
-    [infoWindow addSubview:btn];
 
     return infoWindow;
 }
