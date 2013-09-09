@@ -13,6 +13,7 @@
 - (void)didAuthorize;
 - (void)getVenueHistory:(NSDictionary *) response;
 - (void)getSearchVenues:(NSDictionary *) response;
+- (void)getCheckin:(NSDictionary *) response;
 @end
 
 @interface FoursquareAPI : NSObject <BZFoursquareRequestDelegate, BZFoursquareSessionDelegate>{
@@ -32,8 +33,10 @@
 -(void)cancelRequest;
 -(void)requestVenueHistory;
 -(void)requestSearchVenuesWithLatitude:(double)lat Longitude:(double)lng;
+-(void) requestCheckin:(NSString *)venueId;
 @end
 enum {
     venueHistory = 0,
-    searchVenues = 1
+    searchVenues = 1,
+    checkin      = 2
 };
