@@ -9,6 +9,8 @@
 #import "NawabariViewController.h"
 #import "NawabariViewController+Location.m"
 
+#define kUnitRadius 50
+
 @implementation NawabariViewController 
 @synthesize foursquareAPI = foursquareAPI;
 - (void)viewDidLoad
@@ -78,6 +80,7 @@
     [foursquareAPI requestVenueHistory];
 }
 
+// userのvenue historyを取得した後に呼ばれる
 - (void)getVenueHistory:(NSDictionary *)response {
     NSArray* venues = (NSArray *)[response objectForKey:@"venues"];
     [self drawNawabaris:venues];
@@ -86,26 +89,31 @@
     [foursquareAPI requestSearchVenuesWithLatitude:latitude_ Longitude:longitude_];
 }
 
+// 近郊のvenueを取得した後に呼ばれる
 - (void)getSearchVenues:(NSDictionary *)response {
     NSArray* surroundingVenues = (NSArray *)[response objectForKey:@"venues"];
     [self drawSurroundingNawabaris:surroundingVenues];
-    NSLog(@"%@", [response description]);
-    NSLog(@"%d", [(NSArray *)[response objectForKey:@"venues"] count]);
 }
 
+// チェックイン後に呼ばれる
 - (void)getCheckin:(NSDictionary *)response {
     for (NSMutableDictionary *nawabari in nawabaris) {
         GMSMarker* marker = [nawabari objectForKey:@"marker"];
         if (marker.snippet == tappedVenueId) {
             CGFloat radius = [[nawabari objectForKey:@"defaultRadius"] floatValue];
             GMSCircle *circ = [nawabari objectForKey:@"circ"];
-            circ.radius = radius + 70;
+            
+            nawabariAreaSum -= pow(circ.radius/2, 2) * M_PI;
+            circ.radius = kUnitRadius * sqrt( pow(radius/kUnitRadius, 2) + 1);
+            nawabariAreaSum += pow(circ.radius/2, 2) * M_PI;
+            
+            areaLabel.text = [self getAreaLabelText];
             [nawabari setObject:[NSNumber numberWithFloat:circ.radius] forKey:@"defaultRadius"];
         }
     }
     
     NSString* message = [NSString stringWithFormat:@"チェックインしました!"];
-    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:nil message:message delegate:self
+    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"didCheckin" message:message delegate:self
                                           cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [alert show];
 }
@@ -144,8 +152,11 @@
 - (void)mapView:(GMSMapView *)mapView didTapInfoWindowOfMarker:(id)marker {
     tappedVenueId = [marker snippet];
     NSString* message = [NSString stringWithFormat:@"チェックインしますか?"];
-    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:[marker title] message:message delegate:self
-                                          cancelButtonTitle:@"キャンセル" otherButtonTitles:@"チェックイン", nil];
+    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"didTapped"
+                                                    message:message
+                                                   delegate:self
+                                          cancelButtonTitle:@"キャンセル"
+                                          otherButtonTitles:@"チェックイン", nil];
     [alert show];
 }
 
@@ -186,7 +197,7 @@
         marker.map = mapView_;
         
         CLLocationCoordinate2D circleCenter = CLLocationCoordinate2DMake(lat, lng);
-        GMSCircle* circ  = [GMSCircle circleWithPosition:circleCenter radius:(70 * beenHere)];
+        GMSCircle* circ  = [GMSCircle circleWithPosition:circleCenter radius:(kUnitRadius * sqrt(beenHere))];
         circ.fillColor   = [UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.5];
         circ.strokeColor = [UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.8];
         circ.map = mapView_;
@@ -212,7 +223,7 @@
         } mutableCopy];
         [nawabaris addObject:nawabari];
         
-        nawabariAreaSum += pow(circ.radius/2, 2) * M_PI;
+        nawabariAreaSum += pow(circ.radius, 2) * M_PI;
     }
 }
 
@@ -250,13 +261,13 @@
     titleLabel.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
     [infoWindow addSubview:titleLabel];
     
-    UILabel *snippetLabel = [[UILabel alloc] init];
-    snippetLabel.frame = CGRectMake(4, 20, 176, 46);
-    snippetLabel.font  = [UIFont boldSystemFontOfSize:44];
-    snippetLabel.text  = [NSString stringWithFormat:@"%.0f坪", nawabariAreaSum/3.30578512];
-    snippetLabel.textColor = [UIColor whiteColor];
-    snippetLabel.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
-    [infoWindow addSubview:snippetLabel];
+    areaLabel = [[UILabel alloc] init];
+    areaLabel.frame = CGRectMake(4, 20, 176, 46);
+    areaLabel.font  = [UIFont boldSystemFontOfSize:44];
+    areaLabel.text  = [self getAreaLabelText];
+    areaLabel.textColor = [UIColor whiteColor];
+    areaLabel.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
+    [infoWindow addSubview:areaLabel];
     
     [self.view addSubview:infoWindow];
 }
@@ -310,11 +321,19 @@
     for (NSDictionary *dict in array) {
         return dict;
     }
+    
+    return [[NSDictionary alloc] init];
+}
+
+- (NSString *) getAreaLabelText{
+    return [NSString stringWithFormat:@"%.0f坪", nawabariAreaSum/3.30578512];
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    NSLog([alertView description]);
     switch (buttonIndex) {
         case 0:
+            NSLog(@"0 is selected");
             break;
         case 1:
             [foursquareAPI requestCheckin:tappedVenueId];
