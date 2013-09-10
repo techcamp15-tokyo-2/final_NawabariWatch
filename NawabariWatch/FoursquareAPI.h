@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "BZFoursquare.h"
 
+#define INTERVAL 1
+
 @protocol FoursquareAPIDelegate
 - (void)didAuthorize;
 - (void)getVenueHistory:(NSDictionary *) response;
@@ -23,7 +25,9 @@
     NSArray             *notifications_;
     NSDictionary        *response_;
     int                 responseType_;
+    int                 offset;
 }
+
 @property(nonatomic,readonly,strong) BZFoursquare *foursquare;
 @property (nonatomic, strong) id<FoursquareAPIDelegate> delegate;
 -(BOOL)isAuthenticated;
@@ -37,6 +41,7 @@
 @end
 enum {
     venueHistory = 0,
-    searchVenues = 1,
-    checkin      = 2
+    searchVenues,
+    checkin,
+    checkinHistory
 };
