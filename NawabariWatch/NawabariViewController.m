@@ -101,6 +101,13 @@
 
 // 近郊のvenueを取得した後に呼ばれる
 - (void)getSearchVenues:(NSDictionary *)response {
+    for (NSMutableDictionary *nawabari in surroundingNawabaris) {
+        GMSMarker* marker = [nawabari objectForKey:@"marker"];
+        marker.map = nil;
+        GMSCircle *circ = [nawabari objectForKey:@"circ"];
+        circ.map = nil;
+    }
+
     NSArray* surroundingVenues = (NSArray *)[response objectForKey:@"venues"];
     [self drawSurroundingNawabaris:surroundingVenues];
 }
