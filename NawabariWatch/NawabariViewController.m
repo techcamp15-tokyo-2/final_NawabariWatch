@@ -92,8 +92,11 @@
     [self drawNawabaris:venues];
     [self drawAreaInfoWindow];
     [self drawRankInfoWindow];
-    [foursquareAPI requestSearchVenuesWithLatitude:latitude_ Longitude:longitude_];
     [self drawSurroundingNawabarisButton];
+}
+
+- (void)requestSearchNeighborVenues {
+    [foursquareAPI requestSearchVenuesWithLatitude:latitude_ Longitude:longitude_];
 }
 
 // 近郊のvenueを取得した後に呼ばれる
@@ -337,9 +340,7 @@
     [self.view addSubview:infoWindow];
 }
 
-- (void)drawSurroundingNawabarisButton {
-//    NSArray* surroundingVenues = (NSArray *)[response objectForKey:@"venues"];
-    
+- (void)drawSurroundingNawabarisButton {    
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
     [btn setTitle:@"venueを探す" forState:UIControlStateNormal];
 
@@ -351,7 +352,7 @@
 
     [btn setTitleColor:[UIColor colorWithRed:0.1 green:0.1 blue:0.1 alpha:1] forState:UIControlStateNormal];
     
-//    [btn addTarget:self action:@selector(drawSurroundingNawabaris:surroundingVenues;) forControlEvents:UIControlEventTouchUpInside];
+    [btn addTarget:self action:@selector(requestSearchNeighborVenues) forControlEvents:UIControlEventTouchUpInside];
 //    [[btn layer] setBackgroundColor:
 //     [[UIColor colorWithRed:1 green:1 blue:1 alpha:0.7] CGColor]
 //                           forState:(UIControlStateSelected | UIControlStateHighlighted)];
