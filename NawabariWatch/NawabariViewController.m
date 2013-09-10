@@ -93,11 +93,11 @@
     [self drawAreaInfoWindow];
     [self drawRankInfoWindow];
     [foursquareAPI requestSearchVenuesWithLatitude:latitude_ Longitude:longitude_];
+    [self drawSurroundingNawabarisButton];
 }
 
 // 近郊のvenueを取得した後に呼ばれる
 - (void)getSearchVenues:(NSDictionary *)response {
-    [self drawSurroundingNawabarisButton];
     NSArray* surroundingVenues = (NSArray *)[response objectForKey:@"venues"];
     [self drawSurroundingNawabaris:surroundingVenues];
 }
