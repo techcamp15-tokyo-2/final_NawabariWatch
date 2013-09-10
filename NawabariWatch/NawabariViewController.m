@@ -226,7 +226,7 @@
 }
 
 - (void)mapView:(GMSMapView *)mapView didTapInfoWindowOfMarker:(id)marker {
-    tappedVenue = [marker snippet];
+    tappedVenueId = [marker snippet];
     NSString* message = [NSString stringWithFormat:@"チェックインしますか?"];
     UIAlertView* alert = [[UIAlertView alloc] initWithTitle:[marker title] message:message delegate:self
                                         cancelButtonTitle:@"キャンセル" otherButtonTitles:@"チェックイン", nil];
@@ -238,7 +238,7 @@
         case 0:
             break;
         case 1:
-            [foursquareAPI requestCheckin:tappedVenue];
+            [foursquareAPI requestCheckin:tappedVenueId];
             break;
         default:
             break;

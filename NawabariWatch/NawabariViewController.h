@@ -32,7 +32,7 @@
     CGFloat nawabariAreaSum;
     
     // 選択されたチェックイン待ちのvenue
-    NSString *tappedVenue;
+    NSString *tappedVenueId;
 }
 
 @property(nonatomic,readonly,strong) FoursquareAPI *foursquareAPI;
