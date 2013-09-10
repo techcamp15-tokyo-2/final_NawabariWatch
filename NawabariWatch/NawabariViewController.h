@@ -28,6 +28,9 @@
     // なわばり(マーカーと領土のArray)
     NSMutableArray* nawabaris;
     
+    // 近郊の自分のじゃないなわばり(マーカーと領土のArray)
+    NSMutableArray* surroundingNawabaris;
+    
     // なわばりの合計面積
     CGFloat nawabariAreaSum;
     

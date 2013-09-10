@@ -9,7 +9,7 @@
 #import "NawabariViewController.h"
 #import "NawabariViewController+Location.m"
 
-#define kUnitRadius 50
+#define kUnitRadius 40
 
 @implementation NawabariViewController 
 @synthesize foursquareAPI = foursquareAPI;
@@ -110,9 +110,24 @@
             CGFloat radius = [[nawabari objectForKey:@"defaultRadius"] floatValue];
             GMSCircle *circ = [nawabari objectForKey:@"circ"];
             
-            nawabariAreaSum -= pow(circ.radius/2, 2) * M_PI;
+            nawabariAreaSum -= pow(circ.radius, 2) * M_PI;
             circ.radius = kUnitRadius * sqrt( pow(radius/kUnitRadius, 2) + 1);
-            nawabariAreaSum += pow(circ.radius/2, 2) * M_PI;
+            nawabariAreaSum += pow(circ.radius, 2) * M_PI;
+            
+            areaLabel.text = [self getAreaLabelText];
+            [nawabari setObject:[NSNumber numberWithFloat:circ.radius] forKey:@"defaultRadius"];
+        }
+    }
+    
+    for (NSMutableDictionary *nawabari in surroundingNawabaris) {
+        GMSMarker* marker = [nawabari objectForKey:@"marker"];
+        if (marker.snippet == tappedVenueId) {
+            marker.icon = [UIImage imageNamed:@"blue_map_pin_17x32"];
+            GMSCircle *circ = [nawabari objectForKey:@"circ"];
+            
+            circ.fillColor   = [UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.4];
+            circ.strokeColor = [UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.8];
+            nawabariAreaSum += pow(circ.radius, 2) * M_PI;
             
             areaLabel.text = [self getAreaLabelText];
             [nawabari setObject:[NSNumber numberWithFloat:circ.radius] forKey:@"defaultRadius"];
@@ -189,7 +204,6 @@
 - (void)drawNawabaris:(NSArray *)venues {
     nawabaris = [[NSMutableArray alloc] init];
     nawabariAreaSum = 0;
-    
     for (id venue in venues) {
         CLLocationDegrees lat = [(NSString *)[venue objectForKey:@"lat"] doubleValue];
         CLLocationDegrees lng = [(NSString *)[venue objectForKey:@"lng"] doubleValue];
@@ -237,6 +251,7 @@
 }
 
 - (void)drawSurroundingNawabaris:(NSArray *)venues {
+    surroundingNawabaris = [[NSMutableArray alloc] init];
     for (id venue in venues) {
         CLLocationDegrees lat = [(NSString *)[venue objectForKey:@"lat"] doubleValue];
         CLLocationDegrees lng = [(NSString *)[venue objectForKey:@"lng"] doubleValue];
@@ -251,10 +266,17 @@
         marker.map = mapView_;
         
         CLLocationCoordinate2D circleCenter = CLLocationCoordinate2DMake(lat, lng);
-        GMSCircle* circ  = [GMSCircle circleWithPosition:circleCenter radius:30];
+        GMSCircle* circ  = [GMSCircle circleWithPosition:circleCenter radius:kUnitRadius];
         circ.fillColor   = [UIColor colorWithRed:1 green:0 blue:0 alpha:0.2];
         circ.strokeColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:0];
         circ.map = mapView_;
+        
+        NSMutableDictionary* nawabari = [@{
+                                         @"marker": marker,
+                                         @"circ": circ,
+                                         @"defaultRadius": [NSNumber numberWithFloat:circ.radius]
+                                         } mutableCopy];
+        [surroundingNawabaris addObject:nawabari];
     }
 }
 
