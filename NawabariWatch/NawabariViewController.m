@@ -347,7 +347,8 @@
     [self.view addSubview:infoWindow];
 }
 
-- (void)drawSurroundingNawabarisButton {    
+- (void)drawSurroundingNawabarisButton {
+    /*
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
     [btn setTitle:@"venueを探す" forState:UIControlStateNormal];
 
@@ -360,13 +361,42 @@
     [btn setTitleColor:[UIColor colorWithRed:0.1 green:0.1 blue:0.1 alpha:1] forState:UIControlStateNormal];
     
     [btn addTarget:self action:@selector(requestSearchNeighborVenues) forControlEvents:UIControlEventTouchUpInside];
-//    [[btn layer] setBackgroundColor:
-//     [[UIColor colorWithRed:1 green:1 blue:1 alpha:0.7] CGColor]
-//                           forState:(UIControlStateSelected | UIControlStateHighlighted)];
+    [btn setBackgroundImage:[self createBackgroundImage:[UIColor colorWithRed:0.1 green:0.1 blue:0.1 alpha:1] withSize:CGSizeMake(120, 40)]
+                           forState:(UIControlStateSelected | UIControlStateHighlighted)];
     btn.showsTouchWhenHighlighted = YES;
-   
+    
     btn.frame = CGRectMake(5, self.view.frame.size.height - 40 - 6, 120, 40);
     [self.view addSubview:btn];
+    */
+
+    UIButton *btnSample = [UIButton buttonWithType:UIButtonTypeCustom];
+    btnSample.frame = CGRectMake(5, self.view.frame.size.height - 40 - 6, 120, 40);
+    [btnSample setTitle:@"venueを探す" forState:UIControlStateNormal];
+    [btnSample setBackgroundImage:[self createBackgroundImage:[UIColor colorWithRed:1 green:1 blue:1 alpha:0.7] withSize:CGSizeMake(120, 40)]
+                         forState:UIControlStateNormal];
+    [btnSample setBackgroundImage:[self createBackgroundImage:[UIColor colorWithRed:0.1 green:0.1 blue:0.1 alpha:0.7] withSize:CGSizeMake(120, 40)]
+                   forState:(UIControlStateSelected | UIControlStateHighlighted)];
+    [btnSample.layer setCornerRadius:10.0];
+    [btnSample.layer setBorderColor:[UIColor grayColor].CGColor];
+    [btnSample.layer setBorderWidth:1.0];
+    [btnSample setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+
+    [btnSample addTarget:self action:@selector(requestSearchNeighborVenues) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:btnSample];
+
+}
+
+- (UIImage *)createBackgroundImage:(UIColor *)color withSize:(CGSize)size {
+    UIImage *screenImage;
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height)];
+    view.layer.cornerRadius = 10;
+    view.clipsToBounds = true;
+    view.backgroundColor = color;
+    UIGraphicsBeginImageContext(size);
+    [view.layer renderInContext:UIGraphicsGetCurrentContext()];
+    screenImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return screenImage;
 }
 
 - (NSDictionary *)getRankAndUsersNumById:(int)id andTerritory:(double)territory {
