@@ -260,6 +260,7 @@
     }
 }
 
+// 近郊の自分のでないなわばりを描画
 - (void)drawSurroundingNawabaris:(NSArray *)venues {
     surroundingNawabaris = [[NSMutableArray alloc] init];
     for (id venue in venues) {
@@ -290,6 +291,7 @@
     }
 }
 
+// 領土情報windowを描画
 - (void)drawAreaInfoWindow {
     UIView *infoWindow = [[UIView alloc] initWithFrame:CGRectMake(6, 6, 180, 70)];
     infoWindow.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.45];
@@ -313,6 +315,7 @@
     [self.view addSubview:infoWindow];
 }
 
+// 順位情報windowを描画
 - (void)drawRankInfoWindow {
     UIView *infoWindow = [[UIView alloc] initWithFrame:CGRectMake(192, 6, 122, 70)];
     infoWindow.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.45];
@@ -347,6 +350,7 @@
     [self.view addSubview:infoWindow];
 }
 
+// venueを探すボタンを描画
 - (void)drawSurroundingNawabarisButton {
     /*
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -386,6 +390,7 @@
 
 }
 
+// UIColorからUIImageを生成
 - (UIImage *)createBackgroundImage:(UIColor *)color withSize:(CGSize)size {
     UIImage *screenImage;
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height)];
@@ -399,6 +404,7 @@
     return screenImage;
 }
 
+// WebAPIをたたいてユーザーの順位と全ユーザー数を取得
 - (NSDictionary *)getRankAndUsersNumById:(int)id andTerritory:(double)territory {
     NSString *urlStr = [NSString stringWithFormat:@"http://quiet-wave-3026.herokuapp.com/users/update/%d?territory=%f", id, territory];
     NSURL *url = [NSURL URLWithString:urlStr];
@@ -418,6 +424,7 @@
     return [[NSDictionary alloc] init];
 }
 
+// 順位windowに表示するStringを生成
 - (NSString *) getAreaLabelText{
     return [NSString stringWithFormat:@"%.0f坪", nawabariAreaSum/3.30578512];
 }
