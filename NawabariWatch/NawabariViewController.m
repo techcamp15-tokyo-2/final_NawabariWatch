@@ -17,8 +17,14 @@
     
     //foursquareの汎用クラスを作成&認証
     foursquareAPI = [[FoursquareAPI alloc] init];
-    foursquareAPI.delegate = self;
-    [foursquareAPI startAuthorization];
+    if(![foursquareAPI isAuthenticated]) {
+        
+        NSString* message = [NSString stringWithFormat:@"foursquareの認証がされていません。認証してください！"];
+        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:nil message:message delegate:self
+                                              cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        alert.tag = startAuthorization;
+        [alert show];
+    }
     
     // 変数初期化
 	longitude_ = 0.0;
@@ -107,6 +113,7 @@
     NSString* message = [NSString stringWithFormat:@"チェックインしました!"];
     UIAlertView* alert = [[UIAlertView alloc] initWithTitle:nil message:message delegate:self
                                           cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    alert.tag = finishCheckin;
     [alert show];
 }
 
@@ -146,6 +153,7 @@
     NSString* message = [NSString stringWithFormat:@"チェックインしますか?"];
     UIAlertView* alert = [[UIAlertView alloc] initWithTitle:[marker title] message:message delegate:self
                                           cancelButtonTitle:@"キャンセル" otherButtonTitles:@"チェックイン", nil];
+    alert.tag = requestCheckin;
     [alert show];
 }
 
@@ -313,15 +321,31 @@
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    switch (buttonIndex) {
-        case 0:
+    
+    switch (alertView.tag) {
+        
+        case startAuthorization:
+            foursquareAPI.delegate = self;
+            [foursquareAPI startAuthorization];
             break;
-        case 1:
-            [foursquareAPI requestCheckin:tappedVenueId];
+        
+        case requestCheckin:
+            switch (buttonIndex) {
+                case 0:
+                    break;
+                case 1:
+                    [foursquareAPI requestCheckin:tappedVenueId];
+                    break;
+                default:
+                    break;
+            }
             break;
-        default:
+        
+        case finishCheckin:
             break;
+        
     }
+    
 }
 
 @end

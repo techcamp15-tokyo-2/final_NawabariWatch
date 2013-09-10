@@ -63,3 +63,9 @@
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation;
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error;
 @end
+
+enum {
+    startAuthorization = 0,
+    requestCheckin,
+    finishCheckin
+};
