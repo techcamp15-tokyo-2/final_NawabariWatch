@@ -10,6 +10,7 @@
 #import "BZFoursquare.h"
 
 #define INTERVAL 1
+#define LIMIT 100
 
 @protocol FoursquareAPIDelegate
 - (void)didAuthorize;
@@ -23,9 +24,9 @@
     BZFoursquareRequest *request_;
     NSDictionary        *meta_;
     NSArray             *notifications_;
-    NSDictionary        *response_;
+    NSMutableDictionary *response_;
     int                 responseType_;
-    int                 offset;
+    int                 offset_;
 }
 
 @property(nonatomic,readonly,strong) BZFoursquare *foursquare;
@@ -42,6 +43,7 @@
 enum {
     venueHistory = 0,
     searchVenues,
+    userProfile,
     checkin,
     checkinHistory
 };

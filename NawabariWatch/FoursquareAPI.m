@@ -16,7 +16,7 @@
 @property(nonatomic,strong) BZFoursquareRequest *request;
 @property(nonatomic,copy) NSDictionary *meta;
 @property(nonatomic,copy) NSArray *notifications;
-@property(nonatomic,copy) NSDictionary *response;
+@property(nonatomic,copy) NSMutableDictionary *response;
 @property(nonatomic) int responseType;
 @property(nonatomic) int offset;
 
@@ -37,6 +37,7 @@
 @synthesize notifications = notifications_;
 @synthesize response = response_;
 @synthesize responseType = responseType_;
+@synthesize offset = offset_;
 
 - (id)init {
     self = [super init];
@@ -113,7 +114,7 @@
 
 //userのプロファイルを取得
 -(void) requestUserProfile {
-//    [self prepareForRequest: ];
+    [self prepareForRequestWithType: userProfile];
     NSDictionary * parameters = [NSDictionary dictionaryWithObjectsAndKeys: nil];
     self.request = [foursquare_ requestWithPath:@"users/self" HTTPMethod:@"GET" parameters:parameters delegate:self];
     [request_ start];
@@ -121,14 +122,21 @@
 }
 
 //最大１ヶ月分のチェックインのリストを取得する。
-/*-(void) requestCheckinHistoryFirst {
-    self.
-}*/
+-(void) requestCheckinHistoryFirst {
+    [self prepareForRequestWithType:checkinHistory];
+    self.offset = 0;
+    [self requestCheckinHistory];
+}
 
 -(void) requestCheckinHistory {
-    [self prepareForRequestWithType:checkinHistory];
-    NSDate *now = [NSDate date];
-    NSDate *past = [NSDate dateWithTimeIntervalSince1970:[now timeIntervalSince1970] - INTERVAL * 24 * 60 * 60];
+    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:
+                                [NSString stringWithFormat:@"%d", LIMIT], @"limit",
+                                [NSString stringWithFormat:@"%d", self.offset], @"offset",
+                                nil];
+    self.request = [foursquare_ requestWithPath:@"users/self/checkins" HTTPMethod:@"GET" parameters:parameters delegate:self];
+    [request_ start];
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    self.offset++;
 }
 
 //responseから、必要なvenue情報（@name、@venueid、@lat、@lng、@beenHere）を取り出す。
@@ -187,16 +195,35 @@
     return [NSDictionary dictionaryWithObjectsAndKeys: [NSString stringWithFormat:@"%d", self.responseType ], @"responseType", useVenues, @"venues", nil];
 }
 
+
+
 #pragma mark -
 #pragma mark BZFoursquareRequestDelegate
 
 //requestのレスポンスが帰ってくる
 - (void)requestDidFinishLoading:(BZFoursquareRequest *)request {
+/*    if(self.responseType == checkinHistory) {
+        
+        int count = (int)[self.response dictionaryWithValuesForKeys: @"count"];
+        if(count == 100) {
+            
+            NSDictionary *convertResponce = [self convertResponse:request.response];
+            for((NSDictionary *) venue in convertResponce) {
+                [self.response 
+            }
+        };
+        [_delegate getCheckin:self.response];
+    }*/
     self.meta = request.meta;
     self.notifications = request.notifications;
     self.response = request.response;
     self.request = nil;
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    
+    
+    NSDictionary *user = (NSDictionary *)[self.response objectForKey:@"user"];
+    NSDictionary *friend = [user objectForKey:@"friends"];
+    NSLog(@"%@", [friend description]);
     
     switch (self.responseType) {
     case venueHistory:
@@ -205,11 +232,12 @@
     case searchVenues:
         [_delegate getSearchVenues: [self convertResponse: self.response]];
         break;
+    case userProfile:
+        break;
     case checkin:
         [_delegate getCheckin:self.response];
         break;
     }
-
 }
 
 - (void)request:(BZFoursquareRequest *)request didFailWithError:(NSError *)error {
@@ -218,7 +246,7 @@
     [alertView show];
     self.meta = request.meta;
     self.notifications = request.notifications;
-    self.response = request.response;
+//    self.response = request.response;
     self.request = nil;
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
@@ -227,7 +255,9 @@
 #pragma mark BZFoursquareSessionDelegate
 
 - (void)foursquareDidAuthorize:(BZFoursquare *)foursquare {
-    [_delegate didAuthorize];
+//    [_delegate didAuthorize];
+    NSLog(@"a");
+    [self requestUserProfile];
 }
 
 - (void)foursquareDidNotAuthorize:(BZFoursquare *)foursquare error:(NSDictionary *)errorInfo {
