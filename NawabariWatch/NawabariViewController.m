@@ -369,20 +369,20 @@
     [self.view addSubview:btn];
     */
 
-    UIButton *btnSample = [UIButton buttonWithType:UIButtonTypeCustom];
-    btnSample.frame = CGRectMake(5, self.view.frame.size.height - 40 - 6, 120, 40);
-    [btnSample setTitle:@"venueを探す" forState:UIControlStateNormal];
-    [btnSample setBackgroundImage:[self createBackgroundImage:[UIColor colorWithRed:1 green:1 blue:1 alpha:0.7] withSize:CGSizeMake(120, 40)]
+    UIButton *searchButton = [UIButton buttonWithType:UIButtonTypeCustom];
+   searchButton.frame = CGRectMake(5, self.view.frame.size.height - 40 - 6, 120, 40);
+    [searchButton setTitle:@"venueを探す" forState:UIControlStateNormal];
+    [searchButton setBackgroundImage:[self createBackgroundImage:[UIColor colorWithRed:1 green:1 blue:1 alpha:0.7] withSize:CGSizeMake(120, 40)]
                          forState:UIControlStateNormal];
-    [btnSample setBackgroundImage:[self createBackgroundImage:[UIColor colorWithRed:0.1 green:0.1 blue:0.1 alpha:0.7] withSize:CGSizeMake(120, 40)]
+    [searchButton setBackgroundImage:[self createBackgroundImage:[UIColor colorWithRed:0.1 green:0.1 blue:0.1 alpha:0.7] withSize:CGSizeMake(120, 40)]
                    forState:(UIControlStateSelected | UIControlStateHighlighted)];
-    [btnSample.layer setCornerRadius:10.0];
-    [btnSample.layer setBorderColor:[UIColor grayColor].CGColor];
-    [btnSample.layer setBorderWidth:1.0];
-    [btnSample setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [searchButton.layer setCornerRadius:10.0];
+    [searchButton.layer setBorderColor:[UIColor grayColor].CGColor];
+    [searchButton.layer setBorderWidth:1.0];
+    [searchButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
 
-    [btnSample addTarget:self action:@selector(requestSearchNeighborVenues) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:btnSample];
+    [searchButton addTarget:self action:@selector(requestSearchNeighborVenues) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:searchButton];
 
 }
 
