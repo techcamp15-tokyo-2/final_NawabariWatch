@@ -202,28 +202,24 @@
 
 //requestのレスポンスが帰ってくる
 - (void)requestDidFinishLoading:(BZFoursquareRequest *)request {
-/*    if(self.responseType == checkinHistory) {
-        
-        int count = (int)[self.response dictionaryWithValuesForKeys: @"count"];
-        if(count == 100) {
-            
-            NSDictionary *convertResponce = [self convertResponse:request.response];
-            for((NSDictionary *) venue in convertResponce) {
-                [self.response 
-            }
+    if(self.responseType == checkinHistory) {
+        NSDictionary *checkins = (NSDictionary *)[request.response objectForKey: @"checkins"];
+        int count = (int)[checkins objectForKey:@"count"];
+        NSDictionary *convertResponce = [self convertResponse:(NSDictionary *)[checkins objectForKey:@"items"]];
+        for(id tmp in convertResponce) {
+            NSDictionary *venue = (NSDictionary *)tmp;
+            [self.response setObject:venue forKey:[NSString stringWithFormat:@"%d", [self.response count]]];
+        }
+        if(count != 100) {
+            [_delegate getCheckin:self.response];
         };
-        [_delegate getCheckin:self.response];
-    }*/
+        [self requestCheckinHistory];
+    }
     self.meta = request.meta;
     self.notifications = request.notifications;
     self.response = request.response;
     self.request = nil;
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    
-    
-    NSDictionary *user = (NSDictionary *)[self.response objectForKey:@"user"];
-    NSDictionary *friend = [user objectForKey:@"friends"];
-    NSLog(@"%@", [friend description]);
     
     switch (self.responseType) {
     case venueHistory:
