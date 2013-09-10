@@ -25,11 +25,14 @@
     //foursquareAPI
     FoursquareAPI *foursquareAPI;
     
-    // なわばり
+    // なわばり(マーカーと領土のArray)
     NSMutableArray* nawabaris;
     
     // なわばりの合計面積
     CGFloat nawabariAreaSum;
+    
+    // なわばり面積のラベル
+    UILabel *areaLabel;
     
     // 選択されたチェックイン待ちのvenue
     NSString *tappedVenueId;
