@@ -94,12 +94,13 @@
 }
 
 - (void)getCheckin:(NSDictionary *)response {
-    for (NSDictionary *nawabari in nawabaris) {
+    for (NSMutableDictionary *nawabari in nawabaris) {
         GMSMarker* marker = [nawabari objectForKey:@"marker"];
         if (marker.snippet == tappedVenueId) {
             CGFloat radius = [[nawabari objectForKey:@"defaultRadius"] floatValue];
             GMSCircle *circ = [nawabari objectForKey:@"circ"];
             circ.radius = radius + 70;
+            [nawabari setObject:[NSNumber numberWithFloat:circ.radius] forKey:@"defaultRadius"];
         }
     }
     
@@ -162,11 +163,11 @@
         polygon.strokeWidth = 2;
         polygon.map = mapView_;
 */
-        NSDictionary* nawabari = @{
+        NSMutableDictionary* nawabari = [@{
             @"marker": marker,
             @"circ": circ,
-            @"defaultRadius": [NSString stringWithFormat:@"%f", circ.radius]
-        };
+            @"defaultRadius": [NSNumber numberWithFloat:circ.radius]
+        } mutableCopy];
         [nawabaris addObject:nawabari];
         
         nawabariAreaSum += pow(circ.radius/2, 2) * M_PI;
