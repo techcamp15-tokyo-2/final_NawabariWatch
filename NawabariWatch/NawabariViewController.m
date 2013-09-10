@@ -369,8 +369,8 @@
     [self.view addSubview:btn];
     */
 
-    UIButton *searchButton = [UIButton buttonWithType:UIButtonTypeCustom];
-   searchButton.frame = CGRectMake(5, self.view.frame.size.height - 40 - 6, 120, 40);
+    searchButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    searchButton.frame = CGRectMake(5, self.view.frame.size.height - 40 - 6, 120, 40);
     [searchButton setTitle:@"venueを探す" forState:UIControlStateNormal];
     [searchButton setBackgroundImage:[self createBackgroundImage:[UIColor colorWithRed:1 green:1 blue:1 alpha:0.7] withSize:CGSizeMake(120, 40)]
                          forState:UIControlStateNormal];
@@ -422,6 +422,17 @@
     return [NSString stringWithFormat:@"%.0f坪", nawabariAreaSum/3.30578512];
 }
 
+// iPhoneを傾けた時に呼ばれるメソッド
+-(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)FromInterfaceOrientation {
+    searchButton.frame = CGRectMake(5, self.view.frame.size.height - 40 - 6, 120, 40);
+    if(FromInterfaceOrientation == UIInterfaceOrientationPortrait){
+        // 横向き
+    } else {
+        // 縦向き
+    }
+}
+
+// alertのボタンを押したときに呼ばれるメソッド
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     switch (alertView.tag) {
         case startAuthorization:

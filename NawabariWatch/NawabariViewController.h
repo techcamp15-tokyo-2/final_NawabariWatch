@@ -39,6 +39,9 @@
     
     // 選択されたチェックイン待ちのvenue
     NSString *tappedVenueId;
+    
+    // venueを探すボタン
+    UIButton *searchButton;
 }
 
 @property(nonatomic,readonly,strong) FoursquareAPI *foursquareAPI;
