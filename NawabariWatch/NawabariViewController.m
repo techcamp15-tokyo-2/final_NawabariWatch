@@ -123,6 +123,48 @@
     self.view = mapView_;
 }
 
+// markerがtapされた時、info windowを表示
+- (UIView *)mapView:(GMSMapView *)mapView markerInfoWindow:(id)marker {
+    // infoWindowを作る
+    UIView *infoWindow = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 180, 40)];
+    infoWindow.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.45];
+    
+    UILabel *titleLabel = [[UILabel alloc] init];
+    titleLabel.frame = CGRectMake(10, 10, 160, 20);
+    titleLabel.font  = [UIFont boldSystemFontOfSize:18];
+    titleLabel.text  = [marker title];
+    titleLabel.textColor = [UIColor whiteColor];
+    titleLabel.backgroundColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0];
+    [infoWindow addSubview:titleLabel];
+    
+    return infoWindow;
+}
+
+// info windowがtapされた時、alertを表示
+- (void)mapView:(GMSMapView *)mapView didTapInfoWindowOfMarker:(id)marker {
+    tappedVenueId = [marker snippet];
+    NSString* message = [NSString stringWithFormat:@"チェックインしますか?"];
+    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:[marker title] message:message delegate:self
+                                          cancelButtonTitle:@"キャンセル" otherButtonTitles:@"チェックイン", nil];
+    [alert show];
+}
+
+// cameraの移動やzoom時に、なわばりの半径を再描画
+- (void)mapView:(GMSMapView *)mapView didChangeCameraPosition:(GMSCameraPosition *)position {
+    CGFloat zoom = mapView_.camera.zoom;
+    CGFloat minRadius = 100 * 8192 / pow(2, zoom);
+    for (id nawabari in nawabaris) {
+        GMSCircle* circ = (GMSCircle*)[(NSDictionary*)nawabari objectForKey:@"circ"];
+        CGFloat defaultRadius = [[(NSDictionary*)nawabari objectForKey:@"defaultRadius"] floatValue];
+        
+        if (minRadius >= defaultRadius) {
+            circ.radius = minRadius;
+        } else {
+            circ.radius = defaultRadius;
+        }
+    }
+}
+
 // なわばり(markerとそのまわりの円)を描く
 - (void)drawNawabaris:(NSArray *)venues {
     nawabaris = [[NSMutableArray alloc] init];
@@ -219,57 +261,6 @@
     [self.view addSubview:infoWindow];
 }
 
-- (UIView *)mapView:(GMSMapView *)mapView markerInfoWindow:(id)marker {
-    // infoWindowを作る
-    UIView *infoWindow = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 180, 40)];
-    infoWindow.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.45];
-
-    UILabel *titleLabel = [[UILabel alloc] init];
-    titleLabel.frame = CGRectMake(10, 10, 160, 20);
-    titleLabel.font  = [UIFont boldSystemFontOfSize:18];
-    titleLabel.text  = [marker title];
-    titleLabel.textColor = [UIColor whiteColor];
-    titleLabel.backgroundColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0];
-    [infoWindow addSubview:titleLabel];
-
-    return infoWindow;
-}
-
-- (void)mapView:(GMSMapView *)mapView didTapInfoWindowOfMarker:(id)marker {
-    tappedVenueId = [marker snippet];
-    NSString* message = [NSString stringWithFormat:@"チェックインしますか?"];
-    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:[marker title] message:message delegate:self
-                                        cancelButtonTitle:@"キャンセル" otherButtonTitles:@"チェックイン", nil];
-    [alert show];
-}
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    switch (buttonIndex) {
-        case 0:
-            break;
-        case 1:
-            [foursquareAPI requestCheckin:tappedVenueId];
-            break;
-        default:
-            break;
-    }
-}
-
-- (void)mapView:(GMSMapView *)mapView didChangeCameraPosition:(GMSCameraPosition *)position {
-    CGFloat zoom = mapView_.camera.zoom;
-    CGFloat minRadius = 100 * 8192 / pow(2, zoom);
-    for (id nawabari in nawabaris) {
-        GMSCircle* circ = (GMSCircle*)[(NSDictionary*)nawabari objectForKey:@"circ"];
-        CGFloat defaultRadius = [[(NSDictionary*)nawabari objectForKey:@"defaultRadius"] floatValue];
-        
-        if (minRadius >= defaultRadius) {
-            circ.radius = minRadius;
-        } else {
-            circ.radius = defaultRadius;
-        }
-    }
-}
-
 - (void)drawRankInfoWindow {
     UIView *infoWindow = [[UIView alloc] initWithFrame:CGRectMake(192, 6, 122, 70)];
     infoWindow.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.45];
@@ -318,6 +309,18 @@
                                                        error:&error];
     for (NSDictionary *dict in array) {
         return dict;
+    }
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    switch (buttonIndex) {
+        case 0:
+            break;
+        case 1:
+            [foursquareAPI requestCheckin:tappedVenueId];
+            break;
+        default:
+            break;
     }
 }
 

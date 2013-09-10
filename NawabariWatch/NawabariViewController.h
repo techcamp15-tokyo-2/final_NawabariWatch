@@ -46,16 +46,17 @@
 - (void)getCheckin:(NSDictionary *)response;
 
 - (void)loadView;
+- (UIView *)mapView:(GMSMapView *)mapView markerInfoWindow:(id)marker;
+- (void)mapView:(GMSMapView *)mapView didTapInfoWindowOfMarker:(id)marker;
+- (void)mapView:(GMSMapView *)mapView didChangeCameraPosition:(GMSCameraPosition *)position;
+
 - (void)drawNawabaris:(NSArray *)venues;
 - (void)drawSurroundingNawabaris:(NSArray *)venues;
 - (void)drawAreaInfoWindow;
-
-- (void)mapView:(GMSMapView *)mapView didTapInfoWindowOfMarker:(id)marker;
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex;
-- (void)mapView:(GMSMapView *)mapView didChangeCameraPosition:(GMSCameraPosition *)position;
-
 - (void)drawRankInfoWindow;
 - (NSDictionary *)getRankAndUsersNumById:(int)id andTerritory:(double)territory;
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex;
 @end
 
 @interface NawabariViewController (Location)
