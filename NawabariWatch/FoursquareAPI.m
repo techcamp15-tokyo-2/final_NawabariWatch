@@ -97,7 +97,7 @@
 -(void) requestSearchVenuesWithLatitude:(double)lat Longitude:(double)lng {
     [self prepareForRequestWithType: searchVenues];
     NSString *ll = [NSString stringWithFormat:@"%f,%f", lat, lng];
-    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:@"checkin", @"intent", @" ", @"query", 15, @"limit", ll, @"ll", nil];
+    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:@"checkin", @"intent", @" ", @"query", @"15", @"limit", ll, @"ll", nil];
     self.request = [foursquare_ userlessRequestWithPath:@"venues/search" HTTPMethod:@"GET" parameters:parameters delegate:self];
     [request_ start];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
@@ -121,10 +121,14 @@
 }
 
 //最大１ヶ月分のチェックインのリストを取得する。
+/*-(void) requestCheckinHistoryFirst {
+    self.
+}*/
+
 -(void) requestCheckinHistory {
+    [self prepareForRequestWithType:checkinHistory];
     NSDate *now = [NSDate date];
     NSDate *past = [NSDate dateWithTimeIntervalSince1970:[now timeIntervalSince1970] - INTERVAL * 24 * 60 * 60];
-    
 }
 
 //responseから、必要なvenue情報（@name、@venueid、@lat、@lng、@beenHere）を取り出す。
