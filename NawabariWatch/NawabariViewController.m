@@ -97,6 +97,7 @@
 
 // 近郊のvenueを取得した後に呼ばれる
 - (void)getSearchVenues:(NSDictionary *)response {
+    [self drawSurroundingNawabarisButton];
     NSArray* surroundingVenues = (NSArray *)[response objectForKey:@"venues"];
     [self drawSurroundingNawabaris:surroundingVenues];
 }
@@ -159,7 +160,7 @@
 - (void)mapView:(GMSMapView *)mapView didTapInfoWindowOfMarker:(id)marker {
     tappedVenueId = [marker snippet];
     NSString* message = [NSString stringWithFormat:@"チェックインしますか?"];
-    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"didTapped"
+    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:[marker title]
                                                     message:message
                                                    delegate:self
                                           cancelButtonTitle:@"キャンセル"
@@ -206,7 +207,7 @@
         
         CLLocationCoordinate2D circleCenter = CLLocationCoordinate2DMake(lat, lng);
         GMSCircle* circ  = [GMSCircle circleWithPosition:circleCenter radius:(kUnitRadius * sqrt(beenHere))];
-        circ.fillColor   = [UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.5];
+        circ.fillColor   = [UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.4];
         circ.strokeColor = [UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.8];
         circ.map = mapView_;
 /*
@@ -312,6 +313,30 @@
     [infoWindow addSubview:rankLabel2];
     
     [self.view addSubview:infoWindow];
+}
+
+- (void)drawSurroundingNawabarisButton {
+//    NSArray* surroundingVenues = (NSArray *)[response objectForKey:@"venues"];
+    
+    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [btn setTitle:@"venueを探す" forState:UIControlStateNormal];
+
+    [[btn layer] setCornerRadius:3.0f];
+    [[btn layer] setMasksToBounds:YES];
+    [[btn layer] setBorderWidth:0.6f];
+    [[btn layer] setBackgroundColor:
+     [[UIColor colorWithRed:1 green:1 blue:1 alpha:0.7] CGColor]];
+
+    [btn setTitleColor:[UIColor colorWithRed:0.1 green:0.1 blue:0.1 alpha:1] forState:UIControlStateNormal];
+    
+//    [btn addTarget:self action:@selector(drawSurroundingNawabaris:surroundingVenues;) forControlEvents:UIControlEventTouchUpInside];
+//    [[btn layer] setBackgroundColor:
+//     [[UIColor colorWithRed:1 green:1 blue:1 alpha:0.7] CGColor]
+//                           forState:(UIControlStateSelected | UIControlStateHighlighted)];
+    btn.showsTouchWhenHighlighted = YES;
+   
+    btn.frame = CGRectMake(5, self.view.frame.size.height - 40 - 6, 120, 40);
+    [self.view addSubview:btn];
 }
 
 - (NSDictionary *)getRankAndUsersNumById:(int)id andTerritory:(double)territory {
