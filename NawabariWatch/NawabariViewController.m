@@ -94,6 +94,15 @@
 }
 
 - (void)getCheckin:(NSDictionary *)response {
+    for (NSDictionary *nawabari in nawabaris) {
+        GMSMarker* marker = [nawabari objectForKey:@"marker"];
+        if (marker.snippet == tappedVenueId) {
+            CGFloat radius = [[nawabari objectForKey:@"defaultRadius"] floatValue];
+            GMSCircle *circ = [nawabari objectForKey:@"circ"];
+            circ.radius = radius + 70;
+        }
+    }
+    
     NSString* message = [NSString stringWithFormat:@"チェックインしました!"];
     UIAlertView* alert = [[UIAlertView alloc] initWithTitle:nil message:message delegate:self
                                           cancelButtonTitle:@"OK" otherButtonTitles:nil];
