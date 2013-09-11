@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "BZFoursquare.h"
 
-#define INTERVAL 1
-#define LIMIT 100
+#define LIMIT_TIME 30
+#define LIMIT_CHECKIN 100
+#define MAX_OFFSET 100
 
 @protocol FoursquareAPIDelegate
 - (void)didAuthorize;
@@ -25,9 +26,10 @@
     BZFoursquareRequest *request_;
     NSDictionary        *meta_;
     NSArray             *notifications_;
-    NSMutableArray      *response;
+    NSMutableDictionary *response;
     int                 responseType_;
     int                 offset_;
+    NSTimeInterval      limitTime;
 }
 
 @property(nonatomic,readonly,strong) BZFoursquare *foursquare;
@@ -40,6 +42,7 @@
 -(void)requestVenueHistory;
 -(void)requestSearchVenuesWithLatitude:(double)lat Longitude:(double)lng;
 -(void)requestCheckin:(NSString *)venueId;
+-(void)requestCheckinHistoryFirst;
 @end
 enum {
     venueHistory = 0,

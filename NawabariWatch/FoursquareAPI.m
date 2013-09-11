@@ -18,15 +18,6 @@
 @property(nonatomic,copy) NSArray *notifications;
 @property(nonatomic) int responseType;
 @property(nonatomic) int offset;
-
--(BOOL)isAuthenticated;
--(BOOL)startAuthorization;
--(BOOL)handleOpenURL:(NSURL *)url;
--(void)prepareForRequestWithType:(int)type;
--(void)cancelRequest;
--(void)requestVenueHistory;
--(void)requestSearchVenuesWithLatitude:(double)lat Longitude:(double)lng;
--(void)requestCheckin:(NSString *)venueId;
 @end
 
 @implementation FoursquareAPI
@@ -81,6 +72,7 @@
     self.notifications = nil;
     response = [NSMutableDictionary dictionary];
     self.responseType = type;
+    limitTime = [[NSDate date] timeIntervalSince1970] - LIMIT_TIME * 24 * 60 * 60;
 }
 
 //userのvenueHistoryを取得する
@@ -129,12 +121,12 @@
 
 -(void) requestCheckinHistory {
     NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:
-                                [NSString stringWithFormat:@"%d", LIMIT], @"limit",
+                                [NSString stringWithFormat:@"%d", LIMIT_CHECKIN], @"limit",
                                 [NSString stringWithFormat:@"%d", self.offset], @"offset",
                                 nil];
     self.request = [foursquare_ requestWithPath:@"users/self/checkins" HTTPMethod:@"GET" parameters:parameters delegate:self];
     [request_ start];
-    self.offset++;
+    self.offset+=LIMIT_CHECKIN;
 }
 
 //responseから、必要なvenue情報（@name、@venueid、@lat、@lng、@beenHere）を取り出す。
@@ -182,6 +174,12 @@
         NSDictionary *venue = [item objectForKey:@"venue"];
         NSDictionary *location = (NSDictionary *)[venue objectForKey:@"location"];
         
+        //checkinHistoryはlimitTimeまでのものだけ取ってくる
+        if(self.responseType == checkinHistory) {
+            NSTimeInterval checkinTime = ((NSString *)[item objectForKey:@"createdAt"]).doubleValue;
+            if(checkinTime < limitTime) break;
+        }
+        
         NSDictionary *useVenue =  [NSDictionary dictionaryWithObjectsAndKeys:
                                    (NSString *)[venue objectForKey:@"name"],        @"name",
                                    (NSString *)[venue objectForKey:@"id"],          @"venueId",
@@ -195,8 +193,6 @@
     
     return [NSDictionary dictionaryWithObjectsAndKeys: [NSString stringWithFormat:@"%d", self.responseType ], @"responseType", useVenues, @"venues", nil];
 }
-
-
 
 #pragma mark -
 #pragma mark BZFoursquareRequestDelegate
@@ -226,18 +222,31 @@
         }
         case checkinHistory: {
             NSDictionary *checkins = (NSDictionary *)[request.response objectForKey: @"checkins"];
-            int count = (int)[checkins objectForKey:@"count"];
+            int count = (int)[(NSArray *)[checkins objectForKey:@"items"] count];
             NSDictionary *convertResponce = [self convertResponse:checkins];
-            [response addEntriesFromDictionary:(NSMutableDictionary *)convertResponce];
+
             for(id tmp in (NSArray *)[convertResponce objectForKey:@"venues"]) {
-                NSDictionary *venue = (NSDictionary *)tmp;
-                NSString *key =[NSString stringWithFormat:@"%d", [response count]];
-                NSLog(@"%@ %@", [venue description], key);
-                
+                NSMutableDictionary *newVenue = [NSMutableDictionary dictionary];
+                [newVenue addEntriesFromDictionary:(NSDictionary *)tmp];
+                NSString *key = (NSString *)[newVenue objectForKey:@"venueId"];
+                NSDictionary *venue = (NSDictionary *)[response objectForKey:key];
+                if(venue) {
+                    int beenHere = ((NSString *)[venue objectForKey:@"beenHere"]).intValue + 1;
+                    [newVenue setObject:[NSString stringWithFormat:@"%d", beenHere] forKey:@"beenHere"];
+                }
+                else {
+                    [newVenue setObject:@"1" forKey:@"beenHere"];
+                }
+                [response setObject:newVenue forKey:key];
             }
-            if(count != 100) {
+            if(count != LIMIT_CHECKIN || self.offset == MAX_OFFSET) {
                 [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-                [_delegate getCheckinHistory:(NSDictionary *)response];
+                NSMutableArray *venues = [NSMutableArray array];
+                for(id venue in [response objectEnumerator]) [venues addObject:(NSDictionary *)venue];
+                [_delegate getVenueHistory:[NSDictionary dictionaryWithObjectsAndKeys:
+                                            [NSString stringWithFormat:@"%d", self.responseType], @"responseType",
+                                            venues, @"venues",
+                                            nil]];
                 return;
             }
             else {
@@ -263,9 +272,7 @@
 #pragma mark BZFoursquareSessionDelegate
 
 - (void)foursquareDidAuthorize:(BZFoursquare *)foursquare {
-//    [_delegate didAuthorize];
-    NSLog(@"a");
-    [self requestCheckinHistoryFirst];
+    [_delegate didAuthorize];
 }
 
 - (void)foursquareDidNotAuthorize:(BZFoursquare *)foursquare error:(NSDictionary *)errorInfo {
