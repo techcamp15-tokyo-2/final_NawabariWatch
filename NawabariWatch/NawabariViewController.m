@@ -106,37 +106,7 @@
 }
 
 // チェックイン後に呼ばれる
-- (void)getCheckin:(NSDictionary *)response {
-    for (NSMutableDictionary *nawabari in nawabaris) {
-        GMSMarker* marker = [nawabari objectForKey:@"marker"];
-        if (marker.snippet == tappedVenueId) {
-            CGFloat radius = [[nawabari objectForKey:@"defaultRadius"] floatValue];
-            GMSCircle *circ = [nawabari objectForKey:@"circ"];
-            
-            nawabariAreaSum -= pow(circ.radius, 2) * M_PI;
-            circ.radius = kUnitRadius * sqrt( pow(radius/kUnitRadius, 2) + 1);
-            nawabariAreaSum += pow(circ.radius, 2) * M_PI;
-            
-            areaLabel.text = [self getAreaLabelText];
-            [nawabari setObject:[NSNumber numberWithFloat:circ.radius] forKey:@"defaultRadius"];
-        }
-    }
-    
-    for (NSMutableDictionary *nawabari in surroundingNawabaris) {
-        GMSMarker* marker = [nawabari objectForKey:@"marker"];
-        if (marker.snippet == tappedVenueId) {
-            marker.icon = [UIImage imageNamed:@"blue_map_pin_17x32"];
-            GMSCircle *circ = [nawabari objectForKey:@"circ"];
-            
-            circ.fillColor   = [UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.4];
-            circ.strokeColor = [UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.8];
-            nawabariAreaSum += pow(circ.radius, 2) * M_PI;
-            
-            areaLabel.text = [self getAreaLabelText];
-            [nawabari setObject:[NSNumber numberWithFloat:circ.radius] forKey:@"defaultRadius"];
-        }
-    }
-    
+- (void)getCheckin:(NSDictionary *)response {    
     NSString* message = [NSString stringWithFormat:@"チェックインしました!"];
     UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"didCheckin" message:message delegate:self
                                           cancelButtonTitle:@"OK" otherButtonTitles:nil];
@@ -520,6 +490,42 @@
     }
 }
 
+// チェックイン後、なわばりの半径を変更
+- (void)changeNawabariRadiusAfterCheckin {
+    for (NSMutableDictionary *nawabari in nawabaris) {
+        GMSMarker* marker = [nawabari objectForKey:@"marker"];
+        if (marker.snippet == tappedVenueId) {
+            CGFloat radius = [[nawabari objectForKey:@"defaultRadius"] floatValue];
+            GMSCircle *circ = [nawabari objectForKey:@"circ"];
+            
+            nawabariAreaSum -= pow(circ.radius, 2) * M_PI;
+            circ.radius = kUnitRadius * sqrt( pow(radius/kUnitRadius, 2) + 1);
+            nawabariAreaSum += pow(circ.radius, 2) * M_PI;
+            
+            areaLabel.text = [self getAreaLabelText];
+            [nawabari setObject:[NSNumber numberWithFloat:circ.radius] forKey:@"defaultRadius"];
+            
+            break;
+        }
+    }
+    
+    for (NSMutableDictionary *nawabari in surroundingNawabaris) {
+        GMSMarker* marker = [nawabari objectForKey:@"marker"];
+        if (marker.snippet == tappedVenueId) {
+            marker.icon = [UIImage imageNamed:@"blue_map_pin_17x32"];
+            GMSCircle *circ = [nawabari objectForKey:@"circ"];
+            
+            circ.fillColor   = [UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.4];
+            circ.strokeColor = [UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.8];
+            nawabariAreaSum += pow(circ.radius, 2) * M_PI;
+            
+            areaLabel.text = [self getAreaLabelText];
+            [nawabari setObject:[NSNumber numberWithFloat:circ.radius] forKey:@"defaultRadius"];
+            
+            break;
+        }
+    }
+}
 
 // alertのボタンを押したときに呼ばれるメソッド
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
@@ -542,6 +548,7 @@
             break;
         
         case finishCheckin:
+            [self changeNawabariRadiusAfterCheckin];
             break;
     }
 }
