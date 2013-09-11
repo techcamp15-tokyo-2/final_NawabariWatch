@@ -13,8 +13,7 @@
 
 @implementation NawabariViewController 
 @synthesize foursquareAPI = foursquareAPI;
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
     
     //foursquareの汎用クラスを作成&認証
