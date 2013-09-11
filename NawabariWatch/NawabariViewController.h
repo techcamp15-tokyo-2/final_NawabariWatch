@@ -46,19 +46,21 @@
     
     // 領土表示ボタン
     UIButton *areaInfoWindowButton;
-    
     // ランキング表示ボタン
     UIButton *rankInfoWindowButton;
-    
     // venueを探すボタン
     UIButton *searchButton;
     
     // テキストの色
     UIColor *textColorBlack;
-    
     // テキストラベルの背景の色
     UIColor *backgroundColorWhite;
     UIColor *backgroundColorBlack;
+    
+    // MAPに戻るボタン
+    UIButton *backToMapButton;
+    // rankView
+    UIView *rankView;
 }
 
 @property(nonatomic,readonly,strong) FoursquareAPI *foursquareAPI;

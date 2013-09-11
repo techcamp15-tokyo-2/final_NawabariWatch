@@ -457,11 +457,97 @@
 
 // ランキングページへ遷移
 - (void)transPageToRankView {
+/*
     RankViewController *next = [[RankViewController alloc] init];
     next.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     [self presentViewController:next animated:YES completion:^ {
         // 完了時の処理をここに書きます
     }];
+*/
+    [areaInfoWindowButton removeFromSuperview];
+    [rankInfoWindowButton removeFromSuperview];
+    [searchButton removeFromSuperview];
+    
+    rankView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    rankView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.5];
+    
+    UIView *rankSubView = [[UIView alloc] initWithFrame:CGRectMake(0, 90, self.view.frame.size.width - 90, self.view.frame.size.height)];
+    
+    // ランキングタイトル
+    UILabel *titleLabel = [[UILabel alloc] init];
+    titleLabel.frame = CGRectMake((self.view.frame.size.width - 280)/2,
+                                  0,
+                                  280,
+                                  42);
+    titleLabel.font  = [UIFont boldSystemFontOfSize:40];
+    titleLabel.text  = @"全国ランキング";
+    titleLabel.textColor = [UIColor blackColor];
+    [rankSubView addSubview:titleLabel];
+    
+    // 順位ラベル
+    for (int i = 0; i < 5; i++) {
+        UILabel *rankLabel = [[UILabel alloc] init];
+        rankLabel.frame = CGRectMake(40,
+                                     55 + 32 * i,
+                                     250,
+                                     27);
+        rankLabel.font  = [UIFont boldSystemFontOfSize:25];
+        rankLabel.text  = [NSString stringWithFormat:@"%d位: nyama %d万坪", i + 1, 50 * (6-i)];
+        if (i == 1) {
+            rankLabel.text  = [NSString stringWithFormat:@"%d位: watch 250万坪", i + 1];
+        }
+        rankLabel.textColor = [UIColor blackColor];
+        [rankSubView addSubview:rankLabel];
+    }
+    
+    UILabel *messageLabel = [[UILabel alloc] init];
+    messageLabel.font  = [UIFont boldSystemFontOfSize:32];
+    messageLabel.text  = @"1位まであと少し。";
+    [messageLabel sizeToFit];
+    messageLabel.frame = CGRectMake((self.view.frame.size.width - messageLabel.frame.size.width)/2,
+                                    235,
+                                    messageLabel.frame.size.width,
+                                    messageLabel.frame.size.height);
+    messageLabel.textColor = [UIColor blackColor];
+    [rankSubView addSubview:messageLabel];
+    
+    [rankView addSubview:rankSubView];
+    [self.view addSubview:rankView];
+    [self drawBackButton];
+}
+
+- (void)drawBackButton {
+    backToMapButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    backToMapButton.frame = CGRectMake(192, 4, 122, 70);
+    [backToMapButton setBackgroundImage:[self createBackgroundImage:[UIColor whiteColor] withSize:CGSizeMake(122, 70)]
+                                    forState:UIControlStateNormal];
+    [backToMapButton setBackgroundImage:[self createBackgroundImage:backgroundColorBlack withSize:CGSizeMake(122, 70)]
+                                    forState:(UIControlStateSelected | UIControlStateHighlighted)];
+    [backToMapButton.layer setCornerRadius:10.0];
+    [backToMapButton.layer setBorderColor:[UIColor grayColor].CGColor];
+    [backToMapButton.layer setBorderWidth:1.0];
+    [backToMapButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    
+    [backToMapButton addTarget:self action:@selector(backButtonDidPush) forControlEvents:UIControlEventTouchUpInside];
+    
+    UILabel *titleLabel = [[UILabel alloc] init];
+    titleLabel.frame = CGRectMake(12.5, 1, 116, 69);
+    titleLabel.font  = [UIFont boldSystemFontOfSize:18];
+    titleLabel.text  = @"MAPに戻る";
+    titleLabel.textColor = textColorBlack;
+    titleLabel.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
+    [backToMapButton addSubview:titleLabel];
+    
+    [self.view addSubview:backToMapButton];
+}
+
+- (void)backButtonDidPush {
+    [rankView removeFromSuperview];
+    [backToMapButton removeFromSuperview];
+    
+    [self.view addSubview:areaInfoWindowButton];
+    [self.view addSubview:rankInfoWindowButton];
+    [self.view addSubview:searchButton];
 }
 
 // なわばりの表示・非表示を切り替え
