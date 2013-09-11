@@ -65,7 +65,7 @@
 // 認証が終わったタイミングで呼ばれる
 - (void)didAuthorize {
     [self loadView];
-    [foursquareAPI requestVenueHistory];
+    [foursquareAPI requestCheckinHistoryFirst];
 }
 
 // userのvenue historyを取得した後に呼ばれる
