@@ -194,6 +194,7 @@
     [alert show];
 }
 
+/*
 // cameraの移動やzoom時に、なわばりの半径を再描画
 - (void)mapView:(GMSMapView *)mapView didChangeCameraPosition:(GMSCameraPosition *)position {
     CGFloat zoom = mapView_.camera.zoom;
@@ -209,6 +210,7 @@
         }
     }
 }
+*/
 
 // なわばり(markerとそのまわりの円)を描く
 - (void)drawNawabaris:(NSArray *)venues {
@@ -279,7 +281,7 @@
         CLLocationCoordinate2D circleCenter = CLLocationCoordinate2DMake(lat, lng);
         GMSCircle* circ  = [GMSCircle circleWithPosition:circleCenter radius:kUnitRadius];
         circ.fillColor   = [UIColor colorWithRed:1 green:0 blue:0 alpha:0.2];
-        circ.strokeColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:0];
+        circ.strokeColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:0.4];
         circ.map = mapView_;
         
         NSMutableDictionary* nawabari = [@{
@@ -429,6 +431,7 @@
     return [NSString stringWithFormat:@"%.0f坪", nawabariAreaSum/3.30578512];
 }
 
+/*
 // iPhoneを傾けた時に呼ばれるメソッド
 -(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)FromInterfaceOrientation {
     searchButton.frame = CGRectMake(5, self.view.frame.size.height - 40 - 6, 120, 40);
@@ -438,6 +441,8 @@
         // 縦向き
     }
 }
+*/
+
 
 // alertのボタンを押したときに呼ばれるメソッド
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
