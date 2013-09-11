@@ -71,7 +71,7 @@
 - (void)drawSurroundingNawabaris:(NSArray *)venues;
 - (void)drawAreaInfoWindow;
 - (void)drawRankInfoWindow;
-- (NSDictionary *)getRankAndUsersNumById:(int)id andTerritory:(double)territory;
+- (NSDictionary *)getRankAndUsersNumById:(NSString *)userId andTerritory:(double)territory;
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex;
 @end

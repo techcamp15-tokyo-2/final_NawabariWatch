@@ -77,7 +77,6 @@
 }
 
 - (void)getUserProfile:(NSDictionary *)response {
-    NSLog(@"%@", [response description]);
     NSString *userId = [response objectForKey:@"userId"];
     [self drawRankInfoWindow:userId];
     [self drawSurroundingNawabarisButton];
@@ -287,14 +286,24 @@
 
 // 領土情報windowを描画
 - (void)drawAreaInfoWindow {
-    UIView *infoWindow = [[UIView alloc] initWithFrame:CGRectMake(6, 6, 180, 70)];
-    infoWindow.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.45];
+    UIButton *infoWindow = [UIButton buttonWithType:UIButtonTypeCustom];
+    infoWindow.frame = CGRectMake(4, 4, 180, 70);
+    [infoWindow setBackgroundImage:[self createBackgroundImage:backgroundColorWhite withSize:CGSizeMake(122, 70)]
+                          forState:UIControlStateNormal];
+    [infoWindow setBackgroundImage:[self createBackgroundImage:backgroundColorBlack withSize:CGSizeMake(122, 70)]
+                          forState:(UIControlStateSelected | UIControlStateHighlighted)];
+    [infoWindow.layer setCornerRadius:10.0];
+    [infoWindow.layer setBorderColor:[UIColor grayColor].CGColor];
+    [infoWindow.layer setBorderWidth:1.0];
+    [infoWindow setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    
+    [infoWindow addTarget:self action:@selector(changeDisplayNawabaris) forControlEvents:UIControlEventTouchUpInside];
     
     UILabel *titleLabel = [[UILabel alloc] init];
-    titleLabel.frame = CGRectMake(4, 4, 176, 18);
+    titleLabel.frame = CGRectMake(6, 6, 176, 18);
     titleLabel.font  = [UIFont boldSystemFontOfSize:16];
     titleLabel.text  = @"あなたの領土";
-    titleLabel.textColor = [UIColor whiteColor];
+    titleLabel.textColor = textColorBlack;
     titleLabel.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
     [infoWindow addSubview:titleLabel];
     
@@ -302,7 +311,7 @@
     areaLabel.frame = CGRectMake(4, 20, 176, 46);
     areaLabel.font  = [UIFont boldSystemFontOfSize:44];
     areaLabel.text  = [self getAreaLabelText];
-    areaLabel.textColor = [UIColor whiteColor];
+    areaLabel.textColor = textColorBlack;
     areaLabel.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
     [infoWindow addSubview:areaLabel];
     
@@ -312,7 +321,7 @@
 // 順位情報windowを描画
 - (void)drawRankInfoWindow:(NSString *)userId {
     UIButton *infoWindow = [UIButton buttonWithType:UIButtonTypeCustom];
-    infoWindow.frame = CGRectMake(192, 4, 122, 72);
+    infoWindow.frame = CGRectMake(192, 4, 122, 70);
     [infoWindow setBackgroundImage:[self createBackgroundImage:backgroundColorWhite withSize:CGSizeMake(122, 70)]
                             forState:UIControlStateNormal];
     [infoWindow setBackgroundImage:[self createBackgroundImage:backgroundColorBlack withSize:CGSizeMake(122, 70)]
@@ -323,15 +332,11 @@
     [infoWindow setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     
     [infoWindow addTarget:self action:@selector(transPageToRankView) forControlEvents:UIControlEventTouchUpInside];
-/*
-    UIView *infoWindow = [[UIView alloc] initWithFrame:CGRectMake(192, 6, 122, 70)];
-    infoWindow.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.45];
-*/
     
     UILabel *titleLabel = [[UILabel alloc] init];
-    titleLabel.frame = CGRectMake(6, 6, 114, 18);
-    titleLabel.font  = [UIFont boldSystemFontOfSize:16];
-    titleLabel.text  = @"あなたの順位";
+    titleLabel.frame = CGRectMake(6, 6, 114, 16);
+    titleLabel.font  = [UIFont boldSystemFontOfSize:14];
+    titleLabel.text  = @"全国ランキング";
     titleLabel.textColor = textColorBlack;
     titleLabel.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
     [infoWindow addSubview:titleLabel];
@@ -473,12 +478,23 @@
 
 // ランキングページへ遷移
 - (void)transPageToRankView {
-    NSLog(@"transPage Buttonが押された");
     RankViewController *next = [[RankViewController alloc] init];
     next.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     [self presentViewController:next animated:YES completion:^ {
         // 完了時の処理をここに書きます
     }];
+}
+
+// なわばりの表示・非表示を切り替え
+- (void)changeDisplayNawabaris {
+    for (NSMutableDictionary *nawabari in nawabaris) {
+        GMSMarker* marker = [nawabari objectForKey:@"marker"];
+        if (marker.map == nil) {
+            marker.map = mapView_;
+        } else {
+            marker.map = nil;
+        }
+    }
 }
 
 
