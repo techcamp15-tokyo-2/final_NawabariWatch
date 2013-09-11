@@ -284,14 +284,44 @@
 
 // 領土情報windowを描画
 - (void)drawAreaInfoWindow {
-    UIView *infoWindow = [[UIView alloc] initWithFrame:CGRectMake(6, 6, 180, 70)];
-    infoWindow.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.45];
+    UIButton *infoWindow = [UIButton buttonWithType:UIButtonTypeCustom];
+    infoWindow.frame = CGRectMake(4, 4, 180, 70);
+    [infoWindow setBackgroundImage:[self createBackgroundImage:backgroundColorWhite withSize:CGSizeMake(122, 70)]
+                          forState:UIControlStateNormal];
+    [infoWindow setBackgroundImage:[self createBackgroundImage:backgroundColorBlack withSize:CGSizeMake(122, 70)]
+                          forState:(UIControlStateSelected | UIControlStateHighlighted)];
+    [infoWindow.layer setCornerRadius:10.0];
+    [infoWindow.layer setBorderColor:[UIColor grayColor].CGColor];
+    [infoWindow.layer setBorderWidth:1.0];
+    [infoWindow setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    
+    [infoWindow addTarget:self action:@selector(transPageToRankView) forControlEvents:UIControlEventTouchUpInside];
+/*
+    UIButton *infoWindow = [UIButton buttonWithType:UIButtonTypeCustom];
+    infoWindow.frame = CGRectMake(4, 4, 180, 72);
+    [[infoWindow layer] setBackgroundColor:
+     [backgroundColorWhite CGColor]];
+    [[infoWindow layer] setCornerRadius:10];
+    [[infoWindow layer] setBorderColor:[UIColor grayColor].CGColor];
+    [[infoWindow layer] setBorderWidth:1.0];
+
+    [[infoWindow layer] setMasksToBounds:YES];
+    
+    [infoWindow setTitleColor:[UIColor colorWithRed:0.1 green:0.1 blue:0.1 alpha:1] forState:UIControlStateNormal];
+    [infoWindow addTarget:self action:@selector(requestSearchNeighborVenues) forControlEvents:UIControlEventTouchUpInside];
+    [infoWindow setBackgroundImage:[self createBackgroundImage:[UIColor colorWithRed:0.1 green:0.1 blue:0.1 alpha:1] withSize:CGSizeMake(120, 40)]
+                   forState:(UIControlStateSelected | UIControlStateHighlighted)];
+    infoWindow.showsTouchWhenHighlighted = YES;
+*/
+    
+//    UIView *infoWindow = [[UIView alloc] initWithFrame:CGRectMake(6, 6, 180, 70)];
+//    infoWindow.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.45];
     
     UILabel *titleLabel = [[UILabel alloc] init];
-    titleLabel.frame = CGRectMake(4, 4, 176, 18);
+    titleLabel.frame = CGRectMake(6, 6, 176, 18);
     titleLabel.font  = [UIFont boldSystemFontOfSize:16];
     titleLabel.text  = @"あなたの領土";
-    titleLabel.textColor = [UIColor whiteColor];
+    titleLabel.textColor = textColorBlack;
     titleLabel.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
     [infoWindow addSubview:titleLabel];
     
@@ -299,7 +329,7 @@
     areaLabel.frame = CGRectMake(4, 20, 176, 46);
     areaLabel.font  = [UIFont boldSystemFontOfSize:44];
     areaLabel.text  = [self getAreaLabelText];
-    areaLabel.textColor = [UIColor whiteColor];
+    areaLabel.textColor = textColorBlack;
     areaLabel.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
     [infoWindow addSubview:areaLabel];
     
@@ -309,7 +339,7 @@
 // 順位情報windowを描画
 - (void)drawRankInfoWindow:(NSString *)userId {
     UIButton *infoWindow = [UIButton buttonWithType:UIButtonTypeCustom];
-    infoWindow.frame = CGRectMake(192, 4, 122, 72);
+    infoWindow.frame = CGRectMake(192, 4, 122, 70);
     [infoWindow setBackgroundImage:[self createBackgroundImage:backgroundColorWhite withSize:CGSizeMake(122, 70)]
                             forState:UIControlStateNormal];
     [infoWindow setBackgroundImage:[self createBackgroundImage:backgroundColorBlack withSize:CGSizeMake(122, 70)]
@@ -326,9 +356,9 @@
 */
     
     UILabel *titleLabel = [[UILabel alloc] init];
-    titleLabel.frame = CGRectMake(6, 6, 114, 18);
-    titleLabel.font  = [UIFont boldSystemFontOfSize:16];
-    titleLabel.text  = @"あなたの順位";
+    titleLabel.frame = CGRectMake(6, 6, 114, 16);
+    titleLabel.font  = [UIFont boldSystemFontOfSize:14];
+    titleLabel.text  = @"全国ランキング";
     titleLabel.textColor = textColorBlack;
     titleLabel.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
     [infoWindow addSubview:titleLabel];
