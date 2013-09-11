@@ -25,11 +25,7 @@
 
     // 戻るボタンの設定
     [button setTitle:@"MAPに戻る" forState:UIControlStateNormal];
-    [button sizeToFit];
-    button.frame = CGRectMake(self.view.frame.size.width - button.frame.size.width - 10,
-                              10,
-                              button.frame.size.width,
-                              button.frame.size.height);
+    button.frame = CGRectMake(192, 4, 122, 60);
     [button addTarget:self action:@selector(buttonDidPush) forControlEvents: UIControlEventTouchUpInside];
     [self.view addSubview:button];
     
@@ -52,10 +48,24 @@
                                      250,
                                      27);
         rankLabel.font  = [UIFont boldSystemFontOfSize:25];
-        rankLabel.text  = [NSString stringWithFormat:@"%d位: Watch 300万坪", i + 1];
+        rankLabel.text  = [NSString stringWithFormat:@"%d位: nyama %d万坪", i + 1, 50 * (6-i)];
+        if (i == 1) {
+           rankLabel.text  = [NSString stringWithFormat:@"%d位: watch 250万坪", i + 1]; 
+        }
         rankLabel.textColor = [UIColor blackColor];
         [self.view addSubview:rankLabel];
     }
+    
+    UILabel *messageLabel = [[UILabel alloc] init];
+    messageLabel.font  = [UIFont boldSystemFontOfSize:32];
+    messageLabel.text  = @"1位まであと少し。";
+    [messageLabel sizeToFit];
+    messageLabel.frame = CGRectMake((self.view.frame.size.width - messageLabel.frame.size.width)/2,
+                                  310,
+                                  messageLabel.frame.size.width,
+                                  messageLabel.frame.size.height);
+    messageLabel.textColor = [UIColor blackColor];
+    [self.view addSubview:messageLabel];
 }
 
 - (void)didReceiveMemoryWarning

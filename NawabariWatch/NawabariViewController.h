@@ -43,6 +43,13 @@
     
     // venueを探すボタン
     UIButton *searchButton;
+    
+    // テキストの色
+    UIColor *textColorBlack;
+    
+    // テキストラベルの背景の色
+    UIColor *backgroundColorWhite;
+    UIColor *backgroundColorBlack;
 }
 
 @property(nonatomic,readonly,strong) FoursquareAPI *foursquareAPI;

@@ -31,6 +31,9 @@
     // 変数初期化
 	longitude_ = 0.0;
 	latitude_  = 0.0;
+    textColorBlack = [UIColor colorWithRed:0.15 green:0.15 blue:0.15 alpha:0.8];
+    backgroundColorWhite = [UIColor colorWithRed:1 green:1 blue:1 alpha:0.7];
+    backgroundColorBlack = [UIColor colorWithRed:0.1 green:0.1 blue:0.1 alpha:0.7];
     
 	// ロケーションマネージャーを作成
 	BOOL locationServicesEnabled;
@@ -92,7 +95,6 @@
     [self drawNawabaris:venues];
     [self drawAreaInfoWindow];
     [self drawRankInfoWindow];
-    [self drawRankViewButton];
     [self drawSurroundingNawabarisButton];
 }
 
@@ -322,33 +324,47 @@
 
 // 順位情報windowを描画
 - (void)drawRankInfoWindow {
+    UIButton *infoWindow = [UIButton buttonWithType:UIButtonTypeCustom];
+    infoWindow.frame = CGRectMake(192, 4, 122, 72);
+    [infoWindow setBackgroundImage:[self createBackgroundImage:backgroundColorWhite withSize:CGSizeMake(122, 70)]
+                            forState:UIControlStateNormal];
+    [infoWindow setBackgroundImage:[self createBackgroundImage:backgroundColorBlack withSize:CGSizeMake(122, 70)]
+                            forState:(UIControlStateSelected | UIControlStateHighlighted)];
+    [infoWindow.layer setCornerRadius:10.0];
+    [infoWindow.layer setBorderColor:[UIColor grayColor].CGColor];
+    [infoWindow.layer setBorderWidth:1.0];
+    [infoWindow setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    
+    [infoWindow addTarget:self action:@selector(transPageToRankView) forControlEvents:UIControlEventTouchUpInside];
+/*
     UIView *infoWindow = [[UIView alloc] initWithFrame:CGRectMake(192, 6, 122, 70)];
     infoWindow.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.45];
+*/
     
     UILabel *titleLabel = [[UILabel alloc] init];
-    titleLabel.frame = CGRectMake(4, 4, 114, 18);
+    titleLabel.frame = CGRectMake(6, 6, 114, 18);
     titleLabel.font  = [UIFont boldSystemFontOfSize:16];
     titleLabel.text  = @"あなたの順位";
-    titleLabel.textColor = [UIColor whiteColor];
+    titleLabel.textColor = textColorBlack;
     titleLabel.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
     [infoWindow addSubview:titleLabel];
     
     UILabel *rankLabel = [[UILabel alloc] init];
-    rankLabel.frame = CGRectMake(4, 24, 70, 46);
+    rankLabel.frame = CGRectMake(6, 24, 70, 46);
     rankLabel.font  = [UIFont boldSystemFontOfSize:32];
     NSDictionary *dict = [self getRankAndUsersNumById:1 andTerritory:nawabariAreaSum];
     NSString *rank     = [dict objectForKey:@"rank"];
     NSString *usersNum = [dict objectForKey:@"users_num"];
     rankLabel.text  = [NSString stringWithFormat:@"%@位", rank];
-    rankLabel.textColor = [UIColor whiteColor];
+    rankLabel.textColor = textColorBlack;
     rankLabel.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
     [infoWindow addSubview:rankLabel];
     
     UILabel *rankLabel2 = [[UILabel alloc] init];
-    rankLabel2.frame = CGRectMake(76, 46, 44, 16);
+    rankLabel2.frame = CGRectMake(78, 46, 44, 16);
     rankLabel2.font  = [UIFont boldSystemFontOfSize:14];
     rankLabel2.text  = [NSString stringWithFormat:@"/%@人", usersNum];
-    rankLabel2.textColor = [UIColor whiteColor];
+    rankLabel2.textColor = textColorBlack;
     rankLabel2.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
     [infoWindow addSubview:rankLabel2];
     
@@ -365,7 +381,7 @@
     [[btn layer] setMasksToBounds:YES];
     [[btn layer] setBorderWidth:0.6f];
     [[btn layer] setBackgroundColor:
-     [[UIColor colorWithRed:1 green:1 blue:1 alpha:0.7] CGColor]];
+     [backgroundColorWhite CGColor]];
 
     [btn setTitleColor:[UIColor colorWithRed:0.1 green:0.1 blue:0.1 alpha:1] forState:UIControlStateNormal];
     
@@ -381,9 +397,9 @@
     searchButton = [UIButton buttonWithType:UIButtonTypeCustom];
     searchButton.frame = CGRectMake(5, self.view.frame.size.height - 40 - 6, 120, 40);
     [searchButton setTitle:@"venueを探す" forState:UIControlStateNormal];
-    [searchButton setBackgroundImage:[self createBackgroundImage:[UIColor colorWithRed:1 green:1 blue:1 alpha:0.7] withSize:CGSizeMake(120, 40)]
+    [searchButton setBackgroundImage:[self createBackgroundImage:backgroundColorWhite withSize:CGSizeMake(120, 40)]
                          forState:UIControlStateNormal];
-    [searchButton setBackgroundImage:[self createBackgroundImage:[UIColor colorWithRed:0.1 green:0.1 blue:0.1 alpha:0.7] withSize:CGSizeMake(120, 40)]
+    [searchButton setBackgroundImage:[self createBackgroundImage:backgroundColorBlack withSize:CGSizeMake(120, 40)]
                    forState:(UIControlStateSelected | UIControlStateHighlighted)];
     [searchButton.layer setCornerRadius:10.0];
     [searchButton.layer setBorderColor:[UIColor grayColor].CGColor];
@@ -395,14 +411,15 @@
 
 }
 
+/*
 // ランキングを見るボタンを描画
 - (void)drawRankViewButton {    
     searchButton = [UIButton buttonWithType:UIButtonTypeCustom];
     searchButton.frame = CGRectMake(192, 80, 122, 32);
     [searchButton setTitle:@"ランキング" forState:UIControlStateNormal];
-    [searchButton setBackgroundImage:[self createBackgroundImage:[UIColor colorWithRed:1 green:1 blue:1 alpha:0.7] withSize:CGSizeMake(120, 40)]
+    [searchButton setBackgroundImage:[self createBackgroundImage:backgroundColorWhite withSize:CGSizeMake(120, 40)]
                             forState:UIControlStateNormal];
-    [searchButton setBackgroundImage:[self createBackgroundImage:[UIColor colorWithRed:0.1 green:0.1 blue:0.1 alpha:0.7] withSize:CGSizeMake(120, 40)]
+    [searchButton setBackgroundImage:[self createBackgroundImage:backgroundColorBlack withSize:CGSizeMake(120, 40)]
                             forState:(UIControlStateSelected | UIControlStateHighlighted)];
     [searchButton.layer setCornerRadius:10.0];
     [searchButton.layer setBorderColor:[UIColor grayColor].CGColor];
@@ -411,8 +428,8 @@
     
     [searchButton addTarget:self action:@selector(transPageToRankView) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:searchButton];
-    
 }
+*/
 
 // UIColorからUIImageを生成
 - (UIImage *)createBackgroundImage:(UIColor *)color withSize:(CGSize)size {
