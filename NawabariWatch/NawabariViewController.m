@@ -77,6 +77,7 @@
     [foursquareAPI requestUserProfile];
 }
 
+// userのprofileを取得した後に呼ばれる
 - (void)getUserProfile:(NSDictionary *)response {
     NSString *userId = [response objectForKey:@"userId"];
     [self drawRankInfoWindow:userId];
@@ -416,7 +417,7 @@
 
 /*
 // ランキングを見るボタンを描画
-- (void)drawRankViewButton {    
+- (void)drawRankViewButton {
     searchButton = [UIButton buttonWithType:UIButtonTypeCustom];
     searchButton.frame = CGRectMake(192, 80, 122, 32);
     [searchButton setTitle:@"ランキング" forState:UIControlStateNormal];
