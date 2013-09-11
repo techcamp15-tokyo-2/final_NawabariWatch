@@ -266,18 +266,18 @@
 
 // 領土情報windowを描画
 - (void)drawAreaInfoWindow {
-    UIButton *infoWindow = [UIButton buttonWithType:UIButtonTypeCustom];
-    infoWindow.frame = CGRectMake(4, 4, 180, 70);
-    [infoWindow setBackgroundImage:[self createBackgroundImage:backgroundColorWhite withSize:CGSizeMake(122, 70)]
+    areaInfoWindowButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    areaInfoWindowButton.frame = CGRectMake(4, 4, 180, 70);
+    [areaInfoWindowButton setBackgroundImage:[self createBackgroundImage:backgroundColorWhite withSize:CGSizeMake(122, 70)]
                           forState:UIControlStateNormal];
-    [infoWindow setBackgroundImage:[self createBackgroundImage:backgroundColorBlack withSize:CGSizeMake(122, 70)]
+    [areaInfoWindowButton setBackgroundImage:[self createBackgroundImage:backgroundColorBlack withSize:CGSizeMake(122, 70)]
                           forState:(UIControlStateSelected | UIControlStateHighlighted)];
-    [infoWindow.layer setCornerRadius:10.0];
-    [infoWindow.layer setBorderColor:[UIColor grayColor].CGColor];
-    [infoWindow.layer setBorderWidth:1.0];
-    [infoWindow setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [areaInfoWindowButton.layer setCornerRadius:10.0];
+    [areaInfoWindowButton.layer setBorderColor:[UIColor grayColor].CGColor];
+    [areaInfoWindowButton.layer setBorderWidth:1.0];
+    [areaInfoWindowButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     
-    [infoWindow addTarget:self action:@selector(changeDisplayNawabaris) forControlEvents:UIControlEventTouchUpInside];
+    [areaInfoWindowButton addTarget:self action:@selector(changeDisplayNawabaris) forControlEvents:UIControlEventTouchUpInside];
     
     UILabel *titleLabel = [[UILabel alloc] init];
     titleLabel.frame = CGRectMake(6, 6, 176, 18);
@@ -285,7 +285,7 @@
     titleLabel.text  = @"あなたの領土";
     titleLabel.textColor = textColorBlack;
     titleLabel.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
-    [infoWindow addSubview:titleLabel];
+    [areaInfoWindowButton addSubview:titleLabel];
     
     areaLabel = [[UILabel alloc] init];
     areaLabel.frame = CGRectMake(4, 24, 176, 40);
@@ -293,25 +293,25 @@
     areaLabel.text  = [self getAreaLabelText];
     areaLabel.textColor = textColorBlack;
     areaLabel.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
-    [infoWindow addSubview:areaLabel];
+    [areaInfoWindowButton addSubview:areaLabel];
     
-    [self.view addSubview:infoWindow];
+    [self.view addSubview:areaInfoWindowButton];
 }
 
 // 順位情報windowを描画
 - (void)drawRankInfoWindow:(NSString *)userId {
-    UIButton *infoWindow = [UIButton buttonWithType:UIButtonTypeCustom];
-    infoWindow.frame = CGRectMake(192, 4, 122, 70);
-    [infoWindow setBackgroundImage:[self createBackgroundImage:backgroundColorWhite withSize:CGSizeMake(122, 70)]
+    rankInfoWindowButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    rankInfoWindowButton.frame = CGRectMake(192, 4, 122, 70);
+    [rankInfoWindowButton setBackgroundImage:[self createBackgroundImage:backgroundColorWhite withSize:CGSizeMake(122, 70)]
                             forState:UIControlStateNormal];
-    [infoWindow setBackgroundImage:[self createBackgroundImage:backgroundColorBlack withSize:CGSizeMake(122, 70)]
+    [rankInfoWindowButton setBackgroundImage:[self createBackgroundImage:backgroundColorBlack withSize:CGSizeMake(122, 70)]
                             forState:(UIControlStateSelected | UIControlStateHighlighted)];
-    [infoWindow.layer setCornerRadius:10.0];
-    [infoWindow.layer setBorderColor:[UIColor grayColor].CGColor];
-    [infoWindow.layer setBorderWidth:1.0];
-    [infoWindow setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [rankInfoWindowButton.layer setCornerRadius:10.0];
+    [rankInfoWindowButton.layer setBorderColor:[UIColor grayColor].CGColor];
+    [rankInfoWindowButton.layer setBorderWidth:1.0];
+    [rankInfoWindowButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     
-    [infoWindow addTarget:self action:@selector(transPageToRankView) forControlEvents:UIControlEventTouchUpInside];
+    [rankInfoWindowButton addTarget:self action:@selector(transPageToRankView) forControlEvents:UIControlEventTouchUpInside];
     
     UILabel *titleLabel = [[UILabel alloc] init];
     titleLabel.frame = CGRectMake(6, 6, 114, 16);
@@ -319,7 +319,7 @@
     titleLabel.text  = @"全国ランキング";
     titleLabel.textColor = textColorBlack;
     titleLabel.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
-    [infoWindow addSubview:titleLabel];
+    [rankInfoWindowButton addSubview:titleLabel];
     
     UILabel *rankLabel = [[UILabel alloc] init];
     rankLabel.frame = CGRectMake(6, 24, 70, 40);
@@ -332,7 +332,7 @@
     rankLabel.text  = [NSString stringWithFormat:@"%@位", rank];
     rankLabel.textColor = textColorBlack;
     rankLabel.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
-    [infoWindow addSubview:rankLabel];
+    [rankInfoWindowButton addSubview:rankLabel];
     
     UILabel *rankLabel2 = [[UILabel alloc] init];
     rankLabel2.frame = CGRectMake(78, 46, 44, 16);
@@ -340,9 +340,9 @@
     rankLabel2.text  = [NSString stringWithFormat:@"/%@人", usersNum];
     rankLabel2.textColor = textColorBlack;
     rankLabel2.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
-    [infoWindow addSubview:rankLabel2];
+    [rankInfoWindowButton addSubview:rankLabel2];
     
-    [self.view addSubview:infoWindow];
+    [self.view addSubview:rankInfoWindowButton];
 }
 
 // venueを探すボタンを描画

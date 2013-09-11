@@ -44,6 +44,12 @@
     // 選択されたチェックイン待ちのvenue
     NSString *tappedVenueId;
     
+    // 領土表示ボタン
+    UIButton *areaInfoWindowButton;
+    
+    // ランキング表示ボタン
+    UIButton *rankInfoWindowButton;
+    
     // venueを探すボタン
     UIButton *searchButton;
     
