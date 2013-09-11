@@ -457,36 +457,31 @@
 
 // ランキングページへ遷移
 - (void)transPageToRankView {
-/*
-    RankViewController *next = [[RankViewController alloc] init];
-    next.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    [self presentViewController:next animated:YES completion:^ {
-        // 完了時の処理をここに書きます
-    }];
-*/
     [areaInfoWindowButton removeFromSuperview];
     [rankInfoWindowButton removeFromSuperview];
     [searchButton removeFromSuperview];
     
     rankView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-    rankView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.5];
+    rankView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.7];
     
     UIView *rankSubView = [[UIView alloc] initWithFrame:CGRectMake(0, 90, self.view.frame.size.width - 90, self.view.frame.size.height)];
     
     // ランキングタイトル
     UILabel *titleLabel = [[UILabel alloc] init];
+    titleLabel.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
     titleLabel.frame = CGRectMake((self.view.frame.size.width - 280)/2,
                                   0,
                                   280,
                                   42);
     titleLabel.font  = [UIFont boldSystemFontOfSize:40];
     titleLabel.text  = @"全国ランキング";
-    titleLabel.textColor = [UIColor blackColor];
+    titleLabel.textColor = [UIColor whiteColor];
     [rankSubView addSubview:titleLabel];
     
     // 順位ラベル
     for (int i = 0; i < 5; i++) {
         UILabel *rankLabel = [[UILabel alloc] init];
+        rankLabel.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
         rankLabel.frame = CGRectMake(40,
                                      55 + 32 * i,
                                      250,
@@ -496,11 +491,12 @@
         if (i == 1) {
             rankLabel.text  = [NSString stringWithFormat:@"%d位: watch 250万坪", i + 1];
         }
-        rankLabel.textColor = [UIColor blackColor];
+        rankLabel.textColor = [UIColor whiteColor];
         [rankSubView addSubview:rankLabel];
     }
     
     UILabel *messageLabel = [[UILabel alloc] init];
+    messageLabel.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
     messageLabel.font  = [UIFont boldSystemFontOfSize:32];
     messageLabel.text  = @"1位まであと少し。";
     [messageLabel sizeToFit];
@@ -508,7 +504,7 @@
                                     235,
                                     messageLabel.frame.size.width,
                                     messageLabel.frame.size.height);
-    messageLabel.textColor = [UIColor blackColor];
+    messageLabel.textColor = [UIColor whiteColor];
     [rankSubView addSubview:messageLabel];
     
     [rankView addSubview:rankSubView];
