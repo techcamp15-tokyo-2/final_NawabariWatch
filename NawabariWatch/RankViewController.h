@@ -7,10 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <CoreLocation/CoreLocation.h>
+#import <GoogleMaps/GoogleMaps.h>
 
 @interface RankViewController : UIViewController {
     // ボタンを作ります
     UIButton *button;
 }
+
 
 @end
