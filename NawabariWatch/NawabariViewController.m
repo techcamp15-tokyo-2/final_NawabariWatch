@@ -85,6 +85,10 @@
 
 - (void)requestSearchNeighborVenues {
     [foursquareAPI requestSearchVenuesWithLatitude:latitude_ Longitude:longitude_];
+    [mapView_ animateToCameraPosition:[GMSCameraPosition
+                                       cameraWithLatitude:latitude_
+                                       longitude:longitude_
+                                       zoom:16]];
 }
 
 // 近郊のvenueを取得した後に呼ばれる
@@ -408,7 +412,6 @@
 
     [searchButton addTarget:self action:@selector(requestSearchNeighborVenues) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:searchButton];
-
 }
 
 /*
