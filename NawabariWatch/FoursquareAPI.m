@@ -113,7 +113,7 @@
 
 //userのプロファイルを取得
 -(void) requestUserProfile {
-//    [self prepareForRequest: ];
+    [self prepareForRequestWithType: userProfile];
     NSDictionary * parameters = [NSDictionary dictionaryWithObjectsAndKeys: nil];
     self.request = [foursquare_ requestWithPath:@"users/self" HTTPMethod:@"GET" parameters:parameters delegate:self];
     [request_ start];
@@ -199,15 +199,24 @@
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     
     switch (self.responseType) {
-    case venueHistory:
-        [_delegate getVenueHistory: [self convertResponse: self.response]];
-        break;
-    case searchVenues:
-        [_delegate getSearchVenues: [self convertResponse: self.response]];
-        break;
-    case checkin:
-        [_delegate getCheckin:self.response];
-        break;
+        case venueHistory:
+            [_delegate getVenueHistory: [self convertResponse: self.response]];
+            break;
+        case searchVenues:
+            [_delegate getSearchVenues: [self convertResponse: self.response]];
+            break;
+        case checkin:
+            [_delegate getCheckin:self.response];
+            break;
+        case userProfile: {
+            NSDictionary *user = (NSDictionary *)[self.response objectForKey:@"user"];
+            NSDictionary *userData = [NSDictionary dictionaryWithObjectsAndKeys:
+                                      (NSString *)[user objectForKey:@"id"], @"id",
+                                      (NSString *)[user objectForKey:@"firstName"], @"firstName",
+                                      (NSString *)[user objectForKey:@"lastName"], @"lasttName",
+                                      nil];
+            [_delegate getUserProfile:userData];
+        }
     }
 
 }
