@@ -88,7 +88,7 @@
     [mapView_ animateToCameraPosition:[GMSCameraPosition
                                        cameraWithLatitude:latitude_
                                        longitude:longitude_
-                                       zoom:16]];
+                                       zoom:18]];
 }
 
 // 近郊のvenueを取得した後に呼ばれる
