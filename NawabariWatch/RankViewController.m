@@ -22,29 +22,37 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    UIView *rankView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    rankView.backgroundColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:1];
+    self.view = rankView;
 
     // 戻るボタンの設定
     [button setTitle:@"MAPに戻る" forState:UIControlStateNormal];
-    button.frame = CGRectMake(192, 4, 122, 60);
+    button.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    button.titleLabel.numberOfLines = 2;
+    button.frame = CGRectMake(192, 4, 122, 72);
     [button addTarget:self action:@selector(buttonDidPush) forControlEvents: UIControlEventTouchUpInside];
     [self.view addSubview:button];
+    
+    UIView *rankSubView = [[UIView alloc] initWithFrame:CGRectMake(0, 90, self.view.frame.size.width - 90, self.view.frame.size.height)];
     
     // ランキングタイトル
     UILabel *titleLabel = [[UILabel alloc] init];
     titleLabel.frame = CGRectMake((self.view.frame.size.width - 280)/2,
-                                  75,
+                                  0,
                                   280,
                                   42);
     titleLabel.font  = [UIFont boldSystemFontOfSize:40];
     titleLabel.text  = @"全国ランキング";
     titleLabel.textColor = [UIColor blackColor];
-    [self.view addSubview:titleLabel];
+    [rankSubView addSubview:titleLabel];
     
     // 順位ラベル
     for (int i = 0; i < 5; i++) {
         UILabel *rankLabel = [[UILabel alloc] init];
         rankLabel.frame = CGRectMake(40,
-                                     130 + 32 * i,
+                                     55 + 32 * i,
                                      250,
                                      27);
         rankLabel.font  = [UIFont boldSystemFontOfSize:25];
@@ -53,7 +61,7 @@
            rankLabel.text  = [NSString stringWithFormat:@"%d位: watch 250万坪", i + 1]; 
         }
         rankLabel.textColor = [UIColor blackColor];
-        [self.view addSubview:rankLabel];
+        [rankSubView addSubview:rankLabel];
     }
     
     UILabel *messageLabel = [[UILabel alloc] init];
@@ -61,11 +69,13 @@
     messageLabel.text  = @"1位まであと少し。";
     [messageLabel sizeToFit];
     messageLabel.frame = CGRectMake((self.view.frame.size.width - messageLabel.frame.size.width)/2,
-                                  310,
+                                  235,
                                   messageLabel.frame.size.width,
                                   messageLabel.frame.size.height);
     messageLabel.textColor = [UIColor blackColor];
-    [self.view addSubview:messageLabel];
+    [rankSubView addSubview:messageLabel];
+    
+    [self.view addSubview:rankSubView];
 }
 
 - (void)didReceiveMemoryWarning
