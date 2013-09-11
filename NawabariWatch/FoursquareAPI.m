@@ -16,7 +16,6 @@
 @property(nonatomic,strong) BZFoursquareRequest *request;
 @property(nonatomic,copy) NSDictionary *meta;
 @property(nonatomic,copy) NSArray *notifications;
-@property(nonatomic,copy) NSMutableDictionary *response;
 @property(nonatomic) int responseType;
 @property(nonatomic) int offset;
 
@@ -35,7 +34,6 @@
 @synthesize request = request_;
 @synthesize meta = meta_;
 @synthesize notifications = notifications_;
-@synthesize response = response_;
 @synthesize responseType = responseType_;
 @synthesize offset = offset_;
 
@@ -81,7 +79,7 @@
     [self cancelRequest];
     self.meta = nil;
     self.notifications = nil;
-    self.response = nil;
+    response = [NSMutableDictionary dictionary];
     self.responseType = type;
 }
 
@@ -126,6 +124,7 @@
     [self prepareForRequestWithType:checkinHistory];
     self.offset = 0;
     [self requestCheckinHistory];
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 }
 
 -(void) requestCheckinHistory {
@@ -135,7 +134,6 @@
                                 nil];
     self.request = [foursquare_ requestWithPath:@"users/self/checkins" HTTPMethod:@"GET" parameters:parameters delegate:self];
     [request_ start];
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     self.offset++;
 }
 
@@ -150,9 +148,9 @@
     searchVenuesの記述形式
         venues = ([venueの情報], [venueの情報], ...)
 */
--(NSDictionary *) convertResponse: (NSDictionary *)response {
+-(NSDictionary *) convertResponse: (NSDictionary *)jsonObj {
     //venueのリスト
-    id venues = [response objectForKey:@"venues"];
+    id venues = [jsonObj objectForKey:@"venues"];
     NSMutableArray *useVenues = [NSMutableArray array];
     
     //venuesのリストの要素をarrayで取得
@@ -173,6 +171,9 @@
                                        nil];
                 [items insertObject:item atIndex: [items count]];
             }
+            break;
+        case checkinHistory:
+            items = (NSMutableArray *)[jsonObj objectForKey:@"items"];
             break;
     }
     
@@ -202,37 +203,48 @@
 
 //requestのレスポンスが帰ってくる
 - (void)requestDidFinishLoading:(BZFoursquareRequest *)request {
-    if(self.responseType == checkinHistory) {
-        NSDictionary *checkins = (NSDictionary *)[request.response objectForKey: @"checkins"];
-        int count = (int)[checkins objectForKey:@"count"];
-        NSDictionary *convertResponce = [self convertResponse:(NSDictionary *)[checkins objectForKey:@"items"]];
-        for(id tmp in convertResponce) {
-            NSDictionary *venue = (NSDictionary *)tmp;
-            [self.response setObject:venue forKey:[NSString stringWithFormat:@"%d", [self.response count]]];
-        }
-        if(count != 100) {
-            [_delegate getCheckin:self.response];
-        };
-        [self requestCheckinHistory];
-    }
     self.meta = request.meta;
     self.notifications = request.notifications;
-    self.response = request.response;
     self.request = nil;
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     
     switch (self.responseType) {
-    case venueHistory:
-        [_delegate getVenueHistory: [self convertResponse: self.response]];
-        break;
-    case searchVenues:
-        [_delegate getSearchVenues: [self convertResponse: self.response]];
-        break;
-    case userProfile:
-        break;
-    case checkin:
-        [_delegate getCheckin:self.response];
-        break;
+        case venueHistory: {
+            [_delegate getVenueHistory: [self convertResponse: request.response]];
+            break;
+        }
+        case searchVenues: {
+            [_delegate getSearchVenues: [self convertResponse: request.response]];
+            break;
+        }
+        case userProfile: {
+            break;
+        }
+        case checkin: {
+            [_delegate getCheckin:request.response];
+            break;
+        }
+        case checkinHistory: {
+            NSDictionary *checkins = (NSDictionary *)[request.response objectForKey: @"checkins"];
+            int count = (int)[checkins objectForKey:@"count"];
+            NSDictionary *convertResponce = [self convertResponse:checkins];
+            [response addEntriesFromDictionary:(NSMutableDictionary *)convertResponce];
+            for(id tmp in (NSArray *)[convertResponce objectForKey:@"venues"]) {
+                NSDictionary *venue = (NSDictionary *)tmp;
+                NSString *key =[NSString stringWithFormat:@"%d", [response count]];
+                NSLog(@"%@ %@", [venue description], key);
+                
+            }
+            if(count != 100) {
+                [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+                [_delegate getCheckinHistory:(NSDictionary *)response];
+                return;
+            }
+            else {
+                [self requestCheckinHistory];
+                return;
+            }
+        }
     }
 }
 
@@ -253,7 +265,7 @@
 - (void)foursquareDidAuthorize:(BZFoursquare *)foursquare {
 //    [_delegate didAuthorize];
     NSLog(@"a");
-    [self requestUserProfile];
+    [self requestCheckinHistoryFirst];
 }
 
 - (void)foursquareDidNotAuthorize:(BZFoursquare *)foursquare error:(NSDictionary *)errorInfo {

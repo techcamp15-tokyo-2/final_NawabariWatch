@@ -17,6 +17,7 @@
 - (void)getVenueHistory:(NSDictionary *) response;
 - (void)getSearchVenues:(NSDictionary *) response;
 - (void)getCheckin:(NSDictionary *) response;
+- (void)getCheckinHistory:(NSDictionary *)response;
 @end
 
 @interface FoursquareAPI : NSObject <BZFoursquareRequestDelegate, BZFoursquareSessionDelegate>{
@@ -24,7 +25,7 @@
     BZFoursquareRequest *request_;
     NSDictionary        *meta_;
     NSArray             *notifications_;
-    NSMutableDictionary *response_;
+    NSMutableArray      *response;
     int                 responseType_;
     int                 offset_;
 }
@@ -38,7 +39,7 @@
 -(void)cancelRequest;
 -(void)requestVenueHistory;
 -(void)requestSearchVenuesWithLatitude:(double)lat Longitude:(double)lng;
--(void) requestCheckin:(NSString *)venueId;
+-(void)requestCheckin:(NSString *)venueId;
 @end
 enum {
     venueHistory = 0,
