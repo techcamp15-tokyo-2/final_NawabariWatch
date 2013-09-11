@@ -311,7 +311,7 @@
     [rankInfoWindowButton.layer setBorderWidth:1.0];
     [rankInfoWindowButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     
-    [rankInfoWindowButton addTarget:self action:@selector(transPageToRankView) forControlEvents:UIControlEventTouchUpInside];
+    [rankInfoWindowButton addTarget:self action:@selector(drawRankView) forControlEvents:UIControlEventTouchUpInside];
     
     UILabel *titleLabel = [[UILabel alloc] init];
     titleLabel.frame = CGRectMake(6, 6, 114, 16);
@@ -455,12 +455,16 @@
 }
 */
 
-// ランキングページへ遷移
-- (void)transPageToRankView {
+// ランキングページを描画
+- (void)drawRankView {
     [areaInfoWindowButton removeFromSuperview];
     [rankInfoWindowButton removeFromSuperview];
     [searchButton removeFromSuperview];
     
+    // 白文字の色を指定
+    UIColor *textColorWhite = [UIColor colorWithRed:1 green:1 blue:1 alpha:0.92];
+    
+    // 全国ランキングを表示するview
     rankView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     rankView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.7];
     
@@ -475,7 +479,7 @@
                                   42);
     titleLabel.font  = [UIFont boldSystemFontOfSize:40];
     titleLabel.text  = @"全国ランキング";
-    titleLabel.textColor = [UIColor whiteColor];
+    titleLabel.textColor = textColorWhite;
     [rankSubView addSubview:titleLabel];
     
     // 順位ラベル
@@ -491,7 +495,7 @@
         if (i == 1) {
             rankLabel.text  = [NSString stringWithFormat:@"%d位: watch 250万坪", i + 1];
         }
-        rankLabel.textColor = [UIColor whiteColor];
+        rankLabel.textColor = textColorWhite;
         [rankSubView addSubview:rankLabel];
     }
     
@@ -504,7 +508,7 @@
                                     235,
                                     messageLabel.frame.size.width,
                                     messageLabel.frame.size.height);
-    messageLabel.textColor = [UIColor whiteColor];
+    messageLabel.textColor = textColorWhite;
     [rankSubView addSubview:messageLabel];
     
     [rankView addSubview:rankSubView];
@@ -512,10 +516,11 @@
     [self drawBackButton];
 }
 
+// Mapへ戻るボタンを描画
 - (void)drawBackButton {
     backToMapButton = [UIButton buttonWithType:UIButtonTypeCustom];
     backToMapButton.frame = CGRectMake(192, 4, 122, 70);
-    [backToMapButton setBackgroundImage:[self createBackgroundImage:[UIColor whiteColor] withSize:CGSizeMake(122, 70)]
+    [backToMapButton setBackgroundImage:[self createBackgroundImage:[UIColor colorWithRed:1 green:1 blue:1 alpha:0.92] withSize:CGSizeMake(122, 70)]
                                     forState:UIControlStateNormal];
     [backToMapButton setBackgroundImage:[self createBackgroundImage:backgroundColorBlack withSize:CGSizeMake(122, 70)]
                                     forState:(UIControlStateSelected | UIControlStateHighlighted)];
@@ -530,13 +535,14 @@
     titleLabel.frame = CGRectMake(12.5, 1, 116, 69);
     titleLabel.font  = [UIFont boldSystemFontOfSize:18];
     titleLabel.text  = @"MAPに戻る";
-    titleLabel.textColor = textColorBlack;
+    titleLabel.textColor = [UIColor blackColor];
     titleLabel.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
     [backToMapButton addSubview:titleLabel];
     
     [self.view addSubview:backToMapButton];
 }
 
+// Mapへ戻るボタンが押された時の処理
 - (void)backButtonDidPush {
     [rankView removeFromSuperview];
     [backToMapButton removeFromSuperview];
