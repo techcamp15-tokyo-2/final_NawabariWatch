@@ -490,8 +490,9 @@
     }
 }
 
-// チェックイン後、なわばりの半径を変更
+// チェックイン後、なわばりの半径や色を変更
 - (void)changeNawabariRadiusAfterCheckin {
+    [NSThread sleepForTimeInterval:0.6];
     for (NSMutableDictionary *nawabari in nawabaris) {
         GMSMarker* marker = [nawabari objectForKey:@"marker"];
         if (marker.snippet == tappedVenueId) {
