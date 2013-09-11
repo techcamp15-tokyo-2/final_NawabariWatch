@@ -214,6 +214,13 @@
             break;
         }
         case userProfile: {
+            NSDictionary *user = (NSDictionary *)[request.response objectForKey:@"user"];
+            NSDictionary *userData = [NSDictionary dictionaryWithObjectsAndKeys:
+                                      [user objectForKey:@"id"], @"userId",
+                                      [user objectForKey:@"firstName"], @"firstName",
+                                      [user objectForKey:@"lastName"], @"lastName",
+                                      nil];
+            [_delegate getUserProfile:userData];
             break;
         }
         case checkin: {
@@ -273,6 +280,7 @@
 
 - (void)foursquareDidAuthorize:(BZFoursquare *)foursquare {
     [_delegate didAuthorize];
+
 }
 
 - (void)foursquareDidNotAuthorize:(BZFoursquare *)foursquare error:(NSDictionary *)errorInfo {

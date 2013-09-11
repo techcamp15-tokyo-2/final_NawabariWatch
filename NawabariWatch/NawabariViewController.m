@@ -212,7 +212,9 @@
         // Creates a marker in the center of the map.
         GMSMarker* marker = [[GMSMarker alloc] init];
         marker.position = CLLocationCoordinate2DMake(lat, lng);
-        marker.icon = [UIImage imageNamed:@"blue_map_pin_17x32"];
+//        marker.icon = [UIImage imageNamed:@"blue_map_pin_17x32"];
+        marker.icon = [UIImage imageNamed:@"icon_6m_48"];
+
         marker.title   = name;
         marker.snippet = venueId;
         marker.map = mapView_;
@@ -266,6 +268,7 @@
         marker.title   = name;
         marker.snippet = venueId;
         marker.map = mapView_;
+//        marker.icon = [UIImage imageNamed:@"cat1"];
         
         CLLocationCoordinate2D circleCenter = CLLocationCoordinate2DMake(lat, lng);
         GMSCircle* circ  = [GMSCircle circleWithPosition:circleCenter radius:kUnitRadius];
