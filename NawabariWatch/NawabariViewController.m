@@ -151,6 +151,10 @@
     [alert show];
 }
 
+- (void)getUserProfile:(NSDictionary *)response {
+    NSLog(@"%@", [response description]);
+}
+
 // google map 関連の処理
 - (void)loadView {
     // Do any additional setup after loading the view, typically from a nib.
