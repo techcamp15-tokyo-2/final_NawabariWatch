@@ -77,7 +77,6 @@
 }
 
 - (void)getUserProfile:(NSDictionary *)response {
-    NSLog(@"%@", [response description]);
     NSString *userId = [response objectForKey:@"id"];
     [self drawRankInfoWindow:userId];
     [self drawSurroundingNawabarisButton];
@@ -476,7 +475,6 @@
 
 // ランキングページへ遷移
 - (void)transPageToRankView {
-    NSLog(@"transPage Buttonが押された");
     RankViewController *next = [[RankViewController alloc] init];
     next.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     [self presentViewController:next animated:YES completion:^ {
