@@ -33,7 +33,7 @@
     button.titleLabel.numberOfLines = 2;
     button.frame = CGRectMake(192, 4, 122, 72);
     [button addTarget:self action:@selector(buttonDidPush) forControlEvents: UIControlEventTouchUpInside];
-    [self.view addSubview:button];
+    [rankView addSubview:button];
     
     UIView *rankSubView = [[UIView alloc] initWithFrame:CGRectMake(0, 90, self.view.frame.size.width - 90, self.view.frame.size.height)];
     
@@ -75,7 +75,7 @@
     messageLabel.textColor = [UIColor blackColor];
     [rankSubView addSubview:messageLabel];
     
-    [self.view addSubview:rankSubView];
+    [rankView addSubview:rankSubView];
 }
 
 - (void)didReceiveMemoryWarning

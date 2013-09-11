@@ -38,7 +38,8 @@
 -(void)cancelRequest;
 -(void)requestVenueHistory;
 -(void)requestSearchVenuesWithLatitude:(double)lat Longitude:(double)lng;
--(void) requestCheckin:(NSString *)venueId;
+-(void)requestCheckin:(NSString *)venueId;
+-(void) requestUserProfile;
 @end
 enum {
     venueHistory = 0,

@@ -52,27 +52,6 @@
 		// 位置情報取得開始
 		[locationManager startUpdatingLocation];
 	}
-    
-/*
-    [self loadView];
-    NSArray *venues = @[@{
-                            @"beenHere": @"2",
-                            @"lat": @"35.65682575139073",
-                            @"lng": @"139.694968886065",
-                            @"name": @"ああああ",
-                            @"venueId": @"4b4e9440f964a520f8f126e3"
-                            },
-                          @{
-                              @"beenHere": @"1",
-                              @"lat": @"35.65775608829579",
-                              @"lng": @"139.700348675251",
-                              @"name": @"いいいい",
-                              @"venueId": @"4b5530abf964a52021de27e3"
-                              }
-                          ];
-    NSDictionary *response = @{@"venues": venues};
-    [self requestDidSending:response];
-*/
 }
 
 - (void)didReceiveMemoryWarning
@@ -94,7 +73,13 @@
     NSArray* venues = (NSArray *)[response objectForKey:@"venues"];
     [self drawNawabaris:venues];
     [self drawAreaInfoWindow];
-    [self drawRankInfoWindow];
+    [foursquareAPI requestUserProfile];
+}
+
+- (void)getUserProfile:(NSDictionary *)response {
+    NSLog(@"%@", [response description]);
+    NSString *userId = [response objectForKey:@"id"];
+    [self drawRankInfoWindow:userId];
     [self drawSurroundingNawabarisButton];
 }
 
@@ -152,10 +137,6 @@
                                           cancelButtonTitle:@"OK" otherButtonTitles:nil];
     alert.tag = finishCheckin;
     [alert show];
-}
-
-- (void)getUserProfile:(NSDictionary *)response {
-    NSLog(@"%@", [response description]);
 }
 
 // google map 関連の処理
@@ -235,21 +216,24 @@
         marker.title   = name;
         marker.snippet = venueId;
         marker.map = mapView_;
-        
+
         CLLocationCoordinate2D circleCenter = CLLocationCoordinate2DMake(lat, lng);
         GMSCircle* circ  = [GMSCircle circleWithPosition:circleCenter radius:(kUnitRadius * sqrt(beenHere))];
         circ.fillColor   = [UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.4];
         circ.strokeColor = [UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.8];
+//        circ.fillColor   = [UIColor colorWithRed:0 green:0.9 blue:0.2 alpha:0.2];
+//        circ.strokeColor = [UIColor colorWithRed:0 green:0.9 blue:0.2 alpha:0.8];
         circ.map = mapView_;
+
 /*
         GMSMutablePath *rect = [GMSMutablePath path];
-        double halfWidth = 0.001;
+        double halfWidth = 0.0002;
         [rect addCoordinate:CLLocationCoordinate2DMake(lat - halfWidth, lng - halfWidth)];
         [rect addCoordinate:CLLocationCoordinate2DMake(lat + halfWidth, lng - halfWidth)];
         [rect addCoordinate:CLLocationCoordinate2DMake(lat + halfWidth, lng + halfWidth)];
         [rect addCoordinate:CLLocationCoordinate2DMake(lat - halfWidth, lng + halfWidth)];
         [rect addCoordinate:CLLocationCoordinate2DMake(lat - halfWidth, lng - halfWidth)];
-        
+
         GMSPolygon *polygon = [GMSPolygon polygonWithPath:rect];
         polygon.fillColor = [UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.2];
         polygon.strokeColor = [UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.8];
@@ -323,7 +307,7 @@
 }
 
 // 順位情報windowを描画
-- (void)drawRankInfoWindow {
+- (void)drawRankInfoWindow:(NSString *)userId {
     UIButton *infoWindow = [UIButton buttonWithType:UIButtonTypeCustom];
     infoWindow.frame = CGRectMake(192, 4, 122, 72);
     [infoWindow setBackgroundImage:[self createBackgroundImage:backgroundColorWhite withSize:CGSizeMake(122, 70)]
@@ -352,7 +336,9 @@
     UILabel *rankLabel = [[UILabel alloc] init];
     rankLabel.frame = CGRectMake(6, 24, 70, 46);
     rankLabel.font  = [UIFont boldSystemFontOfSize:32];
-    NSDictionary *dict = [self getRankAndUsersNumById:1 andTerritory:nawabariAreaSum];
+    
+    NSDictionary *dict = [self getRankAndUsersNumById:userId
+                                         andTerritory:nawabariAreaSum];
     NSString *rank     = [dict objectForKey:@"rank"];
     NSString *usersNum = [dict objectForKey:@"users_num"];
     rankLabel.text  = [NSString stringWithFormat:@"%@位", rank];
@@ -446,8 +432,8 @@
 }
 
 // WebAPIをたたいてユーザーの順位と全ユーザー数を取得
-- (NSDictionary *)getRankAndUsersNumById:(int)id andTerritory:(double)territory {
-    NSString *urlStr = [NSString stringWithFormat:@"http://quiet-wave-3026.herokuapp.com/users/update/%d?territory=%f", id, territory];
+- (NSDictionary *)getRankAndUsersNumById:(NSString *)userId andTerritory:(double)territory {
+    NSString *urlStr = [NSString stringWithFormat:@"http://quiet-wave-3026.herokuapp.com/users/update/%@?territory=%f", userId, territory];
     NSURL *url = [NSURL URLWithString:urlStr];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     
