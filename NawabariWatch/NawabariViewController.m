@@ -78,7 +78,7 @@
 
 - (void)getUserProfile:(NSDictionary *)response {
     NSLog(@"%@", [response description]);
-    NSString *userId = [response objectForKey:@"id"];
+    NSString *userId = [response objectForKey:@"userId"];
     [self drawRankInfoWindow:userId];
     [self drawSurroundingNawabarisButton];
 }
