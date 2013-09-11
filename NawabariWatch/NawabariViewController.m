@@ -495,6 +495,15 @@
             marker.map = nil;
         }
     }
+    
+    for (NSMutableDictionary *nawabari in surroundingNawabaris) {
+        GMSMarker* marker = [nawabari objectForKey:@"marker"];
+        if (marker.map == nil) {
+            marker.map = mapView_;
+        } else {
+            marker.map = nil;
+        }
+    }
 }
 
 
