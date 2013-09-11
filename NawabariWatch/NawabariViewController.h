@@ -10,6 +10,7 @@
 #import <CoreLocation/CoreLocation.h>
 #import <GoogleMaps/GoogleMaps.h>
 #import "FoursquareAPI.h"
+#import "RankViewController.h"
 
 @interface NawabariViewController : UIViewController <CLLocationManagerDelegate, FoursquareAPIDelegate> {
     // ロケーションマネージャー

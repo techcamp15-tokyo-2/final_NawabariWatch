@@ -92,6 +92,7 @@
     [self drawNawabaris:venues];
     [self drawAreaInfoWindow];
     [self drawRankInfoWindow];
+    [self drawRankViewButton];
     [self drawSurroundingNawabarisButton];
 }
 
@@ -392,6 +393,25 @@
 
 }
 
+// ランキングを見るボタンを描画
+- (void)drawRankViewButton {    
+    searchButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    searchButton.frame = CGRectMake(192, 80, 122, 32);
+    [searchButton setTitle:@"ランキング" forState:UIControlStateNormal];
+    [searchButton setBackgroundImage:[self createBackgroundImage:[UIColor colorWithRed:1 green:1 blue:1 alpha:0.7] withSize:CGSizeMake(120, 40)]
+                            forState:UIControlStateNormal];
+    [searchButton setBackgroundImage:[self createBackgroundImage:[UIColor colorWithRed:0.1 green:0.1 blue:0.1 alpha:0.7] withSize:CGSizeMake(120, 40)]
+                            forState:(UIControlStateSelected | UIControlStateHighlighted)];
+    [searchButton.layer setCornerRadius:10.0];
+    [searchButton.layer setBorderColor:[UIColor grayColor].CGColor];
+    [searchButton.layer setBorderWidth:1.0];
+    [searchButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    
+    [searchButton addTarget:self action:@selector(transPageToRankView) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:searchButton];
+    
+}
+
 // UIColorからUIImageを生成
 - (UIImage *)createBackgroundImage:(UIColor *)color withSize:(CGSize)size {
     UIImage *screenImage;
@@ -442,6 +462,16 @@
     }
 }
 */
+
+// ランキングページへ遷移
+- (void)transPageToRankView {
+    NSLog(@"transPage Buttonが押された");
+    RankViewController *next = [[RankViewController alloc] init];
+    next.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    [self presentViewController:next animated:YES completion:^ {
+        // 完了時の処理をここに書きます
+    }];
+}
 
 
 // alertのボタンを押したときに呼ばれるメソッド
