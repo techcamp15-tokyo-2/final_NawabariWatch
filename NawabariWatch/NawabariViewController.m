@@ -509,10 +509,13 @@
     
     for (NSMutableDictionary *nawabari in surroundingNawabaris) {
         GMSMarker* marker = [nawabari objectForKey:@"marker"];
+        GMSCircle* circ   = [nawabari objectForKey:@"circ"];
         if (isDisplayMarker) {
             marker.map = mapView_;
+            circ.map   = mapView_;
         } else {
             marker.map = nil;
+            circ.map   = nil;
         }
     }
 }
