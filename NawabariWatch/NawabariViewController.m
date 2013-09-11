@@ -74,6 +74,7 @@
     NSArray* venues = (NSArray *)[response objectForKey:@"venues"];
     [self drawNawabaris:venues];
     [self drawAreaInfoWindow];
+    [self drawSurroundingNawabarisButton];
     [foursquareAPI requestUserProfile];
 }
 
@@ -81,7 +82,6 @@
 - (void)getUserProfile:(NSDictionary *)response {
     NSString *userId = [response objectForKey:@"userId"];
     [self drawRankInfoWindow:userId];
-    [self drawSurroundingNawabarisButton];
 }
 
 - (void)requestSearchNeighborVenues {
@@ -319,8 +319,8 @@
     [infoWindow addSubview:titleLabel];
     
     areaLabel = [[UILabel alloc] init];
-    areaLabel.frame = CGRectMake(4, 20, 176, 46);
-    areaLabel.font  = [UIFont boldSystemFontOfSize:44];
+    areaLabel.frame = CGRectMake(4, 24, 176, 40);
+    areaLabel.font  = [UIFont boldSystemFontOfSize:38];
     areaLabel.text  = [self getAreaLabelText];
     areaLabel.textColor = textColorBlack;
     areaLabel.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
@@ -353,8 +353,8 @@
     [infoWindow addSubview:titleLabel];
     
     UILabel *rankLabel = [[UILabel alloc] init];
-    rankLabel.frame = CGRectMake(6, 24, 70, 46);
-    rankLabel.font  = [UIFont boldSystemFontOfSize:32];
+    rankLabel.frame = CGRectMake(6, 24, 70, 40);
+    rankLabel.font  = [UIFont boldSystemFontOfSize:38];
     
     NSDictionary *dict = [self getRankAndUsersNumById:userId
                                          andTerritory:nawabariAreaSum];
