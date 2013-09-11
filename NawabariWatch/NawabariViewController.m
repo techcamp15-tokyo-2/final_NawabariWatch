@@ -295,7 +295,7 @@
     [infoWindow.layer setBorderWidth:1.0];
     [infoWindow setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     
-    [infoWindow addTarget:self action:@selector(transPageToRankView) forControlEvents:UIControlEventTouchUpInside];
+    [infoWindow addTarget:self action:@selector(changeDisplayNawabaris) forControlEvents:UIControlEventTouchUpInside];
     
     UILabel *titleLabel = [[UILabel alloc] init];
     titleLabel.frame = CGRectMake(6, 6, 176, 18);
@@ -482,6 +482,18 @@
     [self presentViewController:next animated:YES completion:^ {
         // 完了時の処理をここに書きます
     }];
+}
+
+// なわばりの表示・非表示を切り替え
+- (void)changeDisplayNawabaris {
+    for (NSMutableDictionary *nawabari in nawabaris) {
+        GMSMarker* marker = [nawabari objectForKey:@"marker"];
+        if (marker.map == nil) {
+            marker.map = mapView_;
+        } else {
+            marker.map = nil;
+        }
+    }
 }
 
 
