@@ -37,7 +37,6 @@
 		E9DA45A717D741330028B94C /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E9DA45A617D741330028B94C /* Default-568h@2x.png */; };
 		E9DA45AA17D741330028B94C /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E9DA45A817D741330028B94C /* MainStoryboard.storyboard */; };
 		E9DA45AD17D741330028B94C /* NawabariViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E9DA45AC17D741330028B94C /* NawabariViewController.m */; };
-		E9F1C95C17E00D3F002C47AA /* RankViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E9F1C95A17E00D3F002C47AA /* RankViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -79,8 +78,6 @@
 		E9DA45A917D741330028B94C /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
 		E9DA45AB17D741330028B94C /* NawabariViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NawabariViewController.h; sourceTree = "<group>"; };
 		E9DA45AC17D741330028B94C /* NawabariViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NawabariViewController.m; sourceTree = "<group>"; };
-		E9F1C95917E00D3F002C47AA /* RankViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RankViewController.h; sourceTree = "<group>"; };
-		E9F1C95A17E00D3F002C47AA /* RankViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RankViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -174,8 +171,6 @@
 				E9DA45AB17D741330028B94C /* NawabariViewController.h */,
 				E9DA45AC17D741330028B94C /* NawabariViewController.m */,
 				E96FED0717D9B5CF00D6CB8B /* NawabariViewController+Location.m */,
-				E9F1C95917E00D3F002C47AA /* RankViewController.h */,
-				E9F1C95A17E00D3F002C47AA /* RankViewController.m */,
 				E9DA459717D741320028B94C /* Supporting Files */,
 				43DF31E717D96F8B0033ACB1 /* FoursquareAPI.h */,
 				43DF31E817D96F8B0033ACB1 /* FoursquareAPI.m */,
@@ -272,7 +267,6 @@
 				43DF31E417D9636E0033ACB1 /* BZFoursquareRequest.m in Sources */,
 				43DF31E917D96F8B0033ACB1 /* FoursquareAPI.m in Sources */,
 				E96FED0817D9B5CF00D6CB8B /* NawabariViewController+Location.m in Sources */,
-				E9F1C95C17E00D3F002C47AA /* RankViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
