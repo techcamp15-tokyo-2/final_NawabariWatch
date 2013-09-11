@@ -45,7 +45,7 @@
     [self.view addSubview:titleLabel];
     
     // 順位ラベル
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 7; i++) {
         UILabel *rankLabel = [[UILabel alloc] init];
         rankLabel.frame = CGRectMake(40,
                                      130 + 32 * i,
