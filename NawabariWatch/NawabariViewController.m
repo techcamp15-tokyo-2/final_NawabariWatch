@@ -195,7 +195,6 @@
     [alert show];
 }
 
-/*
 // cameraの移動やzoom時に、なわばりの半径を再描画
 - (void)mapView:(GMSMapView *)mapView didChangeCameraPosition:(GMSCameraPosition *)position {
     CGFloat zoom = mapView_.camera.zoom;
@@ -211,7 +210,6 @@
         }
     }
 }
-*/
 
 // なわばり(markerとそのまわりの円)を描く
 - (void)drawNawabaris:(NSArray *)venues {
