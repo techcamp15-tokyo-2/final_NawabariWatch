@@ -26,6 +26,9 @@
     //foursquareAPI
     FoursquareAPI *foursquareAPI;
     
+    // markerを表示するかどうかのフラグ
+    BOOL isDisplayMarker;
+    
     // なわばり(マーカーと領土のArray)
     NSMutableArray* nawabaris;
     

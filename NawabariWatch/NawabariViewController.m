@@ -34,6 +34,7 @@
     textColorBlack = [UIColor colorWithRed:0.15 green:0.15 blue:0.15 alpha:0.8];
     backgroundColorWhite = [UIColor colorWithRed:1 green:1 blue:1 alpha:0.7];
     backgroundColorBlack = [UIColor colorWithRed:0.1 green:0.1 blue:0.1 alpha:0.7];
+    isDisplayMarker = TRUE;
     
 	// ロケーションマネージャーを作成
 	BOOL locationServicesEnabled;
@@ -216,7 +217,9 @@
 
         marker.title   = name;
         marker.snippet = venueId;
-        marker.map = mapView_;
+        if (isDisplayMarker) {
+            marker.map = mapView_;
+        }
 
         CLLocationCoordinate2D circleCenter = CLLocationCoordinate2DMake(lat, lng);
         GMSCircle* circ  = [GMSCircle circleWithPosition:circleCenter radius:(kUnitRadius * sqrt(beenHere))];
@@ -267,6 +270,9 @@
         marker.title   = name;
         marker.snippet = venueId;
         marker.map = mapView_;
+        if (isDisplayMarker) {
+            marker.map = mapView_;
+        }
 //        marker.icon = [UIImage imageNamed:@"cat1"];
         
         CLLocationCoordinate2D circleCenter = CLLocationCoordinate2DMake(lat, lng);
@@ -487,9 +493,10 @@
 
 // なわばりの表示・非表示を切り替え
 - (void)changeDisplayNawabaris {
+    isDisplayMarker = !isDisplayMarker;
     for (NSMutableDictionary *nawabari in nawabaris) {
         GMSMarker* marker = [nawabari objectForKey:@"marker"];
-        if (marker.map == nil) {
+        if (isDisplayMarker) {
             marker.map = mapView_;
         } else {
             marker.map = nil;
@@ -498,7 +505,7 @@
     
     for (NSMutableDictionary *nawabari in surroundingNawabaris) {
         GMSMarker* marker = [nawabari objectForKey:@"marker"];
-        if (marker.map == nil) {
+        if (isDisplayMarker) {
             marker.map = mapView_;
         } else {
             marker.map = nil;
