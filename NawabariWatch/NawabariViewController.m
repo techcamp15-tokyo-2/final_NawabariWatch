@@ -83,6 +83,7 @@
     [self drawRankInfoWindow:userId];
 }
 
+// 近郊のvenueを探す
 - (void)requestSearchNeighborVenues {
     [foursquareAPI requestSearchVenuesWithLatitude:latitude_ Longitude:longitude_];
     [mapView_ animateToCameraPosition:[GMSCameraPosition
