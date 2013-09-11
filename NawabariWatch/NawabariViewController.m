@@ -296,26 +296,6 @@
     [infoWindow setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     
     [infoWindow addTarget:self action:@selector(transPageToRankView) forControlEvents:UIControlEventTouchUpInside];
-/*
-    UIButton *infoWindow = [UIButton buttonWithType:UIButtonTypeCustom];
-    infoWindow.frame = CGRectMake(4, 4, 180, 72);
-    [[infoWindow layer] setBackgroundColor:
-     [backgroundColorWhite CGColor]];
-    [[infoWindow layer] setCornerRadius:10];
-    [[infoWindow layer] setBorderColor:[UIColor grayColor].CGColor];
-    [[infoWindow layer] setBorderWidth:1.0];
-
-    [[infoWindow layer] setMasksToBounds:YES];
-    
-    [infoWindow setTitleColor:[UIColor colorWithRed:0.1 green:0.1 blue:0.1 alpha:1] forState:UIControlStateNormal];
-    [infoWindow addTarget:self action:@selector(requestSearchNeighborVenues) forControlEvents:UIControlEventTouchUpInside];
-    [infoWindow setBackgroundImage:[self createBackgroundImage:[UIColor colorWithRed:0.1 green:0.1 blue:0.1 alpha:1] withSize:CGSizeMake(120, 40)]
-                   forState:(UIControlStateSelected | UIControlStateHighlighted)];
-    infoWindow.showsTouchWhenHighlighted = YES;
-*/
-    
-//    UIView *infoWindow = [[UIView alloc] initWithFrame:CGRectMake(6, 6, 180, 70)];
-//    infoWindow.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.45];
     
     UILabel *titleLabel = [[UILabel alloc] init];
     titleLabel.frame = CGRectMake(6, 6, 176, 18);
@@ -350,10 +330,6 @@
     [infoWindow setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     
     [infoWindow addTarget:self action:@selector(transPageToRankView) forControlEvents:UIControlEventTouchUpInside];
-/*
-    UIView *infoWindow = [[UIView alloc] initWithFrame:CGRectMake(192, 6, 122, 70)];
-    infoWindow.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.45];
-*/
     
     UILabel *titleLabel = [[UILabel alloc] init];
     titleLabel.frame = CGRectMake(6, 6, 114, 16);
