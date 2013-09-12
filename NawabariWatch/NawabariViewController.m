@@ -187,8 +187,20 @@
         // Creates a marker in the center of the map.
         GMSMarker* marker = [[GMSMarker alloc] init];
         marker.position = CLLocationCoordinate2DMake(lat, lng);
-//        marker.icon = [UIImage imageNamed:@"blue_map_pin_17x32"];
-        marker.icon = [UIImage imageNamed:@"icon_6m_48"];
+        marker.icon = [UIImage imageNamed:@"blue_map_pin_17x32"];
+        marker.icon = [UIImage imageNamed:@"neko"];
+
+        UIImage *neko = [UIImage imageNamed:@"neko.png"];  // リサイズ前UIImage
+        float widthPer = 0.4;  // リサイズ後幅の倍率
+        float heightPer = 0.4;  // リサイズ後高さの倍率
+        
+        CGSize sz = CGSizeMake(neko.size.width*widthPer,
+                               neko.size.height*heightPer);
+        UIGraphicsBeginImageContext(sz);
+        [neko drawInRect:CGRectMake(0, 0, sz.width, sz.height)];
+        neko = UIGraphicsGetImageFromCurrentImageContext();
+        marker.icon = neko;
+        UIGraphicsEndImageContext();
 
         marker.title   = name;
         marker.snippet = venueId;
@@ -198,8 +210,11 @@
 
         CLLocationCoordinate2D circleCenter = CLLocationCoordinate2DMake(lat, lng);
         GMSCircle* circ  = [GMSCircle circleWithPosition:circleCenter radius:(kUnitRadius * sqrt(beenHere))];
-        circ.fillColor   = [UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.4];
-        circ.strokeColor = [UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.8];
+//        circ.fillColor   = [UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.4];
+        circ.fillColor   = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.2];
+        circ.strokeColor = [UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0];
+
+//        circ.strokeColor = [UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.8];
 //        circ.fillColor   = [UIColor colorWithRed:0 green:0.9 blue:0.2 alpha:0.2];
 //        circ.strokeColor = [UIColor colorWithRed:0 green:0.9 blue:0.2 alpha:0.8];
         circ.map = mapView_;
