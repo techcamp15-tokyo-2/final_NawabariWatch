@@ -340,7 +340,6 @@
     [self.view addSubview:searchButton];
 }
 
-
 // UIColorからUIImageを生成
 - (UIImage *)createBackgroundImage:(UIColor *)color withSize:(CGSize)size {
     UIImage *screenImage;
@@ -490,33 +489,6 @@
     [self drawBackButton];
 }
 
-// customButtonを作成
-- (UIButton *)makeCustomButtonWithFrame:(CGRect)frame {
-    UIButton *customButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    customButton.frame = frame;
-    [customButton setBackgroundImage:[self createBackgroundImage:[UIColor colorWithRed:1 green:1 blue:1 alpha:0.92] withSize:frame.size]
-                               forState:UIControlStateNormal];
-    [customButton setBackgroundImage:[self createBackgroundImage:backgroundColorBlack withSize:frame.size]
-                               forState:(UIControlStateSelected | UIControlStateHighlighted)];
-    [customButton.layer setCornerRadius:10.0];
-    [customButton.layer setBorderColor:[UIColor grayColor].CGColor];
-    [customButton.layer setBorderWidth:1.0];
-    [customButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    
-    return customButton;
-}
-
-// customLabelを作成
-- (UILabel *)makeCustomLabelWithFrame:(CGRect)frame {
-    UILabel *customLabel = [[UILabel alloc] init];
-    customLabel.frame = frame;
-    customLabel.font  = [UIFont boldSystemFontOfSize:16];
-    customLabel.text  = @"";
-    customLabel.textColor = textColorBlack;
-    customLabel.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
-    return customLabel;
-}
-
 // 全国ランキングtop5を取得する
 - (NSArray *)getRankingTopFive {
     NSString *urlStr = [NSString stringWithFormat:@"http://quiet-wave-3026.herokuapp.com/users/ranking/5"];
@@ -625,6 +597,33 @@
             break;
         }
     }
+}
+
+// customButtonを作成
+- (UIButton *)makeCustomButtonWithFrame:(CGRect)frame {
+    UIButton *customButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    customButton.frame = frame;
+    [customButton setBackgroundImage:[self createBackgroundImage:[UIColor colorWithRed:1 green:1 blue:1 alpha:0.92] withSize:frame.size]
+                            forState:UIControlStateNormal];
+    [customButton setBackgroundImage:[self createBackgroundImage:backgroundColorBlack withSize:frame.size]
+                            forState:(UIControlStateSelected | UIControlStateHighlighted)];
+    [customButton.layer setCornerRadius:10.0];
+    [customButton.layer setBorderColor:[UIColor grayColor].CGColor];
+    [customButton.layer setBorderWidth:1.0];
+    [customButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    
+    return customButton;
+}
+
+// customLabelを作成
+- (UILabel *)makeCustomLabelWithFrame:(CGRect)frame {
+    UILabel *customLabel = [[UILabel alloc] init];
+    customLabel.frame = frame;
+    customLabel.font  = [UIFont boldSystemFontOfSize:16];
+    customLabel.text  = @"デフォルトです";
+    customLabel.textColor = textColorBlack;
+    customLabel.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
+    return customLabel;
 }
 
 // alertのボタンを押したときに呼ばれるメソッド
