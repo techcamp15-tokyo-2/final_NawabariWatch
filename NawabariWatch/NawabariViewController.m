@@ -281,8 +281,8 @@
     titleLabel.text  = @"あなたの領土";
     [areaInfoWindowButton addSubview:titleLabel];
     
-    areaLabel = [self makeCustomLabelWithFrame:CGRectMake(4, 24, 176, 40)];
-    areaLabel.font  = [UIFont boldSystemFontOfSize:38];
+    areaLabel = [self makeCustomLabelWithFrame:CGRectMake(4, 28, 176, 38)];
+    areaLabel.font  = [UIFont boldSystemFontOfSize:37];
     areaLabel.text  = [self makeAreaLabelText];
     [areaInfoWindowButton addSubview:areaLabel];
     
@@ -302,12 +302,12 @@
     titleLabel.text  = @"全国ランキング";
     [rankInfoWindowButton addSubview:titleLabel];
     
-    UILabel *rankLabel = [self makeCustomLabelWithFrame:CGRectMake(6, 24, 70, 40)];
-    rankLabel.font  = [UIFont boldSystemFontOfSize:38];
+    UILabel *rankLabel = [self makeCustomLabelWithFrame:CGRectMake(6, 28, 70, 38)];
+    rankLabel.font  = [UIFont boldSystemFontOfSize:37];
     rankLabel.text  = [NSString stringWithFormat:@"%@位", rank];
     [rankInfoWindowButton addSubview:rankLabel];
     
-    UILabel *rankLabel2 = [self makeCustomLabelWithFrame:CGRectMake(78, 46, 44, 16)];
+    UILabel *rankLabel2 = [self makeCustomLabelWithFrame:CGRectMake(78, 49, 44, 16)];
     rankLabel2.font  = [UIFont boldSystemFontOfSize:14];
     rankLabel2.text  = [NSString stringWithFormat:@"/%@人", usersNum];
     [rankInfoWindowButton addSubview:rankLabel2];
