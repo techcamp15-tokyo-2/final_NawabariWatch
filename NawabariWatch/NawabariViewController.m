@@ -520,6 +520,8 @@
     [rankSubView addSubview:messageLabel];
     
     [rankView addSubview:rankSubView];
+    areaInfoWindowButton.enabled = NO;
+    [rankView addSubview:areaInfoWindowButton];
     [self.view addSubview:rankView];
     [self drawBackButton];
 }
@@ -555,6 +557,7 @@
     [rankView removeFromSuperview];
     [backToMapButton removeFromSuperview];
     
+    areaInfoWindowButton.enabled = YES;
     [self.view addSubview:areaInfoWindowButton];
     [self.view addSubview:rankInfoWindowButton];
     [self.view addSubview:searchButton];
