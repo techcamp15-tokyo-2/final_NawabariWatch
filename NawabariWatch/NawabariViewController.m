@@ -492,21 +492,53 @@
     titleLabel.textColor = textColorWhite;
     [rankSubView addSubview:titleLabel];
     
+    NSArray *rankingTopFive = [self getRankingTopFive];
     // 順位ラベル
     for (int i = 0; i < 5; i++) {
+        NSDictionary *ranker = [rankingTopFive objectAtIndex:i];
+        NSString *name  = [ranker objectForKey:@"name"];
+        float territory = [[ranker objectForKey:@"territory"] floatValue];
+        
+        UIView *rankFrame = [[UIView alloc] init];
+        rankFrame.backgroundColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0];
+        rankFrame.frame = CGRectMake(25,
+                                     55 + 32 * i,
+                                     280,
+                                     27);
+        [rankSubView addSubview:rankFrame];
+
         UILabel *rankLabel = [[UILabel alloc] init];
         rankLabel.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
-        rankLabel.frame = CGRectMake(40,
-                                     55 + 32 * i,
-                                     250,
+        rankLabel.frame = CGRectMake(0,
+                                     0,
+                                     52,
                                      27);
         rankLabel.font  = [UIFont boldSystemFontOfSize:25];
-        rankLabel.text  = [NSString stringWithFormat:@"%d位: nyama %d万坪", i + 1, 50 * (6-i)];
-        if (i == 1) {
-            rankLabel.text  = [NSString stringWithFormat:@"%d位: watch 250万坪", i + 1];
-        }
+        rankLabel.text  = [NSString stringWithFormat:@"%d位:", i + 1];
         rankLabel.textColor = textColorWhite;
-        [rankSubView addSubview:rankLabel];
+        [rankFrame addSubview:rankLabel];
+        
+        UILabel *nameLabel = [[UILabel alloc] init];
+        nameLabel.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
+        nameLabel.frame = CGRectMake(55,
+                                     0,
+                                     95,
+                                     27);
+        nameLabel.font  = [UIFont boldSystemFontOfSize:25];
+        nameLabel.text  = [NSString stringWithFormat:@"%@", name];
+        nameLabel.textColor = textColorWhite;
+        [rankFrame addSubview:nameLabel];
+        
+        UILabel *areaLabel = [[UILabel alloc] init];
+        areaLabel.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
+        areaLabel.frame = CGRectMake(153,
+                                     0,
+                                     117,
+                                     27);
+        areaLabel.font  = [UIFont boldSystemFontOfSize:25];
+        areaLabel.text  = [NSString stringWithFormat:@"%.2f万坪", territory / 10000 / 3.30578512];
+        areaLabel.textColor = textColorWhite;
+        [rankFrame addSubview:areaLabel];
     }
     
     UILabel *messageLabel = [[UILabel alloc] init];
@@ -526,6 +558,22 @@
     [rankView addSubview:areaInfoWindowButton];
     [self.view addSubview:rankView];
     [self drawBackButton];
+}
+
+// 全国ランキングtop5を取得する
+- (NSArray *)getRankingTopFive {
+    NSString *urlStr = [NSString stringWithFormat:@"http://localhost:3000/users/ranking/5"];
+    NSURL *url = [NSURL URLWithString:urlStr];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    
+    NSHTTPURLResponse *response;
+    NSError *error;
+    NSData *jsonData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+    
+    NSArray *rankingTopFive = [NSJSONSerialization JSONObjectWithData:jsonData
+                                                     options:NSJSONReadingAllowFragments
+                                                       error:&error];
+    return rankingTopFive;
 }
 
 // Mapへ戻るボタンを描画
