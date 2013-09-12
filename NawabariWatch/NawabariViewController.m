@@ -24,11 +24,6 @@
     backgroundColorBlack = [UIColor colorWithRed:0.1 green:0.1 blue:0.1 alpha:0.7];
     isDisplayMarker = TRUE;
     isFirst = TRUE;
-    firstRankDisplayButton  = [[UIButton alloc] init];
-    secondRankDisplayButton = [[UIButton alloc] init];
-    thirdRankDisplayButton  = [[UIButton alloc] init];
-    forthRankDisplayButton  = [[UIButton alloc] init];
-    fifthRankDisplayButton  = [[UIButton alloc] init];
     rankDisplayButtonArray  =  [[NSMutableArray alloc] init];
     
     
@@ -378,7 +373,7 @@
 
 // 全国ランキングページを描画
 - (void)drawRankView {
-    [areaInfoWindowButton removeFromSuperview];
+    areaInfoWindowButton.enabled = NO;
     [rankInfoWindowButton removeFromSuperview];
     [searchButton removeFromSuperview];
     
@@ -390,6 +385,8 @@
     rankView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.7];
     
     UIView *rankSubView = [[UIView alloc] initWithFrame:CGRectMake(0, 90, self.view.frame.size.width - 90, self.view.frame.size.height)];
+    [rankView addSubview:rankSubView];    
+    [self.view addSubview:rankView];
     
     // ランキングタイトル
     UILabel *titleLabel = [self makeCustomLabelWithFrame:CGRectMake((self.view.frame.size.width - 280)/2, 0, 280, 42)];
@@ -449,11 +446,7 @@
                                     messageLabel.frame.size.height);
     messageLabel.textColor = textColorWhite;
     [rankSubView addSubview:messageLabel];
-    
-    [rankView addSubview:rankSubView];
-    areaInfoWindowButton.enabled = NO;
-    [rankView addSubview:areaInfoWindowButton];
-    [self.view addSubview:rankView];
+
     [self drawBackButton];
 }
 

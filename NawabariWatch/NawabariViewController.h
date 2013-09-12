@@ -56,13 +56,7 @@
     UIColor *backgroundColorWhite;
     UIColor *backgroundColorBlack;
     
-    // ランキングに表示される各順位のユーザーのボタン
-    UIButton *firstRankDisplayButton;
-    UIButton *secondRankDisplayButton;
-    UIButton *thirdRankDisplayButton;
-    UIButton *forthRankDisplayButton;
-    UIButton *fifthRankDisplayButton;
-    // 上の5つのボタンを格納するArray
+    // rank viewの5つのボタンを格納するArray
     NSMutableArray *rankDisplayButtonArray;
     
     // MAPに戻るボタン
