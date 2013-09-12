@@ -46,7 +46,7 @@
 	}
     
     NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
-    [userDefault removeObjectForKey:@"access_token"];
+//    [userDefault removeObjectForKey:@"access_token"];
     
     //foursquareの汎用クラスを作成&認証
     foursquareAPI = [[FoursquareAPI alloc] init];
@@ -268,7 +268,7 @@
 
 // 領土情報windowを描画
 - (void)drawAreaInfoWindow {
-    areaInfoWindowButton = [self makeCustomButtonWithFrame:CGRectMake(4, 4, 180, 70)];
+    areaInfoWindowButton = [self makeCustomButtonWithFrame:CGRectMake(5, 5, 180, 70)];
     [areaInfoWindowButton addTarget:self action:@selector(changeDisplayNawabaris) forControlEvents:UIControlEventTouchUpInside];
     
     UILabel *titleLabel = [self makeCustomLabelWithFrame:CGRectMake(6, 6, 176, 18)];
@@ -292,7 +292,7 @@
     NSString *rank     = [rankAndUsersNum objectForKey:@"rank"];
     NSString *usersNum = [rankAndUsersNum objectForKey:@"users_num"];
     
-    rankInfoWindowButton = [self makeCustomButtonWithFrame:CGRectMake(190, 4, 125, 70)];
+    rankInfoWindowButton = [self makeCustomButtonWithFrame:CGRectMake(189, 5, 125, 70)];
     [rankInfoWindowButton addTarget:self action:@selector(drawRankView) forControlEvents:UIControlEventTouchUpInside];
     
     UILabel *titleLabel = [self makeCustomLabelWithFrame:CGRectMake(6, 6, 114, 18)];
@@ -379,8 +379,8 @@
     [self.view addSubview:rankView];
     
     // ランキングタイトル
-    UILabel *titleLabel = [self makeCustomLabelWithFrame:CGRectMake((self.view.frame.size.width - 280)/2, 0, 280, 42)];
-    titleLabel.font  = [UIFont boldSystemFontOfSize:40];
+    UILabel *titleLabel = [self makeCustomLabelWithFrame:CGRectMake((self.view.frame.size.width - 295)/2, 0, 295, 45)];
+    titleLabel.font  = [UIFont boldSystemFontOfSize:42];
     titleLabel.text  = @"全国ランキング";
     titleLabel.textColor = textColorWhite;
     [rankSubView addSubview:titleLabel];
@@ -393,33 +393,33 @@
         NSString *name   = [ranker objectForKey:@"name"];
         float area       = [[ranker objectForKey:@"area"] floatValue];
         
-        UIButton *rankDisplayButton = [self makeCustomButtonWithFrame:CGRectMake(25,
-                                                               145 + 32 * i,
-                                                               280,
-                                                               27)];
+        UIButton *rankDisplayButton = [self makeCustomButtonWithFrame:CGRectMake(10,
+                                                               147 + 40 * i,
+                                                               300,
+                                                               36)];
         [rankDisplayButton addTarget:self action:@selector(requestOtherUserTerritory:) forControlEvents:UIControlEventTouchUpInside];
         rankDisplayButton.tag = [userId intValue];
         
-        UILabel *rankLabel = [self makeCustomLabelWithFrame:CGRectMake(0,
+        UILabel *rankLabel = [self makeCustomLabelWithFrame:CGRectMake(8,
                                                                        0,
                                                                        52,
-                                                                       27)];
+                                                                       36)];
         rankLabel.font  = [UIFont boldSystemFontOfSize:25];
         rankLabel.text  = [NSString stringWithFormat:@"%d位:", i + 1];
         [rankDisplayButton addSubview:rankLabel];
         
-        UILabel *nameLabel = [self makeCustomLabelWithFrame:CGRectMake(55,
+        UILabel *nameLabel = [self makeCustomLabelWithFrame:CGRectMake(63,
                                                                        0,
                                                                        95,
-                                                                       27)];
+                                                                       36)];
         nameLabel.font  = [UIFont boldSystemFontOfSize:25];
         nameLabel.text  = [NSString stringWithFormat:@"%@", name];
         [rankDisplayButton addSubview:nameLabel];
         
-        UILabel *tmpAreaLabel = [self makeCustomLabelWithFrame:CGRectMake(153,
+        UILabel *tmpAreaLabel = [self makeCustomLabelWithFrame:CGRectMake(161,
                                                                        0,
-                                                                       117,
-                                                                       27)];
+                                                                       135,
+                                                                       36)];
         tmpAreaLabel.font  = [UIFont boldSystemFontOfSize:25];
         tmpAreaLabel.text  = [NSString stringWithFormat:@"%.2f万坪", area / 10000 / 3.30578512];
         [rankDisplayButton addSubview:tmpAreaLabel];
@@ -433,7 +433,7 @@
     messageLabel.text  = @"1位まであと少し。";
     [messageLabel sizeToFit];
     messageLabel.frame = CGRectMake((self.view.frame.size.width - messageLabel.frame.size.width)/2,
-                                    235,
+                                    275,
                                     messageLabel.frame.size.width,
                                     messageLabel.frame.size.height);
     messageLabel.textColor = textColorWhite;
@@ -460,7 +460,7 @@
 
 // Mapへ戻るボタンを描画
 - (void)drawBackButton {
-    backToMapButton = [self makeCustomButtonWithFrame:CGRectMake(190, 4, 125, 70)];
+    backToMapButton = [self makeCustomButtonWithFrame:rankInfoWindowButton.frame];
     [backToMapButton addTarget:self action:@selector(backButtonDidPush) forControlEvents:UIControlEventTouchUpInside];
     
     UILabel *titleLabel = [self makeCustomLabelWithFrame:CGRectMake(12.5, 1, 116, 69)];
