@@ -24,6 +24,7 @@
     backgroundColorBlack = [UIColor colorWithRed:0.1 green:0.1 blue:0.1 alpha:0.7];
     isDisplayMarker = TRUE;
     isFirst = TRUE;
+    rankAndUsersNum = [[NSDictionary alloc] init];
     rankerTopFive = [[NSArray alloc] init];
     rankDisplayButtonArray  =  [[NSMutableArray alloc] init];
     
@@ -91,7 +92,7 @@
 - (void)getUserProfile:(NSDictionary *)response {
     NSString *userId   = [response objectForKey:@"userId"];
     NSString *userName = [response objectForKey:@"firstName"];
-    [self drawRankInfoWindowById:userId Name:userName];
+    [self requestRankInfoById:userId Name:userName Territory:nawabariAreaSum];
 }
 
 // 近郊のvenueを探す
@@ -286,10 +287,7 @@
 }
 
 // 順位情報windowを描画
-- (void)drawRankInfoWindowById:(NSString *)userId Name:(NSString *)userName {
-    NSDictionary *rankAndUsersNum = [self getRankAndUsersNumById:userId
-                                                            Name:userName
-                                                       Territory:nawabariAreaSum];
+- (void)drawRankInfoWindow {
     NSString *rank     = [rankAndUsersNum objectForKey:@"rank"];
     NSString *usersNum = [rankAndUsersNum objectForKey:@"users_num"];
     
@@ -338,23 +336,14 @@
 }
 
 // WebAPIをたたいてユーザーの順位と全ユーザー数を取得
-- (NSDictionary *)getRankAndUsersNumById:(NSString *)userId Name:(NSString *)userName Territory:(double)territory {
+- (void)requestRankInfoById:(NSString *)userId Name:(NSString *)userName Territory:(double)territory {
     NSString *urlStr = [NSString stringWithFormat:@"http://localhost:3000/users/update/%@/%@/%f", userId, userName, territory];
     NSURL *url = [NSURL URLWithString:urlStr];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     
-    NSHTTPURLResponse *response;
-    NSError *error;
-    NSData *jsonData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
-
-    NSArray *array = [NSJSONSerialization JSONObjectWithData:jsonData
-                                                     options:NSJSONReadingAllowFragments
-                                                       error:&error];
-    for (NSDictionary *dict in array) {
-        return dict;
-    }
-    
-    return [[NSDictionary alloc] init];
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    [connection start];
 }
 
 // 順位windowに表示するStringを生成
@@ -654,6 +643,9 @@
     } else if ([type isEqualToString:@"top_five"]) {
         rankerTopFive = [dict objectForKey:@"top_five"];
         [self drawRankView];
+    } else if ([type isEqualToString:@"rank"]) {
+        rankAndUsersNum = [dict objectForKey:@"rank_info"];
+        [self drawRankInfoWindow];
     }
 }
 

@@ -61,6 +61,9 @@
     UIColor *backgroundColorWhite;
     UIColor *backgroundColorBlack;
     
+    // ユーザーのランクと全ユーザー数を格納する辞書
+    NSDictionary *rankAndUsersNum;
+    
     // rank viewのtop5のユーザー
     NSArray *rankerTopFive;
     // rank viewの5つのボタンを格納するArray
