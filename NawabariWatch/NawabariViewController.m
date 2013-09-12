@@ -386,7 +386,7 @@
                                                                147 + 40 * i,
                                                                300,
                                                                36)];
-        [rankDisplayButton addTarget:self action:@selector(requestOtherUserTerritory:) forControlEvents:UIControlEventTouchUpInside];
+        [rankDisplayButton addTarget:self action:@selector(requestUserTeritory:) forControlEvents:UIControlEventTouchUpInside];
         rankDisplayButton.tag = [userId intValue];
         
         UILabel *rankLabel = [self makeCustomLabelWithFrame:CGRectMake(8,
@@ -595,15 +595,12 @@
     }
 }
 
-- (void)requestOtherUserTerritory:(id)sender {
-    int userId = [(UIButton *)sender tag];
-    [self requestUserTeritory:[NSString stringWithFormat:@"%d",userId]];
-    [self backButtonDidPush];
-}
-
 // DBにuserの領土を取ってくるためのrequestを投げる
-- (void)requestUserTeritory:(NSString *)userId {
-    NSString *urlStr = [NSString stringWithFormat:@"http://localhost:3000/territories/with_user/%@", userId];
+- (void)requestUserTeritory:(id)sender {
+    [self backButtonDidPush];
+    
+    int userId = [(UIButton *)sender tag];
+    NSString *urlStr = [NSString stringWithFormat:@"http://localhost:3000/territories/with_user/%d", userId];
     NSURL *url = [NSURL URLWithString:urlStr];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     
