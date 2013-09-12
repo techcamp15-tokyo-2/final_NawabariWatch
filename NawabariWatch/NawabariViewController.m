@@ -44,7 +44,7 @@
 	}
     
     NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
-//    [userDefault removeObjectForKey:@"access_token"];
+    [userDefault removeObjectForKey:@"access_token"];
     
     //foursquareの汎用クラスを作成&認証
     foursquareAPI = [[FoursquareAPI alloc] init];
@@ -72,7 +72,7 @@
 // 認証が終わったタイミングで呼ばれる
 - (void)didAuthorize {
     [self loadView];
-    [foursquareAPI requestCheckinHistoryFirst];
+    [foursquareAPI requestVenueHistory];
 }
 
 // userのvenue historyを取得した後に呼ばれる
@@ -183,6 +183,11 @@
 
 // なわばり(markerとそのまわりの円)を描く
 - (void)drawNawabaris:(NSArray *)venues {
+    [self drawNawabaris:venues withFillColor:[UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.4]
+        strokeColor:[UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.8]];
+}
+
+- (void)drawNawabaris:(NSArray *)venues withFillColor:(UIColor *)fillColor strokeColor:(UIColor *)strokeColor {
     nawabaris = [[NSMutableArray alloc] init];
     nawabariAreaSum = 0;
     nawabariVenueIds = [[NSMutableSet alloc] init];
@@ -204,39 +209,40 @@
         if (isDisplayMarker) {
             marker.map = mapView_;
         }
-
+        
         CLLocationCoordinate2D circleCenter = CLLocationCoordinate2DMake(lat, lng);
         GMSCircle* circ  = [GMSCircle circleWithPosition:circleCenter radius:(kUnitRadius * sqrt(beenHere))];
-        circ.fillColor   = [UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.4];
-        circ.strokeColor = [UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.8];
-//        circ.fillColor   = [UIColor colorWithRed:0 green:0.9 blue:0.2 alpha:0.2];
-//        circ.strokeColor = [UIColor colorWithRed:0 green:0.9 blue:0.2 alpha:0.8];
+        circ.fillColor   = fillColor;
+        circ.strokeColor = strokeColor;
+        //        circ.fillColor   = [UIColor colorWithRed:0 green:0.9 blue:0.2 alpha:0.2];
+        //        circ.strokeColor = [UIColor colorWithRed:0 green:0.9 blue:0.2 alpha:0.8];
         circ.map = mapView_;
-
-/*
-        GMSMutablePath *rect = [GMSMutablePath path];
-        double halfWidth = 0.0002;
-        [rect addCoordinate:CLLocationCoordinate2DMake(lat - halfWidth, lng - halfWidth)];
-        [rect addCoordinate:CLLocationCoordinate2DMake(lat + halfWidth, lng - halfWidth)];
-        [rect addCoordinate:CLLocationCoordinate2DMake(lat + halfWidth, lng + halfWidth)];
-        [rect addCoordinate:CLLocationCoordinate2DMake(lat - halfWidth, lng + halfWidth)];
-        [rect addCoordinate:CLLocationCoordinate2DMake(lat - halfWidth, lng - halfWidth)];
-
-        GMSPolygon *polygon = [GMSPolygon polygonWithPath:rect];
-        polygon.fillColor = [UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.2];
-        polygon.strokeColor = [UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.8];
-        polygon.strokeWidth = 2;
-        polygon.map = mapView_;
-*/
+        
+        /*
+         GMSMutablePath *rect = [GMSMutablePath path];
+         double halfWidth = 0.0002;
+         [rect addCoordinate:CLLocationCoordinate2DMake(lat - halfWidth, lng - halfWidth)];
+         [rect addCoordinate:CLLocationCoordinate2DMake(lat + halfWidth, lng - halfWidth)];
+         [rect addCoordinate:CLLocationCoordinate2DMake(lat + halfWidth, lng + halfWidth)];
+         [rect addCoordinate:CLLocationCoordinate2DMake(lat - halfWidth, lng + halfWidth)];
+         [rect addCoordinate:CLLocationCoordinate2DMake(lat - halfWidth, lng - halfWidth)];
+         
+         GMSPolygon *polygon = [GMSPolygon polygonWithPath:rect];
+         polygon.fillColor = [UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.2];
+         polygon.strokeColor = [UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.8];
+         polygon.strokeWidth = 2;
+         polygon.map = mapView_;
+         */
         NSMutableDictionary* nawabari = [@{
-            @"marker": marker,
-            @"circ": circ,
-            @"defaultRadius": [NSNumber numberWithFloat:circ.radius]
-        } mutableCopy];
+                                         @"marker": marker,
+                                         @"circ": circ,
+                                         @"defaultRadius": [NSNumber numberWithFloat:circ.radius]
+                                         } mutableCopy];
         [nawabaris addObject:nawabari];
         
         nawabariAreaSum += pow(circ.radius, 2) * M_PI;
     }
+
 }
 
 // 近郊の自分のでないなわばりを描画
@@ -616,6 +622,8 @@
     [self.view addSubview:areaInfoWindowButton];
     [self.view addSubview:rankInfoWindowButton];
     [self.view addSubview:searchButton];
+    
+    [self requestUserTeritory:@"5"];
 }
 
 // なわばりの表示・非表示を切り替え
@@ -712,6 +720,18 @@
 
 //DBにuserの領土を取ってくるためのrequestを投げる
 - (void)requestUserTeritory:(NSString *)userId {
+    NSString *urlStr = [NSString stringWithFormat:@"http://quiet-wave-3026.herokuapp.com/territories/with_user/%@", userId];
+    NSURL *url = [NSURL URLWithString:urlStr];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    
+    NSHTTPURLResponse *response;
+    NSError *error;
+    NSData *jsonData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+    
+    NSArray *array = [NSJSONSerialization JSONObjectWithData:jsonData
+                                                     options:NSJSONReadingAllowFragments
+                                                       error:&error];
+    NSLog(@"%@", [array description]);
     
 }
 @end
