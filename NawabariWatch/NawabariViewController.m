@@ -101,7 +101,7 @@
     [mapView_ animateToCameraPosition:[GMSCameraPosition
                                        cameraWithLatitude:latitude_
                                        longitude:longitude_
-                                       zoom:17]];
+                                       zoom:18]];
 }
 
 // 近郊のvenueを取得した後に呼ばれる
@@ -193,7 +193,7 @@
     nawabaris = [self drawNawabaris:venues
                       withFillColor:[UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.4]
                       strokeColor:[UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.8]
-                      iconName:@"blue_map_pin_17x32"];
+                      iconName:@"blue_pin_s"];
 }
 
 - (NSMutableArray *)drawNawabaris:(NSArray *)venues withFillColor:(UIColor *)fillColor strokeColor:(UIColor *)strokeColor iconName:(NSString *) iconName {
@@ -265,9 +265,9 @@
     
     surroundingNawabaris = [NSMutableArray array];
     surroundingNawabaris = [self drawNawabaris:surroundVenues
-                            withFillColor:[UIColor colorWithRed:1 green:0 blue:0 alpha:0.2]
-                            strokeColor:[UIColor colorWithRed:1 green:0 blue:0 alpha:0.4]
-                            iconName:@""];
+                            withFillColor:[UIColor colorWithRed:0.9 green:0.2 blue:0 alpha:0]
+                            strokeColor:[UIColor colorWithRed:0.9 green:0.2 blue:0 alpha:0.4]
+                            iconName:@"red_pin"];
     }
 
 
@@ -643,8 +643,9 @@
     if ([type isEqualToString:@"territories"]) {
         NSArray *tmpNawabaris = [dict objectForKey:@"territories"];
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-        otherUsersNawabaris = [self drawNawabaris:tmpNawabaris withFillColor:[UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.4]
-            strokeColor:[UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.4] iconName:@""];
+        otherUsersNawabaris = [self drawNawabaris:tmpNawabaris
+                                    withFillColor:[UIColor colorWithRed:0 green:0.9 blue:0.2 alpha:0.2]
+                                      strokeColor:[UIColor colorWithRed:0 green:0.9 blue:0.2 alpha:0.8] iconName:@"green_pin_s"];
     } else if ([type isEqualToString:@"top_five"]) {
         rankerTopFive = [dict objectForKey:@"top_five"];
         [self drawRankView];

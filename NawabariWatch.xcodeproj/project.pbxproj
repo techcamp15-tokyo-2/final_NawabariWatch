@@ -11,6 +11,10 @@
 		43DF31E417D9636E0033ACB1 /* BZFoursquareRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 43DF31E217D9636E0033ACB1 /* BZFoursquareRequest.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		43DF31E617D96E1D0033ACB1 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43DF31E517D96E1D0033ACB1 /* MobileCoreServices.framework */; };
 		43DF31E917D96F8B0033ACB1 /* FoursquareAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 43DF31E817D96F8B0033ACB1 /* FoursquareAPI.m */; settings = {COMPILER_FLAGS = "-D'FOURSQUARE_CLIENT_ID=@\"$(FOURSQUARE_CLIENT_ID)\"' -D'FOURSQUARE_CLIENT_SECRET=@\"$(FOURSQUARE_CLIENT_SECRET)\"' -D'FOURSQUARE_CALLBACK_URL=@\"$(FOURSQUARE_CALLBACK_URL)\"' "; }; };
+		E921D2C717E234B5009B629E /* blue_pin_s.png in Resources */ = {isa = PBXBuildFile; fileRef = E921D2C617E234B5009B629E /* blue_pin_s.png */; };
+		E921D2CB17E23700009B629E /* red_pin_s.png in Resources */ = {isa = PBXBuildFile; fileRef = E921D2CA17E23700009B629E /* red_pin_s.png */; };
+		E921D2D117E23A2E009B629E /* green_pin_s.png in Resources */ = {isa = PBXBuildFile; fileRef = E921D2D017E23A2E009B629E /* green_pin_s.png */; };
+		E921D2D517E23B39009B629E /* red_pin.png in Resources */ = {isa = PBXBuildFile; fileRef = E921D2D417E23B39009B629E /* red_pin.png */; };
 		E96FECE717D85ACB00D6CB8B /* GoogleMaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E96FECE617D85ACB00D6CB8B /* GoogleMaps.framework */; };
 		E96FECE917D85BE900D6CB8B /* GoogleMaps.bundle in Resources */ = {isa = PBXBuildFile; fileRef = E96FECE817D85BE900D6CB8B /* GoogleMaps.bundle */; };
 		E96FECEB17D85C4800D6CB8B /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E96FECEA17D85C4800D6CB8B /* AVFoundation.framework */; };
@@ -47,6 +51,10 @@
 		43DF31E517D96E1D0033ACB1 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		43DF31E717D96F8B0033ACB1 /* FoursquareAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FoursquareAPI.h; sourceTree = "<group>"; };
 		43DF31E817D96F8B0033ACB1 /* FoursquareAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FoursquareAPI.m; sourceTree = "<group>"; };
+		E921D2C617E234B5009B629E /* blue_pin_s.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blue_pin_s.png; sourceTree = "<group>"; };
+		E921D2CA17E23700009B629E /* red_pin_s.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = red_pin_s.png; path = ../../../../../Dropbox/red_pin_s.png; sourceTree = "<group>"; };
+		E921D2D017E23A2E009B629E /* green_pin_s.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = green_pin_s.png; path = ../../../../../Dropbox/green_pin_s.png; sourceTree = "<group>"; };
+		E921D2D417E23B39009B629E /* red_pin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = red_pin.png; path = ../../../../../Dropbox/red_pin.png; sourceTree = "<group>"; };
 		E96FECE617D85ACB00D6CB8B /* GoogleMaps.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleMaps.framework; sourceTree = "<group>"; };
 		E96FECE817D85BE900D6CB8B /* GoogleMaps.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = GoogleMaps.bundle; path = GoogleMaps.framework/Versions/A/Resources/GoogleMaps.bundle; sourceTree = "<group>"; };
 		E96FECEA17D85C4800D6CB8B /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -165,6 +173,10 @@
 		E9DA459617D741320028B94C /* NawabariWatch */ = {
 			isa = PBXGroup;
 			children = (
+				E921D2D017E23A2E009B629E /* green_pin_s.png */,
+				E921D2D417E23B39009B629E /* red_pin.png */,
+				E921D2CA17E23700009B629E /* red_pin_s.png */,
+				E921D2C617E234B5009B629E /* blue_pin_s.png */,
 				E9DA459F17D741320028B94C /* NawabariAppDelegate.h */,
 				E9DA45A017D741330028B94C /* NawabariAppDelegate.m */,
 				E9DA45A817D741330028B94C /* MainStoryboard.storyboard */,
@@ -250,6 +262,10 @@
 				E9DA45A717D741330028B94C /* Default-568h@2x.png in Resources */,
 				E9DA45AA17D741330028B94C /* MainStoryboard.storyboard in Resources */,
 				E96FECE917D85BE900D6CB8B /* GoogleMaps.bundle in Resources */,
+				E921D2C717E234B5009B629E /* blue_pin_s.png in Resources */,
+				E921D2CB17E23700009B629E /* red_pin_s.png in Resources */,
+				E921D2D117E23A2E009B629E /* green_pin_s.png in Resources */,
+				E921D2D517E23B39009B629E /* red_pin.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
