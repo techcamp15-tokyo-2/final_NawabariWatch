@@ -505,12 +505,13 @@
     [self drawBackButton];
 }
 
+// customButtonを作成
 - (UIButton *)makeCustomButtonWithFrame:(CGRect)frame {
     UIButton *customButton = [UIButton buttonWithType:UIButtonTypeCustom];
     customButton.frame = frame;
-    [customButton setBackgroundImage:[self createBackgroundImage:[UIColor colorWithRed:1 green:1 blue:1 alpha:0.92] withSize:CGSizeMake(125, 70)]
+    [customButton setBackgroundImage:[self createBackgroundImage:[UIColor colorWithRed:1 green:1 blue:1 alpha:0.92] withSize:frame.size]
                                forState:UIControlStateNormal];
-    [customButton setBackgroundImage:[self createBackgroundImage:backgroundColorBlack withSize:CGSizeMake(125, 70)]
+    [customButton setBackgroundImage:[self createBackgroundImage:backgroundColorBlack withSize:frame.size]
                                forState:(UIControlStateSelected | UIControlStateHighlighted)];
     [customButton.layer setCornerRadius:10.0];
     [customButton.layer setBorderColor:[UIColor grayColor].CGColor];
@@ -539,7 +540,6 @@
 // Mapへ戻るボタンを描画
 - (void)drawBackButton {
     backToMapButton = [self makeCustomButtonWithFrame:CGRectMake(190, 4, 125, 70)];
-    
     [backToMapButton addTarget:self action:@selector(backButtonDidPush) forControlEvents:UIControlEventTouchUpInside];
     
     UILabel *titleLabel = [[UILabel alloc] init];
