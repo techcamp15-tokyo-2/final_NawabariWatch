@@ -20,7 +20,7 @@
     foursquareAPI = [[FoursquareAPI alloc] init];
     if(![foursquareAPI isAuthenticated]) {
         
-        NSString* message = [NSString stringWithFormat:@"foursquareの認証がされていません。認証してください！"];
+        NSString* message = [NSString stringWithFormat:@"foursquareの認証が必要です。\n認証をお願いします。"];
         UIAlertView* alert = [[UIAlertView alloc] initWithTitle:nil message:message delegate:self
                                               cancelButtonTitle:@"OK" otherButtonTitles:nil];
         alert.tag = startAuthorization;
@@ -109,7 +109,7 @@
 // チェックイン後に呼ばれる
 - (void)getCheckin:(NSDictionary *)response {
     NSString* message = [NSString stringWithFormat:@"チェックインしました!"];
-    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"didCheckin" message:message delegate:self
+    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:nil message:message delegate:self
                                           cancelButtonTitle:@"OK" otherButtonTitles:nil];
     alert.tag = finishCheckin;
     [alert show];
@@ -148,7 +148,7 @@
 // info windowがtapされた時、alertを表示
 - (void)mapView:(GMSMapView *)mapView didTapInfoWindowOfMarker:(id)marker {
     tappedVenueId = [marker snippet];
-    NSString* message = [NSString stringWithFormat:@"チェックインしますか?"];
+    NSString* message = [NSString stringWithFormat:@"チェックインして領土を\n広げますか？"];
     UIAlertView* alert = [[UIAlertView alloc] initWithTitle:[marker title]
                                                     message:message
                                                    delegate:self
@@ -191,9 +191,7 @@
         // Creates a marker in the center of the map.
         GMSMarker* marker = [[GMSMarker alloc] init];
         marker.position = CLLocationCoordinate2DMake(lat, lng);
-//        marker.icon = [UIImage imageNamed:@"blue_map_pin_17x32"];
-        marker.icon = [UIImage imageNamed:@"icon_6m_48"];
-
+        marker.icon = [UIImage imageNamed:@"blue_map_pin_17x32"];
         marker.title   = name;
         marker.snippet = venueId;
         if (isDisplayMarker) {
@@ -379,8 +377,8 @@
     */
 
     searchButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    searchButton.frame = CGRectMake(5, self.view.frame.size.height - 40 - 6, 120, 40);
-    [searchButton setTitle:@"venueを探す" forState:UIControlStateNormal];
+    searchButton.frame = CGRectMake(5, self.view.frame.size.height - 40 - 6, 130, 40);
+    [searchButton setTitle:@"領土を開拓" forState:UIControlStateNormal];
     [searchButton setBackgroundImage:[self createBackgroundImage:backgroundColorWhite withSize:CGSizeMake(120, 40)]
                          forState:UIControlStateNormal];
     [searchButton setBackgroundImage:[self createBackgroundImage:backgroundColorBlack withSize:CGSizeMake(120, 40)]
