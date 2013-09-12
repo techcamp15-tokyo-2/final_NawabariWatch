@@ -289,20 +289,14 @@
     areaInfoWindowButton = [self makeCustomButtonWithFrame:CGRectMake(4, 4, 180, 70)];
     [areaInfoWindowButton addTarget:self action:@selector(changeDisplayNawabaris) forControlEvents:UIControlEventTouchUpInside];
     
-    UILabel *titleLabel = [[UILabel alloc] init];
-    titleLabel.frame = CGRectMake(6, 6, 176, 18);
+    UILabel *titleLabel = [self makeCustomLabelWithFrame:CGRectMake(6, 6, 176, 18)];
     titleLabel.font  = [UIFont boldSystemFontOfSize:16];
     titleLabel.text  = @"あなたの領土";
-    titleLabel.textColor = textColorBlack;
-    titleLabel.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
     [areaInfoWindowButton addSubview:titleLabel];
     
-    areaLabel = [[UILabel alloc] init];
-    areaLabel.frame = CGRectMake(4, 24, 176, 40);
+    areaLabel = [self makeCustomLabelWithFrame:CGRectMake(4, 24, 176, 40)];
     areaLabel.font  = [UIFont boldSystemFontOfSize:38];
     areaLabel.text  = [self getAreaLabelText];
-    areaLabel.textColor = textColorBlack;
-    areaLabel.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
     [areaInfoWindowButton addSubview:areaLabel];
     
     [self.view addSubview:areaInfoWindowButton];
@@ -519,6 +513,17 @@
     [customButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     
     return customButton;
+}
+
+// customLabelを作成
+- (UILabel *)makeCustomLabelWithFrame:(CGRect)frame {
+    UILabel *customLabel = [[UILabel alloc] init];
+    customLabel.frame = frame;
+    customLabel.font  = [UIFont boldSystemFontOfSize:16];
+    customLabel.text  = @"";
+    customLabel.textColor = textColorBlack;
+    customLabel.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
+    return customLabel;
 }
 
 // 全国ランキングtop5を取得する
