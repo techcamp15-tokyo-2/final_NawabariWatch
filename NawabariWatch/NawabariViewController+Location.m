@@ -16,6 +16,11 @@
 	// 位置情報更新
 	longitude_ = newLocation.coordinate.longitude;
 	latitude_  = newLocation.coordinate.latitude;
+    
+    if(isFirst) {
+        isFirst = FALSE;
+        [self loadView];
+    }
 }
 
 // 位置情報が取得失敗した場合にコールされる。

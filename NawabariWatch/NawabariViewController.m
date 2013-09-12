@@ -16,17 +16,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    //foursquareの汎用クラスを作成&認証
-    foursquareAPI = [[FoursquareAPI alloc] init];
-    if(![foursquareAPI isAuthenticated]) {
-        
-        NSString* message = [NSString stringWithFormat:@"foursquareの認証が必要です。\n認証をお願いします。"];
-        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:nil message:message delegate:self
-                                              cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        alert.tag = startAuthorization;
-        [alert show];
-    }
-    
     // 変数初期化
 	longitude_ = 0.0;
 	latitude_  = 0.0;
@@ -34,6 +23,7 @@
     backgroundColorWhite = [UIColor colorWithRed:1 green:1 blue:1 alpha:0.7];
     backgroundColorBlack = [UIColor colorWithRed:0.1 green:0.1 blue:0.1 alpha:0.7];
     isDisplayMarker = TRUE;
+    isFirst = TRUE;
     
 	// ロケーションマネージャーを作成
 	BOOL locationServicesEnabled;
@@ -52,6 +42,24 @@
 		// 位置情報取得開始
 		[locationManager startUpdatingLocation];
 	}
+    
+    NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+//    [userDefault removeObjectForKey:@"access_token"];
+    
+    //foursquareの汎用クラスを作成&認証
+    foursquareAPI = [[FoursquareAPI alloc] init];
+    foursquareAPI.delegate = self;
+    if(![foursquareAPI isAuthenticated]) {
+        
+        NSString* message = [NSString stringWithFormat:@"foursquareの認証が必要です。\n認証をお願いします。"];
+        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:nil message:message delegate:self
+                                              cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        alert.tag = startAuthorization;
+        [alert show];
+    } else {
+        [self loadView];
+        [foursquareAPI requestCheckinHistoryFirst];
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -632,7 +640,6 @@
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     switch (alertView.tag) {
         case startAuthorization:
-            foursquareAPI.delegate = self;
             [foursquareAPI startAuthorization];
             break;
         

@@ -203,7 +203,6 @@
     self.notifications = request.notifications;
     self.request = nil;
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    
     switch (self.responseType) {
         case venueHistory: {
             [_delegate getVenueHistory: [self convertResponse: request.response]];
@@ -250,10 +249,12 @@
                 [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
                 NSMutableArray *venues = [NSMutableArray array];
                 for(id venue in [response objectEnumerator]) [venues addObject:(NSDictionary *)venue];
-                [_delegate getVenueHistory:[NSDictionary dictionaryWithObjectsAndKeys:
-                                            [NSString stringWithFormat:@"%d", self.responseType], @"responseType",
-                                            venues, @"venues",
-                                            nil]];
+                NSDictionary *responseData = [NSDictionary dictionaryWithObjectsAndKeys:
+                                     [NSString stringWithFormat:@"%d", self.responseType], @"responseType",
+                                     venues, @"venues",
+                                     nil];
+                [_delegate getVenueHistory:responseData];
+                
                 return;
             }
             else {
