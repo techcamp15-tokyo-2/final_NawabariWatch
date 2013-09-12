@@ -618,16 +618,42 @@
     NSURL *url = [NSURL URLWithString:urlStr];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     
-    NSHTTPURLResponse *response;
-    NSError *error;
-    NSData *jsonData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    [connection start];
+}
+
+// データ受信時に１回だけ呼び出される。
+// 受信データを格納する変数を初期化する。
+- (void) connection:(NSURLConnection *) connection didReceiveResponse:(NSURLResponse *)response {
     
+    // receiveDataはフィールド変数
+    receivedData = [[NSMutableData alloc] init];
+}
+
+// データ受信したら何度も呼び出されるメソッド。
+// 受信したデータをreceivedDataに追加する
+- (void) connection:(NSURLConnection *) connection didReceiveData:(NSData *)data {
+    [receivedData appendData:data];
+}
+
+// データ受信が終わったら呼び出されるメソッド。
+- (void) connectionDidFinishLoading:(NSURLConnection *)connection {
+    
+    // 今回受信したデータはHTMLデータなので、NSDataをNSStringに変換する。
+    NSData *jsonData = receivedData;
     NSArray *array = [NSJSONSerialization JSONObjectWithData:jsonData
                                                      options:NSJSONReadingAllowFragments
-                                                                error:&error];
-    enemyNawabaris = [self drawNawabaris:array
-                      withFillColor:[UIColor colorWithRed:1.00 green:0.6314 blue:0.0000 alpha:0.25]
-                      strokeColor:[UIColor colorWithRed:1.00 green:0.6314 blue:0.0000 alpha:0.4]
-                      iconName:@""];
+                                                       error:nil];
+    
+    
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    [self drawNawabaris:array withFillColor:[UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.4]
+            strokeColor:[UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.4] iconName:@""];
+}
+
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
+    // エラー情報を表示する。
+    // objectForKeyで指定するKeyがポイント
 }
 @end
