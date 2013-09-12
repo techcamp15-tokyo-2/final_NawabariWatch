@@ -188,11 +188,13 @@
         NSString *venueId = (NSString *)[venue objectForKey:@"venueId"];
         [nawabariVenueIds addObject:venueId];
     }
-    nawabaris = [self drawNawabaris:venues withFillColor:[UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.4]
-        strokeColor:[UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.8]];
+    nawabaris = [self drawNawabaris:venues
+                      withFillColor:[UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.4]
+                      strokeColor:[UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.8]
+                      iconName:@"blue_map_pin_17x32"];
 }
 
-- (NSMutableArray *)drawNawabaris:(NSArray *)venues withFillColor:(UIColor *)fillColor strokeColor:(UIColor *)strokeColor  {
+- (NSMutableArray *)drawNawabaris:(NSArray *)venues withFillColor:(UIColor *)fillColor strokeColor:(UIColor *)strokeColor iconName:(NSString *) iconName {
     NSMutableArray *nawabariArray = [[NSMutableArray alloc] init];
     nawabariAreaSum = 0;
     for (id venue in venues) {
@@ -205,7 +207,7 @@
         // Creates a marker in the center of the map.
         GMSMarker* marker = [[GMSMarker alloc] init];
         marker.position = CLLocationCoordinate2DMake(lat, lng);
-        marker.icon = [UIImage imageNamed:@"blue_map_pin_17x32"];
+        marker.icon = [UIImage imageNamed:iconName];
         marker.title   = name;
         marker.snippet = venueId;
         if (isDisplayMarker) {
@@ -263,7 +265,8 @@
     surroundingNawabaris = [NSMutableArray array];
     surroundingNawabaris = [self drawNawabaris:surroundVenues
                             withFillColor:[UIColor colorWithRed:1 green:0 blue:0 alpha:0.2]
-                            strokeColor:[UIColor colorWithRed:1 green:0 blue:0 alpha:0.4]];
+                            strokeColor:[UIColor colorWithRed:1 green:0 blue:0 alpha:0.4]
+                            iconName:@""];
     }
 
 // 領土情報windowを描画
@@ -593,6 +596,8 @@
     [backToMapButton addSubview:titleLabel];
     
     [self.view addSubview:backToMapButton];
+    
+    [self requestUserTeritory:@"5"];
 }
 
 // Mapへ戻るボタンが押された時の処理
@@ -710,11 +715,11 @@
     
     NSArray *array = [NSJSONSerialization JSONObjectWithData:jsonData
                                                      options:NSJSONReadingAllowFragments
-                                                       error:&error];
+                                                                error:&error];
     NSLog(@"%@", [array description]);
-    enemyNawabaris = [NSMutableArray array];
-    enemyNawabaris = [self drawNawabaris:array withFillColor:[UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.4]
-            strokeColor:[UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.8]];
-    
+    enemyNawabaris = [self drawNawabaris:array
+                      withFillColor:[UIColor colorWithRed:1.00 green:0.6314 blue:0.0000 alpha:0.8]
+                      strokeColor:[UIColor colorWithRed:1.00 green:0.6314 blue:0.0000 alpha:0.4]
+                      iconName:@""];
 }
 @end
