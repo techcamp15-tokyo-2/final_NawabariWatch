@@ -144,15 +144,11 @@
 // markerがtapされた時、info windowを表示
 - (UIView *)mapView:(GMSMapView *)mapView markerInfoWindow:(id)marker {
     // infoWindowを作る
-    UIView *infoWindow = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 180, 40)];
-    infoWindow.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.45];
+    UIView *infoWindow = (UIView *)[self makeCustomButtonWithFrame:CGRectMake(0, 0, 180, 40)];
     
-    UILabel *titleLabel = [[UILabel alloc] init];
-    titleLabel.frame = CGRectMake(10, 10, 160, 20);
+    UILabel *titleLabel = [self makeCustomLabelWithFrame:CGRectMake(10, 10, 160, 20)];
     titleLabel.font  = [UIFont boldSystemFontOfSize:18];
     titleLabel.text  = [marker title];
-    titleLabel.textColor = [UIColor whiteColor];
-    titleLabel.backgroundColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0];
     [infoWindow addSubview:titleLabel];
     
     return infoWindow;
@@ -510,8 +506,7 @@
     backToMapButton = [self makeCustomButtonWithFrame:CGRectMake(190, 4, 125, 70)];
     [backToMapButton addTarget:self action:@selector(backButtonDidPush) forControlEvents:UIControlEventTouchUpInside];
     
-    UILabel *titleLabel = [[UILabel alloc] init];
-    titleLabel.frame = CGRectMake(12.5, 1, 116, 69);
+    UILabel *titleLabel = [self makeCustomLabelWithFrame:CGRectMake(12.5, 1, 116, 69)];
     titleLabel.font  = [UIFont boldSystemFontOfSize:18];
     titleLabel.text  = @"MAPに戻る";
     titleLabel.textColor = [UIColor blackColor];
