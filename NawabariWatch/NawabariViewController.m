@@ -292,7 +292,7 @@
     NSString *usersNum = [rankAndUsersNum objectForKey:@"users_num"];
     
     rankInfoWindowButton = [self makeCustomButtonWithFrame:CGRectMake(189, 5, 125, 70)];
-    [rankInfoWindowButton addTarget:self action:@selector(getRankingTopFive) forControlEvents:UIControlEventTouchUpInside];
+    [rankInfoWindowButton addTarget:self action:@selector(requestRankingTopFive) forControlEvents:UIControlEventTouchUpInside];
     
     UILabel *titleLabel = [self makeCustomLabelWithFrame:CGRectMake(6, 6, 114, 18)];
     titleLabel.font  = [UIFont boldSystemFontOfSize:16];
@@ -432,7 +432,7 @@
 }
 
 // 全国ランキングtop5を取得する
-- (void)getRankingTopFive {
+- (void)requestRankingTopFive {
     NSString *urlStr = [NSString stringWithFormat:@"http://localhost:3000/users/ranking/5"];
     NSURL *url = [NSURL URLWithString:urlStr];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
