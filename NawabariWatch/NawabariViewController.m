@@ -483,7 +483,7 @@
 
 // ユーザーの順位と全ユーザー数を取得
 - (void)requestRankInfoById:(NSString *)userId Name:(NSString *)userName Territory:(double)territory {
-    NSString *urlStr = [NSString stringWithFormat:@"http://localhost:3000/users/update/%@/%@/%f", userId, userName, territory];
+    NSString *urlStr = [NSString stringWithFormat:@"http://quiet-wave-3026.herokuapp.com//users/update/%@/%@/%f", userId, userName, territory];
     NSURL *url = [NSURL URLWithString:urlStr];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     
@@ -494,7 +494,7 @@
 
 // 全国ランキングtop5を取得する
 - (void)requestRankingTopFive {
-    NSString *urlStr = [NSString stringWithFormat:@"http://localhost:3000/users/ranking/5"];
+    NSString *urlStr = [NSString stringWithFormat:@"http://quiet-wave-3026.herokuapp.com//users/ranking/5"];
     NSURL *url = [NSURL URLWithString:urlStr];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     
@@ -508,7 +508,7 @@
     [self backButtonDidPush];
     
     int userId = [(UIButton *)sender tag];
-    NSString *urlStr = [NSString stringWithFormat:@"http://localhost:3000/territories/with_user/%d", userId];
+    NSString *urlStr = [NSString stringWithFormat:@"http://quiet-wave-3026.herokuapp.com//territories/with_user/%d", userId];
     NSURL *url = [NSURL URLWithString:urlStr];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     
