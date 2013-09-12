@@ -280,7 +280,7 @@
     
     areaLabel = [self makeCustomLabelWithFrame:CGRectMake(4, 24, 176, 40)];
     areaLabel.font  = [UIFont boldSystemFontOfSize:38];
-    areaLabel.text  = [self getAreaLabelText];
+    areaLabel.text  = [self makeAreaLabelText];
     [areaInfoWindowButton addSubview:areaLabel];
     
     [self.view addSubview:areaInfoWindowButton];
@@ -347,7 +347,7 @@
 }
 
 // 順位windowに表示するStringを生成
-- (NSString *) getAreaLabelText{
+- (NSString *) makeAreaLabelText{
     return [NSString stringWithFormat:@"%.0f坪", nawabariAreaSum/3.30578512];
 }
 
@@ -514,7 +514,7 @@
             circ.radius = kUnitRadius * sqrt( pow(radius/kUnitRadius, 2) + 1);
             nawabariAreaSum += pow(circ.radius, 2) * M_PI;
             
-            areaLabel.text = [self getAreaLabelText];
+            areaLabel.text = [self makeAreaLabelText];
             [nawabari setObject:[NSNumber numberWithFloat:circ.radius] forKey:@"defaultRadius"];
             
             break;
@@ -531,7 +531,7 @@
             circ.strokeColor = [UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.8];
             nawabariAreaSum += pow(circ.radius, 2) * M_PI;
             
-            areaLabel.text = [self getAreaLabelText];
+            areaLabel.text = [self makeAreaLabelText];
             [nawabari setObject:[NSNumber numberWithFloat:circ.radius] forKey:@"defaultRadius"];
             
             NSMutableDictionary *newNawabari = [NSMutableDictionary dictionaryWithDictionary:nawabari];            
