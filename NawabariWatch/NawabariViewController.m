@@ -497,7 +497,7 @@
     for (int i = 0; i < 5; i++) {
         NSDictionary *ranker = [rankingTopFive objectAtIndex:i];
         NSString *name  = [ranker objectForKey:@"name"];
-        float territory = [[ranker objectForKey:@"territory"] floatValue];
+        float area = [[ranker objectForKey:@"area"] floatValue];
         
         UIView *rankFrame = [[UIView alloc] init];
         rankFrame.backgroundColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0];
@@ -536,7 +536,7 @@
                                      117,
                                      27);
         areaLabel.font  = [UIFont boldSystemFontOfSize:25];
-        areaLabel.text  = [NSString stringWithFormat:@"%.2f万坪", territory / 10000 / 3.30578512];
+        areaLabel.text  = [NSString stringWithFormat:@"%.2f万坪", area / 10000 / 3.30578512];
         areaLabel.textColor = textColorWhite;
         [rankFrame addSubview:areaLabel];
     }
