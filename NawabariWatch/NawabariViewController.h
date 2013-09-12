@@ -10,8 +10,9 @@
 #import <CoreLocation/CoreLocation.h>
 #import <GoogleMaps/GoogleMaps.h>
 #import "FoursquareAPI.h"
+#import "SVProgressHUD.h"
 
-@interface NawabariViewController : UIViewController <CLLocationManagerDelegate, FoursquareAPIDelegate> {
+@interface NawabariViewController : UIViewController <CLLocationManagerDelegate, FoursquareAPIDelegate, UIWebViewDelegate> {
     // ロケーションマネージャー
 	CLLocationManager* locationManager;
     

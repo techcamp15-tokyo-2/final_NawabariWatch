@@ -62,6 +62,9 @@
         [alert show];
     } else {
         [self loadView];
+        
+        // ローディング開始
+        [SVProgressHUD show];
         [foursquareAPI requestCheckinHistoryFirst];
     }
 }
@@ -76,27 +79,42 @@
 // 認証が終わったタイミングで呼ばれる
 - (void)didAuthorize {
     [self loadView];
+    
+    // ローディング開始
+    [SVProgressHUD show];
     [foursquareAPI requestVenueHistory];
 }
 
 // userのvenue historyを取得した後に呼ばれる
 - (void)getVenueHistory:(NSDictionary *)response {
+    // ローディング終了
+    [SVProgressHUD dismiss];
+    
     NSArray* venues = (NSArray *)[response objectForKey:@"venues"];
     [self drawNawabaris:venues];
     [self drawAreaInfoWindow];
     [self drawSurroundingNawabarisButton];
+    
+    // ローディング開始
+    [SVProgressHUD show];
     [foursquareAPI requestUserProfile];
 }
 
 // userのprofileを取得した後に呼ばれる
 - (void)getUserProfile:(NSDictionary *)response {
+    // ローディング終了
+    [SVProgressHUD dismiss];
+    
     NSString *userId   = [response objectForKey:@"userId"];
     NSString *userName = [response objectForKey:@"firstName"];
+    
     [self requestRankInfoById:userId Name:userName Territory:nawabariAreaSum];
 }
 
 // 近郊のvenueを探す
 - (void)requestSearchNeighborVenues {
+    // ローディング開始
+    [SVProgressHUD show];
     [foursquareAPI requestSearchVenuesWithLatitude:latitude_ Longitude:longitude_];
     [mapView_ animateToCameraPosition:[GMSCameraPosition
                                        cameraWithLatitude:latitude_
@@ -106,6 +124,9 @@
 
 // 近郊のvenueを取得した後に呼ばれる
 - (void)getSearchVenues:(NSDictionary *)response {
+    // ローディング終了
+    [SVProgressHUD dismiss];
+    
     for (NSMutableDictionary *nawabari in surroundingNawabaris) {
         GMSMarker* marker = [nawabari objectForKey:@"marker"];
         marker.map = nil;
@@ -119,6 +140,9 @@
 
 // チェックイン後に呼ばれる
 - (void)getCheckin:(NSDictionary *)response {
+    // ローディング終了
+    [SVProgressHUD dismiss];
+    
     NSString* message = [NSString stringWithFormat:@"チェックインしました!"];
     UIAlertView* alert = [[UIAlertView alloc] initWithTitle:nil message:message delegate:self
                                           cancelButtonTitle:@"OK" otherButtonTitles:nil];
@@ -483,6 +507,9 @@
 
 // ユーザーの順位と全ユーザー数を取得
 - (void)requestRankInfoById:(NSString *)userId Name:(NSString *)userName Territory:(double)territory {
+    // ローディング開始
+    [SVProgressHUD show];
+    
     NSString *urlStr = [NSString stringWithFormat:@"http://quiet-wave-3026.herokuapp.com//users/update/%@/%@/%f", userId, userName, territory];
     NSURL *url = [NSURL URLWithString:urlStr];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
@@ -494,6 +521,9 @@
 
 // 全国ランキングtop5を取得する
 - (void)requestRankingTopFive {
+    // ローディング開始
+    [SVProgressHUD show];
+    
     NSString *urlStr = [NSString stringWithFormat:@"http://quiet-wave-3026.herokuapp.com//users/ranking/5"];
     NSURL *url = [NSURL URLWithString:urlStr];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
@@ -505,6 +535,9 @@
 
 // DBにuserの領土を取ってくるためのrequestを投げる
 - (void)requestUserTeritory:(id)sender {
+    // ローディング開始
+    [SVProgressHUD show];
+    
     [self backButtonDidPush];
     
     int userId = [(UIButton *)sender tag];
@@ -603,6 +636,8 @@
                 case 0:
                     break;
                 case 1:
+                    // ローディング開始
+                    [SVProgressHUD show];
                     [foursquareAPI requestCheckin:tappedVenueId];
                     break;
                 default:
@@ -633,6 +668,9 @@
 
 // データ受信が終わったら呼び出されるメソッド。
 - (void) connectionDidFinishLoading:(NSURLConnection *)connection {
+    // ローディング終了
+    [SVProgressHUD dismiss];
+    
     // 今回受信したデータはjsonデータ
     NSData *jsonData = receivedData;
     NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:jsonData
@@ -665,4 +703,5 @@
     // エラー情報を表示する。
     // objectForKeyで指定するKeyがポイント
 }
+
 @end
