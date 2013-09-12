@@ -183,22 +183,24 @@
 
 // なわばり(markerとそのまわりの円)を描く
 - (void)drawNawabaris:(NSArray *)venues {
-    [self drawNawabaris:venues withFillColor:[UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.4]
+    nawabariVenueIds = [[NSMutableSet alloc] init];
+    for(id venue in venues) {
+        NSString *venueId = (NSString *)[venue objectForKey:@"venueId"];
+        [nawabariVenueIds addObject:venueId];
+    }
+    nawabaris = [self drawNawabaris:venues withFillColor:[UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.4]
         strokeColor:[UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.8]];
 }
 
-- (void)drawNawabaris:(NSArray *)venues withFillColor:(UIColor *)fillColor strokeColor:(UIColor *)strokeColor {
-    nawabaris = [[NSMutableArray alloc] init];
+- (NSMutableArray *)drawNawabaris:(NSArray *)venues withFillColor:(UIColor *)fillColor strokeColor:(UIColor *)strokeColor  {
+    NSMutableArray *nawabariArray = [[NSMutableArray alloc] init];
     nawabariAreaSum = 0;
-    nawabariVenueIds = [[NSMutableSet alloc] init];
     for (id venue in venues) {
         CLLocationDegrees lat = [(NSString *)[venue objectForKey:@"lat"] doubleValue];
         CLLocationDegrees lng = [(NSString *)[venue objectForKey:@"lng"] doubleValue];
         NSString *name = (NSString *)[venue objectForKey:@"name"];
         int beenHere = [(NSString *)[venue objectForKey:@"beenHere"] intValue];
         NSString *venueId = (NSString *)[venue objectForKey:@"venueId"];
-        
-        [nawabariVenueIds addObject:venueId];
         
         // Creates a marker in the center of the map.
         GMSMarker* marker = [[GMSMarker alloc] init];
@@ -238,51 +240,31 @@
                                          @"circ": circ,
                                          @"defaultRadius": [NSNumber numberWithFloat:circ.radius]
                                          } mutableCopy];
-        [nawabaris addObject:nawabari];
+        [nawabariArray addObject:nawabari];
         
         nawabariAreaSum += pow(circ.radius, 2) * M_PI;
     }
-
+//    NSLog(@"%@", [nawabariArray description]);
+    return nawabariArray;
 }
 
 // 近郊の自分のでないなわばりを描画
 - (void)drawSurroundingNawabaris:(NSArray *)venues {
-    surroundingNawabaris = [[NSMutableArray alloc] init];
+    NSMutableArray *surroundVenues = [NSMutableArray array];
     for (NSDictionary* venue in venues) {
-        CLLocationDegrees lat = [(NSString *)[venue objectForKey:@"lat"] doubleValue];
-        CLLocationDegrees lng = [(NSString *)[venue objectForKey:@"lng"] doubleValue];
-        NSString *name = (NSString *)[venue objectForKey:@"name"];
         NSString *venueId = (NSString *)[venue objectForKey:@"venueId"];
         
         if ([nawabariVenueIds containsObject:venueId]) {
             continue;
         }
-        
-        // Creates a marker in the center of the map.
-        GMSMarker* marker = [[GMSMarker alloc] init];
-        marker.position = CLLocationCoordinate2DMake(lat, lng);
-        marker.title   = name;
-        marker.snippet = venueId;
-        marker.map = mapView_;
-        if (isDisplayMarker) {
-            marker.map = mapView_;
-        }
-//        marker.icon = [UIImage imageNamed:@"cat1"];
-        
-        CLLocationCoordinate2D circleCenter = CLLocationCoordinate2DMake(lat, lng);
-        GMSCircle* circ  = [GMSCircle circleWithPosition:circleCenter radius:kUnitRadius];
-        circ.fillColor   = [UIColor colorWithRed:1 green:0 blue:0 alpha:0.2];
-        circ.strokeColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:0.4];
-        circ.map = mapView_;
-        
-        NSMutableDictionary* nawabari = [@{
-                                         @"marker": marker,
-                                         @"circ": circ,
-                                         @"defaultRadius": [NSNumber numberWithFloat:circ.radius]
-                                         } mutableCopy];
-        [surroundingNawabaris addObject:nawabari];
+        [surroundVenues addObject:venue];
     }
-}
+    
+    surroundingNawabaris = [NSMutableArray array];
+    surroundingNawabaris = [self drawNawabaris:surroundVenues
+                            withFillColor:[UIColor colorWithRed:1 green:0 blue:0 alpha:0.2]
+                            strokeColor:[UIColor colorWithRed:1 green:0 blue:0 alpha:0.4]];
+    }
 
 // 領土情報windowを描画
 - (void)drawAreaInfoWindow {
@@ -622,8 +604,6 @@
     [self.view addSubview:areaInfoWindowButton];
     [self.view addSubview:rankInfoWindowButton];
     [self.view addSubview:searchButton];
-    
-    [self requestUserTeritory:@"5"];
 }
 
 // なわばりの表示・非表示を切り替え
@@ -732,6 +712,9 @@
                                                      options:NSJSONReadingAllowFragments
                                                        error:&error];
     NSLog(@"%@", [array description]);
+    enemyNawabaris = [NSMutableArray array];
+    enemyNawabaris = [self drawNawabaris:array withFillColor:[UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.4]
+            strokeColor:[UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.8]];
     
 }
 @end
