@@ -20,7 +20,7 @@
     foursquareAPI = [[FoursquareAPI alloc] init];
     if(![foursquareAPI isAuthenticated]) {
         
-        NSString* message = [NSString stringWithFormat:@"foursquareの認証がされていません。認証してください！"];
+        NSString* message = [NSString stringWithFormat:@"foursquareの認証が必要です。\n認証をお願いします。"];
         UIAlertView* alert = [[UIAlertView alloc] initWithTitle:nil message:message delegate:self
                                               cancelButtonTitle:@"OK" otherButtonTitles:nil];
         alert.tag = startAuthorization;
@@ -108,7 +108,7 @@
 // チェックイン後に呼ばれる
 - (void)getCheckin:(NSDictionary *)response {    
     NSString* message = [NSString stringWithFormat:@"チェックインしました!"];
-    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"didCheckin" message:message delegate:self
+    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:nil message:message delegate:self
                                           cancelButtonTitle:@"OK" otherButtonTitles:nil];
     alert.tag = finishCheckin;
     [alert show];
@@ -147,7 +147,7 @@
 // info windowがtapされた時、alertを表示
 - (void)mapView:(GMSMapView *)mapView didTapInfoWindowOfMarker:(id)marker {
     tappedVenueId = [marker snippet];
-    NSString* message = [NSString stringWithFormat:@"チェックインしますか?"];
+    NSString* message = [NSString stringWithFormat:@"チェックインして領土を\n広げますか？"];
     UIAlertView* alert = [[UIAlertView alloc] initWithTitle:[marker title]
                                                     message:message
                                                    delegate:self
@@ -191,20 +191,6 @@
         GMSMarker* marker = [[GMSMarker alloc] init];
         marker.position = CLLocationCoordinate2DMake(lat, lng);
         marker.icon = [UIImage imageNamed:@"blue_map_pin_17x32"];
-        marker.icon = [UIImage imageNamed:@"neko"];
-
-        UIImage *neko = [UIImage imageNamed:@"neko.png"];  // リサイズ前UIImage
-        float widthPer = 0.4;  // リサイズ後幅の倍率
-        float heightPer = 0.4;  // リサイズ後高さの倍率
-        
-        CGSize sz = CGSizeMake(neko.size.width*widthPer,
-                               neko.size.height*heightPer);
-        UIGraphicsBeginImageContext(sz);
-        [neko drawInRect:CGRectMake(0, 0, sz.width, sz.height)];
-        neko = UIGraphicsGetImageFromCurrentImageContext();
-        marker.icon = neko;
-        UIGraphicsEndImageContext();
-
         marker.title   = name;
         marker.snippet = venueId;
         if (isDisplayMarker) {
@@ -213,11 +199,8 @@
 
         CLLocationCoordinate2D circleCenter = CLLocationCoordinate2DMake(lat, lng);
         GMSCircle* circ  = [GMSCircle circleWithPosition:circleCenter radius:(kUnitRadius * sqrt(beenHere))];
-//        circ.fillColor   = [UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.4];
-        circ.fillColor   = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.2];
-        circ.strokeColor = [UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0];
-
-//        circ.strokeColor = [UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.8];
+        circ.fillColor   = [UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.4];
+        circ.strokeColor = [UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.8];
 //        circ.fillColor   = [UIColor colorWithRed:0 green:0.9 blue:0.2 alpha:0.2];
 //        circ.strokeColor = [UIColor colorWithRed:0 green:0.9 blue:0.2 alpha:0.8];
         circ.map = mapView_;
@@ -392,8 +375,8 @@
     */
 
     searchButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    searchButton.frame = CGRectMake(5, self.view.frame.size.height - 40 - 6, 120, 40);
-    [searchButton setTitle:@"venueを探す" forState:UIControlStateNormal];
+    searchButton.frame = CGRectMake(5, self.view.frame.size.height - 40 - 6, 130, 40);
+    [searchButton setTitle:@"領土を開拓" forState:UIControlStateNormal];
     [searchButton setBackgroundImage:[self createBackgroundImage:backgroundColorWhite withSize:CGSizeMake(120, 40)]
                          forState:UIControlStateNormal];
     [searchButton setBackgroundImage:[self createBackgroundImage:backgroundColorBlack withSize:CGSizeMake(120, 40)]
