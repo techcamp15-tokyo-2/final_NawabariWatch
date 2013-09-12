@@ -233,7 +233,7 @@
 // 近郊の自分のでないなわばりを描画
 - (void)drawSurroundingNawabaris:(NSArray *)venues {
     surroundingNawabaris = [[NSMutableArray alloc] init];
-    for (id venue in venues) {
+    for (NSDictionary* venue in venues) {
         CLLocationDegrees lat = [(NSString *)[venue objectForKey:@"lat"] doubleValue];
         CLLocationDegrees lng = [(NSString *)[venue objectForKey:@"lng"] doubleValue];
         NSString *name = (NSString *)[venue objectForKey:@"name"];
