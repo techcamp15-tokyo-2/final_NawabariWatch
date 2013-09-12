@@ -304,37 +304,28 @@
 
 // 順位情報windowを描画
 - (void)drawRankInfoWindowById:(NSString *)userId Name:(NSString *)userName {
+    NSDictionary *rankAndUsersNum = [self getRankAndUsersNumById:userId
+                                                            Name:userName
+                                                       Territory:nawabariAreaSum];
+    NSString *rank     = [rankAndUsersNum objectForKey:@"rank"];
+    NSString *usersNum = [rankAndUsersNum objectForKey:@"users_num"];
+    
     rankInfoWindowButton = [self makeCustomButtonWithFrame:CGRectMake(190, 4, 125, 70)];
     [rankInfoWindowButton addTarget:self action:@selector(drawRankView) forControlEvents:UIControlEventTouchUpInside];
     
-    UILabel *titleLabel = [[UILabel alloc] init];
-    titleLabel.frame = CGRectMake(6, 6, 114, 18);
+    UILabel *titleLabel = [self makeCustomLabelWithFrame:CGRectMake(6, 6, 114, 18)];
     titleLabel.font  = [UIFont boldSystemFontOfSize:16];
     titleLabel.text  = @"全国ランキング";
-    titleLabel.textColor = textColorBlack;
-    titleLabel.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
     [rankInfoWindowButton addSubview:titleLabel];
     
-    UILabel *rankLabel = [[UILabel alloc] init];
-    rankLabel.frame = CGRectMake(6, 24, 70, 40);
+    UILabel *rankLabel = [self makeCustomLabelWithFrame:CGRectMake(6, 24, 70, 40)];
     rankLabel.font  = [UIFont boldSystemFontOfSize:38];
-    
-    NSDictionary *rankAndUsersNum = [self getRankAndUsersNumById:userId
-                                                 Name:userName
-                                            Territory:nawabariAreaSum];
-    NSString *rank     = [rankAndUsersNum objectForKey:@"rank"];
-    NSString *usersNum = [rankAndUsersNum objectForKey:@"users_num"];
     rankLabel.text  = [NSString stringWithFormat:@"%@位", rank];
-    rankLabel.textColor = textColorBlack;
-    rankLabel.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
     [rankInfoWindowButton addSubview:rankLabel];
     
-    UILabel *rankLabel2 = [[UILabel alloc] init];
-    rankLabel2.frame = CGRectMake(78, 46, 44, 16);
+    UILabel *rankLabel2 = [self makeCustomLabelWithFrame:CGRectMake(78, 46, 44, 16)];
     rankLabel2.font  = [UIFont boldSystemFontOfSize:14];
     rankLabel2.text  = [NSString stringWithFormat:@"/%@人", usersNum];
-    rankLabel2.textColor = textColorBlack;
-    rankLabel2.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
     [rankInfoWindowButton addSubview:rankLabel2];
     
     [self.view addSubview:rankInfoWindowButton];
