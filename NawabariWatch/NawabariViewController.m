@@ -209,6 +209,7 @@
 
 // なわばり(markerとそのまわりの円)を描く
 - (void)drawNawabaris:(NSArray *)venues {
+    nawabariAreaSum = 0;
     nawabariVenueIds = [[NSMutableSet alloc] init];
     for(id venue in venues) {
         NSString *venueId = (NSString *)[venue objectForKey:@"venueId"];
@@ -218,11 +219,14 @@
                       withFillColor:[UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.4]
                       strokeColor:[UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.8]
                       iconName:@"blue_pin_s"];
+    for (NSMutableDictionary* nawabari in nawabaris) {
+        GMSCircle* circ = [nawabari objectForKey:@"circ"];
+        nawabariAreaSum += pow(circ.radius, 2) * M_PI;
+    }
 }
 
 - (NSMutableArray *)drawNawabaris:(NSArray *)venues withFillColor:(UIColor *)fillColor strokeColor:(UIColor *)strokeColor iconName:(NSString *) iconName {
     NSMutableArray *nawabariArray = [[NSMutableArray alloc] init];
-    nawabariAreaSum = 0;
     for (id venue in venues) {
         CLLocationDegrees lat = [(NSString *)[venue objectForKey:@"lat"] doubleValue];
         CLLocationDegrees lng = [(NSString *)[venue objectForKey:@"lng"] doubleValue];
@@ -269,8 +273,6 @@
                                          @"defaultRadius": [NSNumber numberWithFloat:circ.radius]
                                          } mutableCopy];
         [nawabariArray addObject:nawabari];
-        
-        nawabariAreaSum += pow(circ.radius, 2) * M_PI;
     }
     return nawabariArray;
 }
@@ -607,9 +609,11 @@
         if (marker.snippet == tappedVenueId) {          
             marker.icon = [UIImage imageNamed:@"blue_map_pin_17x32"];
             GMSCircle *circ = [nawabari objectForKey:@"circ"];
+            NSLog([circ description]);
             
             circ.fillColor   = [UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.4];
             circ.strokeColor = [UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.8];
+            NSLog(@"%f", circ.radius);
             nawabariAreaSum += pow(circ.radius, 2) * M_PI;
             
             areaLabel.text = [self makeAreaLabelText];
