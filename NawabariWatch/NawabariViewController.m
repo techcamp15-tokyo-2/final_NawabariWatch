@@ -308,7 +308,7 @@
 // 順位情報windowを描画
 - (void)drawRankInfoWindowById:(NSString *)userId Name:(NSString *)userName {
     rankInfoWindowButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    rankInfoWindowButton.frame = CGRectMake(192, 4, 122, 70);
+    rankInfoWindowButton.frame = CGRectMake(190, 4, 124, 70);
     [rankInfoWindowButton setBackgroundImage:[self createBackgroundImage:backgroundColorWhite withSize:CGSizeMake(122, 70)]
                             forState:UIControlStateNormal];
     [rankInfoWindowButton setBackgroundImage:[self createBackgroundImage:backgroundColorBlack withSize:CGSizeMake(122, 70)]
@@ -321,8 +321,8 @@
     [rankInfoWindowButton addTarget:self action:@selector(drawRankView) forControlEvents:UIControlEventTouchUpInside];
     
     UILabel *titleLabel = [[UILabel alloc] init];
-    titleLabel.frame = CGRectMake(6, 6, 114, 16);
-    titleLabel.font  = [UIFont boldSystemFontOfSize:14];
+    titleLabel.frame = CGRectMake(6, 6, 114, 18);
+    titleLabel.font  = [UIFont boldSystemFontOfSize:16];
     titleLabel.text  = @"全国ランキング";
     titleLabel.textColor = textColorBlack;
     titleLabel.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
