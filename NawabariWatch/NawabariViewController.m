@@ -244,7 +244,6 @@
         
         nawabariAreaSum += pow(circ.radius, 2) * M_PI;
     }
-//    NSLog(@"%@", [nawabariArray description]);
     return nawabariArray;
 }
 
@@ -390,14 +389,16 @@
     // 順位ラベル
     for (int i = 0; i < 5; i++) {
         NSDictionary *ranker = [rankingTopFive objectAtIndex:i];
-        NSString *name  = [ranker objectForKey:@"name"];
-        float area = [[ranker objectForKey:@"area"] floatValue];
+        NSString *userId = [ranker objectForKey:@"foursq_id"];
+        NSString *name   = [ranker objectForKey:@"name"];
+        float area       = [[ranker objectForKey:@"area"] floatValue];
         
-        UIButton *tmpButton = [[UIButton alloc] init];
-        tmpButton = [self makeCustomButtonWithFrame:CGRectMake(25,
+        UIButton *rankDisplayButton = [self makeCustomButtonWithFrame:CGRectMake(25,
                                                                145 + 32 * i,
                                                                280,
                                                                27)];
+        [rankDisplayButton addTarget:self action:@selector(requestOtherUserTerritory:) forControlEvents:UIControlEventTouchUpInside];
+        rankDisplayButton.tag = [userId intValue];
         
         UILabel *rankLabel = [self makeCustomLabelWithFrame:CGRectMake(0,
                                                                        0,
@@ -405,7 +406,7 @@
                                                                        27)];
         rankLabel.font  = [UIFont boldSystemFontOfSize:25];
         rankLabel.text  = [NSString stringWithFormat:@"%d位:", i + 1];
-        [tmpButton addSubview:rankLabel];
+        [rankDisplayButton addSubview:rankLabel];
         
         UILabel *nameLabel = [self makeCustomLabelWithFrame:CGRectMake(55,
                                                                        0,
@@ -413,7 +414,7 @@
                                                                        27)];
         nameLabel.font  = [UIFont boldSystemFontOfSize:25];
         nameLabel.text  = [NSString stringWithFormat:@"%@", name];
-        [tmpButton addSubview:nameLabel];
+        [rankDisplayButton addSubview:nameLabel];
         
         UILabel *tmpAreaLabel = [self makeCustomLabelWithFrame:CGRectMake(153,
                                                                        0,
@@ -421,10 +422,10 @@
                                                                        27)];
         tmpAreaLabel.font  = [UIFont boldSystemFontOfSize:25];
         tmpAreaLabel.text  = [NSString stringWithFormat:@"%.2f万坪", area / 10000 / 3.30578512];
-        [tmpButton addSubview:tmpAreaLabel];
+        [rankDisplayButton addSubview:tmpAreaLabel];
         
-        [rankDisplayButtonArray addObject:tmpButton];
-        [self.view addSubview:tmpButton];
+        [rankDisplayButtonArray addObject:rankDisplayButton];
+        [self.view addSubview:rankDisplayButton];
     }
     
     UILabel *messageLabel = [self makeCustomLabelWithFrame:CGRectMake(0, 0, 0, 0)];
@@ -470,8 +471,6 @@
     [backToMapButton addSubview:titleLabel];
     
     [self.view addSubview:backToMapButton];
-    
-    [self requestUserTeritory:@"5"];
 }
 
 // Mapへ戻るボタンが押された時の処理
@@ -607,6 +606,12 @@
     }
 }
 
+- (void)requestOtherUserTerritory:(id)sender {
+    int userId = [(UIButton *)sender tag];
+    [self requestUserTeritory:[NSString stringWithFormat:@"%d",userId]];
+    [self backButtonDidPush];
+}
+
 //DBにuserの領土を取ってくるためのrequestを投げる
 - (void)requestUserTeritory:(NSString *)userId {
     NSString *urlStr = [NSString stringWithFormat:@"http://quiet-wave-3026.herokuapp.com/territories/with_user/%@", userId];
@@ -620,9 +625,8 @@
     NSArray *array = [NSJSONSerialization JSONObjectWithData:jsonData
                                                      options:NSJSONReadingAllowFragments
                                                                 error:&error];
-    NSLog(@"%@", [array description]);
     enemyNawabaris = [self drawNawabaris:array
-                      withFillColor:[UIColor colorWithRed:1.00 green:0.6314 blue:0.0000 alpha:0.8]
+                      withFillColor:[UIColor colorWithRed:1.00 green:0.6314 blue:0.0000 alpha:0.25]
                       strokeColor:[UIColor colorWithRed:1.00 green:0.6314 blue:0.0000 alpha:0.4]
                       iconName:@""];
 }
