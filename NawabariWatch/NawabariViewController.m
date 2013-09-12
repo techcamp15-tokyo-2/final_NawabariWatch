@@ -24,6 +24,7 @@
     backgroundColorBlack = [UIColor colorWithRed:0.1 green:0.1 blue:0.1 alpha:0.7];
     isDisplayMarker = TRUE;
     isFirst = TRUE;
+    rankerTopFive = [[NSArray alloc] init];
     rankDisplayButtonArray  =  [[NSMutableArray alloc] init];
     
     
@@ -293,7 +294,7 @@
     NSString *usersNum = [rankAndUsersNum objectForKey:@"users_num"];
     
     rankInfoWindowButton = [self makeCustomButtonWithFrame:CGRectMake(189, 5, 125, 70)];
-    [rankInfoWindowButton addTarget:self action:@selector(drawRankView) forControlEvents:UIControlEventTouchUpInside];
+    [rankInfoWindowButton addTarget:self action:@selector(getRankingTopFive) forControlEvents:UIControlEventTouchUpInside];
     
     UILabel *titleLabel = [self makeCustomLabelWithFrame:CGRectMake(6, 6, 114, 18)];
     titleLabel.font  = [UIFont boldSystemFontOfSize:16];
@@ -385,10 +386,9 @@
     titleLabel.textColor = textColorWhite;
     [rankSubView addSubview:titleLabel];
     
-    NSArray *rankingTopFive = [self getRankingTopFive];
     // 順位ラベル
     for (int i = 0; i < 5; i++) {
-        NSDictionary *ranker = [rankingTopFive objectAtIndex:i];
+        NSDictionary *ranker = [rankerTopFive objectAtIndex:i];
         NSString *userId = [ranker objectForKey:@"foursq_id"];
         NSString *name   = [ranker objectForKey:@"name"];
         float area       = [[ranker objectForKey:@"area"] floatValue];
@@ -443,19 +443,14 @@
 }
 
 // 全国ランキングtop5を取得する
-- (NSArray *)getRankingTopFive {
+- (void)getRankingTopFive {
     NSString *urlStr = [NSString stringWithFormat:@"http://localhost:3000/users/ranking/5"];
     NSURL *url = [NSURL URLWithString:urlStr];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     
-    NSHTTPURLResponse *response;
-    NSError *error;
-    NSData *jsonData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
-    
-    NSArray *rankingTopFive = [NSJSONSerialization JSONObjectWithData:jsonData
-                                                     options:NSJSONReadingAllowFragments
-                                                       error:&error];
-    return rankingTopFive;
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    [connection start];
 }
 
 // Mapへ戻るボタンを描画
@@ -652,11 +647,13 @@
     
     NSString *type = [dict objectForKey:@"type"];
     if ([type isEqualToString:@"territories"]) {
-        NSLog(type);
         NSArray *tmpNawabaris = [dict objectForKey:@"territories"];
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         otherUsersNawabaris = [self drawNawabaris:tmpNawabaris withFillColor:[UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.4]
             strokeColor:[UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.4] iconName:@""];
+    } else if ([type isEqualToString:@"top_five"]) {
+        rankerTopFive = [dict objectForKey:@"top_five"];
+        [self drawRankView];
     }
 }
 

@@ -61,6 +61,8 @@
     UIColor *backgroundColorWhite;
     UIColor *backgroundColorBlack;
     
+    // rank viewのtop5のユーザー
+    NSArray *rankerTopFive;
     // rank viewの5つのボタンを格納するArray
     NSMutableArray *rankDisplayButtonArray;
     
