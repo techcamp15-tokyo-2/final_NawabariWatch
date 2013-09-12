@@ -68,6 +68,9 @@
     
     //最初の一回だけ位置が更新されたら再描画する
     BOOL isFirst;
+    
+    //NSDataのレスポンスを取得する
+    NSMutableData *receivedData;
 }
 
 @property(nonatomic,readonly,strong) FoursquareAPI *foursquareAPI;
