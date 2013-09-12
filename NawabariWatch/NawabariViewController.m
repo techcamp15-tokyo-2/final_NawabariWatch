@@ -24,6 +24,12 @@
     backgroundColorBlack = [UIColor colorWithRed:0.1 green:0.1 blue:0.1 alpha:0.7];
     isDisplayMarker = TRUE;
     isFirst = TRUE;
+    firstRankDisplayButton  = [[UIButton alloc] init];
+    secondRankDisplayButton = [[UIButton alloc] init];
+    thirdRankDisplayButton  = [[UIButton alloc] init];
+    forthRankDisplayButton  = [[UIButton alloc] init];
+    fifthRankDisplayButton  = [[UIButton alloc] init];
+    
     
 	// ロケーションマネージャーを作成
 	BOOL locationServicesEnabled;
@@ -280,17 +286,7 @@
 
 // 領土情報windowを描画
 - (void)drawAreaInfoWindow {
-    areaInfoWindowButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    areaInfoWindowButton.frame = CGRectMake(4, 4, 180, 70);
-    [areaInfoWindowButton setBackgroundImage:[self createBackgroundImage:backgroundColorWhite withSize:CGSizeMake(122, 70)]
-                          forState:UIControlStateNormal];
-    [areaInfoWindowButton setBackgroundImage:[self createBackgroundImage:backgroundColorBlack withSize:CGSizeMake(122, 70)]
-                          forState:(UIControlStateSelected | UIControlStateHighlighted)];
-    [areaInfoWindowButton.layer setCornerRadius:10.0];
-    [areaInfoWindowButton.layer setBorderColor:[UIColor grayColor].CGColor];
-    [areaInfoWindowButton.layer setBorderWidth:1.0];
-    [areaInfoWindowButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    
+    areaInfoWindowButton = [self makeCustomButtonWithFrame:CGRectMake(4, 4, 180, 70)];
     [areaInfoWindowButton addTarget:self action:@selector(changeDisplayNawabaris) forControlEvents:UIControlEventTouchUpInside];
     
     UILabel *titleLabel = [[UILabel alloc] init];
@@ -314,17 +310,7 @@
 
 // 順位情報windowを描画
 - (void)drawRankInfoWindowById:(NSString *)userId Name:(NSString *)userName {
-    rankInfoWindowButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    rankInfoWindowButton.frame = CGRectMake(190, 4, 125, 70);
-    [rankInfoWindowButton setBackgroundImage:[self createBackgroundImage:backgroundColorWhite withSize:CGSizeMake(125, 70)]
-                            forState:UIControlStateNormal];
-    [rankInfoWindowButton setBackgroundImage:[self createBackgroundImage:backgroundColorBlack withSize:CGSizeMake(125, 70)]
-                            forState:(UIControlStateSelected | UIControlStateHighlighted)];
-    [rankInfoWindowButton.layer setCornerRadius:10.0];
-    [rankInfoWindowButton.layer setBorderColor:[UIColor grayColor].CGColor];
-    [rankInfoWindowButton.layer setBorderWidth:1.0];
-    [rankInfoWindowButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    
+    rankInfoWindowButton = [self makeCustomButtonWithFrame:CGRectMake(190, 4, 125, 70)];
     [rankInfoWindowButton addTarget:self action:@selector(drawRankView) forControlEvents:UIControlEventTouchUpInside];
     
     UILabel *titleLabel = [[UILabel alloc] init];
@@ -362,62 +348,13 @@
 
 // venueを探すボタンを描画
 - (void)drawSurroundingNawabarisButton {
-    /*
-    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [btn setTitle:@"venueを探す" forState:UIControlStateNormal];
-
-    [[btn layer] setCornerRadius:3.0f];
-    [[btn layer] setMasksToBounds:YES];
-    [[btn layer] setBorderWidth:0.6f];
-    [[btn layer] setBackgroundColor:
-     [backgroundColorWhite CGColor]];
-
-    [btn setTitleColor:[UIColor colorWithRed:0.1 green:0.1 blue:0.1 alpha:1] forState:UIControlStateNormal];
-    
-    [btn addTarget:self action:@selector(requestSearchNeighborVenues) forControlEvents:UIControlEventTouchUpInside];
-    [btn setBackgroundImage:[self createBackgroundImage:[UIColor colorWithRed:0.1 green:0.1 blue:0.1 alpha:1] withSize:CGSizeMake(120, 40)]
-                           forState:(UIControlStateSelected | UIControlStateHighlighted)];
-    btn.showsTouchWhenHighlighted = YES;
-    
-    btn.frame = CGRectMake(5, self.view.frame.size.height - 40 - 6, 120, 40);
-    [self.view addSubview:btn];
-    */
-
-    searchButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    searchButton.frame = CGRectMake(5, self.view.frame.size.height - 40 - 6, 130, 40);
+    searchButton = [self makeCustomButtonWithFrame:CGRectMake(5, self.view.frame.size.height - 40 - 6, 130, 40)];
     [searchButton setTitle:@"領土を開拓" forState:UIControlStateNormal];
-    [searchButton setBackgroundImage:[self createBackgroundImage:backgroundColorWhite withSize:CGSizeMake(120, 40)]
-                         forState:UIControlStateNormal];
-    [searchButton setBackgroundImage:[self createBackgroundImage:backgroundColorBlack withSize:CGSizeMake(120, 40)]
-                   forState:(UIControlStateSelected | UIControlStateHighlighted)];
-    [searchButton.layer setCornerRadius:10.0];
-    [searchButton.layer setBorderColor:[UIColor grayColor].CGColor];
-    [searchButton.layer setBorderWidth:1.0];
-    [searchButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
 
     [searchButton addTarget:self action:@selector(requestSearchNeighborVenues) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:searchButton];
 }
 
-/*
-// ランキングを見るボタンを描画
-- (void)drawRankViewButton {
-    searchButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    searchButton.frame = CGRectMake(192, 80, 122, 32);
-    [searchButton setTitle:@"ランキング" forState:UIControlStateNormal];
-    [searchButton setBackgroundImage:[self createBackgroundImage:backgroundColorWhite withSize:CGSizeMake(120, 40)]
-                            forState:UIControlStateNormal];
-    [searchButton setBackgroundImage:[self createBackgroundImage:backgroundColorBlack withSize:CGSizeMake(120, 40)]
-                            forState:(UIControlStateSelected | UIControlStateHighlighted)];
-    [searchButton.layer setCornerRadius:10.0];
-    [searchButton.layer setBorderColor:[UIColor grayColor].CGColor];
-    [searchButton.layer setBorderWidth:1.0];
-    [searchButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    
-    [searchButton addTarget:self action:@selector(transPageToRankView) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:searchButton];
-}
-*/
 
 // UIColorからUIImageを生成
 - (UIImage *)createBackgroundImage:(UIColor *)color withSize:(CGSize)size {
@@ -458,18 +395,6 @@
     return [NSString stringWithFormat:@"%.0f坪", nawabariAreaSum/3.30578512];
 }
 
-/*
-// iPhoneを傾けた時に呼ばれるメソッド
--(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)FromInterfaceOrientation {
-    searchButton.frame = CGRectMake(5, self.view.frame.size.height - 40 - 6, 120, 40);
-    if(FromInterfaceOrientation == UIInterfaceOrientationPortrait){
-        // 横向き
-    } else {
-        // 縦向き
-    }
-}
-*/
-
 // ランキングページを描画
 - (void)drawRankView {
     [areaInfoWindowButton removeFromSuperview];
@@ -498,20 +423,35 @@
     [rankSubView addSubview:titleLabel];
     
     NSArray *rankingTopFive = [self getRankingTopFive];
+    NSArray *rankDisplayButtonArray = @[
+        firstRankDisplayButton,
+        secondRankDisplayButton,
+        thirdRankDisplayButton,
+        forthRankDisplayButton,
+        fifthRankDisplayButton
+    ];
     // 順位ラベル
     for (int i = 0; i < 5; i++) {
         NSDictionary *ranker = [rankingTopFive objectAtIndex:i];
         NSString *name  = [ranker objectForKey:@"name"];
         float area = [[ranker objectForKey:@"area"] floatValue];
         
-        UIView *rankFrame = [[UIView alloc] init];
-        rankFrame.backgroundColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0];
-        rankFrame.frame = CGRectMake(25,
-                                     55 + 32 * i,
-                                     280,
-                                     27);
-        [rankSubView addSubview:rankFrame];
-
+        UIButton *tmpButton = [rankDisplayButtonArray objectAtIndex:i];
+        tmpButton = [self makeCustomButtonWithFrame:CGRectMake(25,
+                                                               145 + 32 * i,
+                                                               280,
+                                                               27)];
+        [tmpButton addTarget:self action:@selector(backButtonDidPush) forControlEvents:UIControlEventTouchUpInside];
+        
+        UILabel *titleLabel = [[UILabel alloc] init];
+        titleLabel.frame = CGRectMake(12.5, 1, 116, 69);
+        titleLabel.font  = [UIFont boldSystemFontOfSize:18];
+        titleLabel.text  = @"MAPに戻る";
+        titleLabel.textColor = [UIColor blackColor];
+        titleLabel.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
+        [tmpButton addSubview:titleLabel];
+        [self.view addSubview:tmpButton];
+        
         UILabel *rankLabel = [[UILabel alloc] init];
         rankLabel.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
         rankLabel.frame = CGRectMake(0,
@@ -521,7 +461,7 @@
         rankLabel.font  = [UIFont boldSystemFontOfSize:25];
         rankLabel.text  = [NSString stringWithFormat:@"%d位:", i + 1];
         rankLabel.textColor = textColorWhite;
-        [rankFrame addSubview:rankLabel];
+        [tmpButton addSubview:rankLabel];
         
         UILabel *nameLabel = [[UILabel alloc] init];
         nameLabel.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
@@ -532,7 +472,7 @@
         nameLabel.font  = [UIFont boldSystemFontOfSize:25];
         nameLabel.text  = [NSString stringWithFormat:@"%@", name];
         nameLabel.textColor = textColorWhite;
-        [rankFrame addSubview:nameLabel];
+        [tmpButton addSubview:nameLabel];
         
         UILabel *areaLabel = [[UILabel alloc] init];
         areaLabel.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
@@ -543,7 +483,7 @@
         areaLabel.font  = [UIFont boldSystemFontOfSize:25];
         areaLabel.text  = [NSString stringWithFormat:@"%.2f万坪", area / 10000 / 3.30578512];
         areaLabel.textColor = textColorWhite;
-        [rankFrame addSubview:areaLabel];
+        [tmpButton addSubview:areaLabel];
     }
     
     UILabel *messageLabel = [[UILabel alloc] init];
@@ -565,6 +505,21 @@
     [self drawBackButton];
 }
 
+- (UIButton *)makeCustomButtonWithFrame:(CGRect)frame {
+    UIButton *customButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    customButton.frame = frame;
+    [customButton setBackgroundImage:[self createBackgroundImage:[UIColor colorWithRed:1 green:1 blue:1 alpha:0.92] withSize:CGSizeMake(125, 70)]
+                               forState:UIControlStateNormal];
+    [customButton setBackgroundImage:[self createBackgroundImage:backgroundColorBlack withSize:CGSizeMake(125, 70)]
+                               forState:(UIControlStateSelected | UIControlStateHighlighted)];
+    [customButton.layer setCornerRadius:10.0];
+    [customButton.layer setBorderColor:[UIColor grayColor].CGColor];
+    [customButton.layer setBorderWidth:1.0];
+    [customButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    
+    return customButton;
+}
+
 // 全国ランキングtop5を取得する
 - (NSArray *)getRankingTopFive {
     NSString *urlStr = [NSString stringWithFormat:@"http://quiet-wave-3026.herokuapp.com/users/ranking/5"];
@@ -583,16 +538,7 @@
 
 // Mapへ戻るボタンを描画
 - (void)drawBackButton {
-    backToMapButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    backToMapButton.frame = CGRectMake(190, 4, 125, 70);
-    [backToMapButton setBackgroundImage:[self createBackgroundImage:[UIColor colorWithRed:1 green:1 blue:1 alpha:0.92] withSize:CGSizeMake(125, 70)]
-                                    forState:UIControlStateNormal];
-    [backToMapButton setBackgroundImage:[self createBackgroundImage:backgroundColorBlack withSize:CGSizeMake(125, 70)]
-                                    forState:(UIControlStateSelected | UIControlStateHighlighted)];
-    [backToMapButton.layer setCornerRadius:10.0];
-    [backToMapButton.layer setBorderColor:[UIColor grayColor].CGColor];
-    [backToMapButton.layer setBorderWidth:1.0];
-    [backToMapButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    backToMapButton = [self makeCustomButtonWithFrame:CGRectMake(190, 4, 125, 70)];
     
     [backToMapButton addTarget:self action:@selector(backButtonDidPush) forControlEvents:UIControlEventTouchUpInside];
     

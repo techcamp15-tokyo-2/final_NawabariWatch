@@ -56,6 +56,13 @@
     UIColor *backgroundColorWhite;
     UIColor *backgroundColorBlack;
     
+    // ランキングに表示される各順位のユーザーのボタン
+    UIButton *firstRankDisplayButton;
+    UIButton *secondRankDisplayButton;
+    UIButton *thirdRankDisplayButton;
+    UIButton *forthRankDisplayButton;
+    UIButton *fifthRankDisplayButton;
+    
     // MAPに戻るボタン
     UIButton *backToMapButton;
     // rankView
