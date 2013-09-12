@@ -89,7 +89,7 @@
     [mapView_ animateToCameraPosition:[GMSCameraPosition
                                        cameraWithLatitude:latitude_
                                        longitude:longitude_
-                                       zoom:18]];
+                                       zoom:17]];
 }
 
 // 近郊のvenueを取得した後に呼ばれる
@@ -177,12 +177,15 @@
 - (void)drawNawabaris:(NSArray *)venues {
     nawabaris = [[NSMutableArray alloc] init];
     nawabariAreaSum = 0;
+    nawabariVenueIds = [[NSMutableSet alloc] init];
     for (id venue in venues) {
         CLLocationDegrees lat = [(NSString *)[venue objectForKey:@"lat"] doubleValue];
         CLLocationDegrees lng = [(NSString *)[venue objectForKey:@"lng"] doubleValue];
         NSString *name = (NSString *)[venue objectForKey:@"name"];
         int beenHere = [(NSString *)[venue objectForKey:@"beenHere"] intValue];
         NSString *venueId = (NSString *)[venue objectForKey:@"venueId"];
+        
+        [nawabariVenueIds addObject:venueId];
         
         // Creates a marker in the center of the map.
         GMSMarker* marker = [[GMSMarker alloc] init];
@@ -238,6 +241,10 @@
         CLLocationDegrees lng = [(NSString *)[venue objectForKey:@"lng"] doubleValue];
         NSString *name = (NSString *)[venue objectForKey:@"name"];
         NSString *venueId = (NSString *)[venue objectForKey:@"venueId"];
+        
+        if ([nawabariVenueIds containsObject:venueId]) {
+            continue;
+        }
         
         // Creates a marker in the center of the map.
         GMSMarker* marker = [[GMSMarker alloc] init];
