@@ -435,7 +435,7 @@
 
 // WebAPIをたたいてユーザーの順位と全ユーザー数を取得
 - (NSDictionary *)getRankAndUsersNumById:(NSString *)userId Name:(NSString *)userName Territory:(double)territory {
-    NSString *urlStr = [NSString stringWithFormat:@"http://localhost:3000/users/update/%@/%@/%f", userId, userName, territory];
+    NSString *urlStr = [NSString stringWithFormat:@"http://quiet-wave-3026.herokuapp.com/users/update/%@/%@/%f", userId, userName, territory];
     NSURL *url = [NSURL URLWithString:urlStr];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     
@@ -567,7 +567,7 @@
 
 // 全国ランキングtop5を取得する
 - (NSArray *)getRankingTopFive {
-    NSString *urlStr = [NSString stringWithFormat:@"http://localhost:3000/users/ranking/5"];
+    NSString *urlStr = [NSString stringWithFormat:@"http://quiet-wave-3026.herokuapp.com/users/ranking/5"];
     NSURL *url = [NSURL URLWithString:urlStr];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     
