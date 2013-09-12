@@ -126,6 +126,7 @@
     [alert show];
 }
 
+
 // google map 関連の処理
 - (void)loadView {
     // Do any additional setup after loading the view, typically from a nib.
@@ -180,6 +181,7 @@
         }
     }
 }
+
 
 // なわばり(markerとそのまわりの円)を描く
 - (void)drawNawabaris:(NSArray *)venues {
@@ -268,6 +270,7 @@
                             iconName:@""];
     }
 
+
 // 領土情報windowを描画
 - (void)drawAreaInfoWindow {
     areaInfoWindowButton = [self makeCustomButtonWithFrame:CGRectMake(5, 5, 180, 70)];
@@ -321,36 +324,6 @@
     [self.view addSubview:searchButton];
 }
 
-// UIColorからUIImageを生成
-- (UIImage *)createBackgroundImage:(UIColor *)color withSize:(CGSize)size {
-    UIImage *screenImage;
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height)];
-    view.layer.cornerRadius = 10;
-    view.clipsToBounds = true;
-    view.backgroundColor = color;
-    UIGraphicsBeginImageContext(size);
-    [view.layer renderInContext:UIGraphicsGetCurrentContext()];
-    screenImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return screenImage;
-}
-
-// WebAPIをたたいてユーザーの順位と全ユーザー数を取得
-- (void)requestRankInfoById:(NSString *)userId Name:(NSString *)userName Territory:(double)territory {
-    NSString *urlStr = [NSString stringWithFormat:@"http://localhost:3000/users/update/%@/%@/%f", userId, userName, territory];
-    NSURL *url = [NSURL URLWithString:urlStr];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-    
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-    NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
-    [connection start];
-}
-
-// 順位windowに表示するStringを生成
-- (NSString *) makeAreaLabelText{
-    return [NSString stringWithFormat:@"%.0f坪", nawabariAreaSum/3.30578512];
-}
-
 // 全国ランキングページを描画
 - (void)drawRankView {
     areaInfoWindowButton.enabled = NO;
@@ -365,7 +338,7 @@
     rankView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.7];
     
     UIView *rankSubView = [[UIView alloc] initWithFrame:CGRectMake(0, 90, self.view.frame.size.width - 90, self.view.frame.size.height)];
-    [rankView addSubview:rankSubView];    
+    [rankView addSubview:rankSubView];
     [self.view addSubview:rankView];
     
     // ランキングタイトル
@@ -383,9 +356,9 @@
         float area       = [[ranker objectForKey:@"area"] floatValue];
         
         UIButton *rankDisplayButton = [self makeCustomButtonWithFrame:CGRectMake(10,
-                                                               147 + 40 * i,
-                                                               300,
-                                                               36)];
+                                                                                 147 + 40 * i,
+                                                                                 300,
+                                                                                 36)];
         [rankDisplayButton addTarget:self action:@selector(requestUserTeritory:) forControlEvents:UIControlEventTouchUpInside];
         rankDisplayButton.tag = [userId intValue];
         
@@ -406,9 +379,9 @@
         [rankDisplayButton addSubview:nameLabel];
         
         UILabel *tmpAreaLabel = [self makeCustomLabelWithFrame:CGRectMake(161,
-                                                                       0,
-                                                                       135,
-                                                                       36)];
+                                                                          0,
+                                                                          135,
+                                                                          36)];
         tmpAreaLabel.font  = [UIFont boldSystemFontOfSize:25];
         tmpAreaLabel.text  = [NSString stringWithFormat:@"%.2f万坪", area / 10000 / 3.30578512];
         [rankDisplayButton addSubview:tmpAreaLabel];
@@ -427,19 +400,8 @@
                                     messageLabel.frame.size.height);
     messageLabel.textColor = textColorWhite;
     [rankSubView addSubview:messageLabel];
-
-    [self drawBackButton];
-}
-
-// 全国ランキングtop5を取得する
-- (void)requestRankingTopFive {
-    NSString *urlStr = [NSString stringWithFormat:@"http://localhost:3000/users/ranking/5"];
-    NSURL *url = [NSURL URLWithString:urlStr];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-    NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
-    [connection start];
+    [self drawBackButton];
 }
 
 // Mapへ戻るボタンを描画
@@ -471,6 +433,91 @@
     [self.view addSubview:searchButton];
 }
 
+
+// 順位windowに表示するStringを生成
+- (NSString *) makeAreaLabelText {
+    return [NSString stringWithFormat:@"%.0f坪", nawabariAreaSum/3.30578512];
+}
+
+// UIColorからUIImageを生成
+- (UIImage *)createBackgroundImage:(UIColor *)color withSize:(CGSize)size {
+    UIImage *screenImage;
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height)];
+    view.layer.cornerRadius = 10;
+    view.clipsToBounds = true;
+    view.backgroundColor = color;
+    UIGraphicsBeginImageContext(size);
+    [view.layer renderInContext:UIGraphicsGetCurrentContext()];
+    screenImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return screenImage;
+}
+
+// customButtonを作成
+- (UIButton *)makeCustomButtonWithFrame:(CGRect)frame {
+    UIButton *customButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    customButton.frame = frame;
+    [customButton setBackgroundImage:[self createBackgroundImage:[UIColor colorWithRed:1 green:1 blue:1 alpha:0.92] withSize:frame.size]
+                            forState:UIControlStateNormal];
+    [customButton setBackgroundImage:[self createBackgroundImage:backgroundColorBlack withSize:frame.size]
+                            forState:(UIControlStateSelected | UIControlStateHighlighted)];
+    [customButton.layer setCornerRadius:10.0];
+    [customButton.layer setBorderColor:[UIColor grayColor].CGColor];
+    [customButton.layer setBorderWidth:1.0];
+    [customButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    
+    return customButton;
+}
+
+// customLabelを作成
+- (UILabel *)makeCustomLabelWithFrame:(CGRect)frame {
+    UILabel *customLabel = [[UILabel alloc] init];
+    customLabel.frame = frame;
+    customLabel.font  = [UIFont boldSystemFontOfSize:16];
+    customLabel.text  = @"デフォルトです";
+    customLabel.textColor = textColorBlack;
+    customLabel.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
+    return customLabel;
+}
+
+
+// ユーザーの順位と全ユーザー数を取得
+- (void)requestRankInfoById:(NSString *)userId Name:(NSString *)userName Territory:(double)territory {
+    NSString *urlStr = [NSString stringWithFormat:@"http://localhost:3000/users/update/%@/%@/%f", userId, userName, territory];
+    NSURL *url = [NSURL URLWithString:urlStr];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    [connection start];
+}
+
+// 全国ランキングtop5を取得する
+- (void)requestRankingTopFive {
+    NSString *urlStr = [NSString stringWithFormat:@"http://localhost:3000/users/ranking/5"];
+    NSURL *url = [NSURL URLWithString:urlStr];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    [connection start];
+}
+
+// DBにuserの領土を取ってくるためのrequestを投げる
+- (void)requestUserTeritory:(id)sender {
+    [self backButtonDidPush];
+    
+    int userId = [(UIButton *)sender tag];
+    NSString *urlStr = [NSString stringWithFormat:@"http://localhost:3000/territories/with_user/%d", userId];
+    NSURL *url = [NSURL URLWithString:urlStr];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    [connection start];
+}
+
+
 // なわばりの表示・非表示を切り替え
 - (void)changeDisplayNawabaris {
     isDisplayMarker = !isDisplayMarker;
@@ -487,6 +534,7 @@
     [self changeDisplayNawabariWithNawabaris:otherUsersNawabaris];
 }
 
+// changeDisplayNawabarisのヘルパー
 - (void)changeDisplayNawabariWithNawabaris:(NSMutableArray *)nawabaris {
     for (NSMutableDictionary *nawabari in nawabaris) {
         GMSMarker* marker = [nawabari objectForKey:@"marker"];
@@ -543,33 +591,6 @@
     }
 }
 
-// customButtonを作成
-- (UIButton *)makeCustomButtonWithFrame:(CGRect)frame {
-    UIButton *customButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    customButton.frame = frame;
-    [customButton setBackgroundImage:[self createBackgroundImage:[UIColor colorWithRed:1 green:1 blue:1 alpha:0.92] withSize:frame.size]
-                            forState:UIControlStateNormal];
-    [customButton setBackgroundImage:[self createBackgroundImage:backgroundColorBlack withSize:frame.size]
-                            forState:(UIControlStateSelected | UIControlStateHighlighted)];
-    [customButton.layer setCornerRadius:10.0];
-    [customButton.layer setBorderColor:[UIColor grayColor].CGColor];
-    [customButton.layer setBorderWidth:1.0];
-    [customButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    
-    return customButton;
-}
-
-// customLabelを作成
-- (UILabel *)makeCustomLabelWithFrame:(CGRect)frame {
-    UILabel *customLabel = [[UILabel alloc] init];
-    customLabel.frame = frame;
-    customLabel.font  = [UIFont boldSystemFontOfSize:16];
-    customLabel.text  = @"デフォルトです";
-    customLabel.textColor = textColorBlack;
-    customLabel.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
-    return customLabel;
-}
-
 // alertのボタンを押したときに呼ばれるメソッド
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     switch (alertView.tag) {
@@ -595,19 +616,6 @@
     }
 }
 
-// DBにuserの領土を取ってくるためのrequestを投げる
-- (void)requestUserTeritory:(id)sender {
-    [self backButtonDidPush];
-    
-    int userId = [(UIButton *)sender tag];
-    NSString *urlStr = [NSString stringWithFormat:@"http://localhost:3000/territories/with_user/%d", userId];
-    NSURL *url = [NSURL URLWithString:urlStr];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-    
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-    NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
-    [connection start];
-}
 
 // データ受信時に１回だけ呼び出される。
 // 受信データを格納する変数を初期化する。

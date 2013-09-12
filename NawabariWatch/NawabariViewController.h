@@ -88,6 +88,8 @@
 
 - (void)didAuthorize;
 - (void)getVenueHistory:(NSDictionary *)response;
+- (void)getUserProfile:(NSDictionary *)response;
+- (void)requestSearchNeighborVenues;
 - (void)getSearchVenues:(NSDictionary *)response;
 - (void)getCheckin:(NSDictionary *)response;
 
@@ -97,12 +99,28 @@
 - (void)mapView:(GMSMapView *)mapView didChangeCameraPosition:(GMSCameraPosition *)position;
 
 - (void)drawNawabaris:(NSArray *)venues;
+- (NSMutableArray *)drawNawabaris:(NSArray *)venues withFillColor:(UIColor *)fillColor strokeColor:(UIColor *)strokeColor iconName:(NSString *) iconName;
 - (void)drawSurroundingNawabaris:(NSArray *)venues;
 - (void)drawAreaInfoWindow;
-- (void)drawRankInfoWindowById:(NSString *)userId Name:(NSString *)userName;
-- (NSDictionary *)getRankAndUsersNumById:(NSString *)userId andTerritory:(double)territory;
+- (void)drawRankInfoWindow;
+- (void)drawSurroundingNawabarisButton;
+- (void)drawRankView;
+- (void)drawBackButton;
+- (void)backButtonDidPush;
 
+- (void)requestRankInfoById:(NSString *)userId Name:(NSString *)userName Territory:(double)territory;
+- (void)requestRankingTopFive;
+- (void)requestUserTeritory:(id)sender;
+
+- (void)changeDisplayNawabaris;
+- (void)changeDisplayNawabariWithNawabaris:(NSMutableArray *)nawabaris;
+- (void)changeNawabariRadiusAfterCheckin;
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex;
+
+- (void) connection:(NSURLConnection *) connection didReceiveResponse:(NSURLResponse *)response;
+- (void) connection:(NSURLConnection *) connection didReceiveData:(NSData *)data;
+- (void) connectionDidFinishLoading:(NSURLConnection *)connection;
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error;
 @end
 
 @interface NawabariViewController (Location)
