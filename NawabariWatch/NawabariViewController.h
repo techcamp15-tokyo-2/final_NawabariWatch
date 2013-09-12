@@ -80,7 +80,7 @@
 - (void)drawNawabaris:(NSArray *)venues;
 - (void)drawSurroundingNawabaris:(NSArray *)venues;
 - (void)drawAreaInfoWindow;
-- (void)drawRankInfoWindow;
+- (void)drawRankInfoWindowById:(NSString *)userId Name:(NSString *)userName;
 - (NSDictionary *)getRankAndUsersNumById:(NSString *)userId andTerritory:(double)territory;
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex;

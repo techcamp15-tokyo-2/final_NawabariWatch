@@ -79,8 +79,9 @@
 
 // userのprofileを取得した後に呼ばれる
 - (void)getUserProfile:(NSDictionary *)response {
-    NSString *userId = [response objectForKey:@"userId"];
-    [self drawRankInfoWindow:userId];
+    NSString *userId   = [response objectForKey:@"userId"];
+    NSString *userName = [response objectForKey:@"firstName"];
+    [self drawRankInfoWindowById:userId Name:userName];
 }
 
 // 近郊のvenueを探す
@@ -106,7 +107,7 @@
 }
 
 // チェックイン後に呼ばれる
-- (void)getCheckin:(NSDictionary *)response {    
+- (void)getCheckin:(NSDictionary *)response {
     NSString* message = [NSString stringWithFormat:@"チェックインしました!"];
     UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"didCheckin" message:message delegate:self
                                           cancelButtonTitle:@"OK" otherButtonTitles:nil];
@@ -307,7 +308,7 @@
 }
 
 // 順位情報windowを描画
-- (void)drawRankInfoWindow:(NSString *)userId {
+- (void)drawRankInfoWindowById:(NSString *)userId Name:(NSString *)userName {
     rankInfoWindowButton = [UIButton buttonWithType:UIButtonTypeCustom];
     rankInfoWindowButton.frame = CGRectMake(192, 4, 122, 70);
     [rankInfoWindowButton setBackgroundImage:[self createBackgroundImage:backgroundColorWhite withSize:CGSizeMake(122, 70)]
@@ -333,10 +334,11 @@
     rankLabel.frame = CGRectMake(6, 24, 70, 40);
     rankLabel.font  = [UIFont boldSystemFontOfSize:38];
     
-    NSDictionary *dict = [self getRankAndUsersNumById:userId
-                                         andTerritory:nawabariAreaSum];
-    NSString *rank     = [dict objectForKey:@"rank"];
-    NSString *usersNum = [dict objectForKey:@"users_num"];
+    NSDictionary *rankAndUsersNum = [self getRankAndUsersNumById:userId
+                                                 Name:userName
+                                            Territory:nawabariAreaSum];
+    NSString *rank     = [rankAndUsersNum objectForKey:@"rank"];
+    NSString *usersNum = [rankAndUsersNum objectForKey:@"users_num"];
     rankLabel.text  = [NSString stringWithFormat:@"%@位", rank];
     rankLabel.textColor = textColorBlack;
     rankLabel.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
@@ -427,8 +429,8 @@
 }
 
 // WebAPIをたたいてユーザーの順位と全ユーザー数を取得
-- (NSDictionary *)getRankAndUsersNumById:(NSString *)userId andTerritory:(double)territory {
-    NSString *urlStr = [NSString stringWithFormat:@"http://quiet-wave-3026.herokuapp.com/users/update/%@/%f", userId, territory];
+- (NSDictionary *)getRankAndUsersNumById:(NSString *)userId Name:(NSString *)userName Territory:(double)territory {
+    NSString *urlStr = [NSString stringWithFormat:@"http://localhost:3000/users/update/%@/%@/%f", userId, userName, territory];
     NSURL *url = [NSURL URLWithString:urlStr];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     
