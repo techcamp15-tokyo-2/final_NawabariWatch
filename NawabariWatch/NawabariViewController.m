@@ -46,7 +46,7 @@
 	}
     
     NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
-//    [userDefault removeObjectForKey:@"access_token"];
+    [userDefault removeObjectForKey:@"access_token"];
     
     //foursquareの汎用クラスを作成&認証
     foursquareAPI = [[FoursquareAPI alloc] init];
@@ -74,7 +74,7 @@
 // 認証が終わったタイミングで呼ばれる
 - (void)didAuthorize {
     [self loadView];
-    [foursquareAPI requestCheckinHistoryFirst];
+    [foursquareAPI requestVenueHistory];
 }
 
 // userのvenue historyを取得した後に呼ばれる
@@ -181,9 +181,20 @@
 
 // なわばり(markerとそのまわりの円)を描く
 - (void)drawNawabaris:(NSArray *)venues {
-    nawabaris = [[NSMutableArray alloc] init];
-    nawabariAreaSum = 0;
     nawabariVenueIds = [[NSMutableSet alloc] init];
+    for(id venue in venues) {
+        NSString *venueId = (NSString *)[venue objectForKey:@"venueId"];
+        [nawabariVenueIds addObject:venueId];
+    }
+    nawabaris = [self drawNawabaris:venues
+                      withFillColor:[UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.4]
+                      strokeColor:[UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.8]
+                      iconName:@"blue_map_pin_17x32"];
+}
+
+- (NSMutableArray *)drawNawabaris:(NSArray *)venues withFillColor:(UIColor *)fillColor strokeColor:(UIColor *)strokeColor iconName:(NSString *) iconName {
+    NSMutableArray *nawabariArray = [[NSMutableArray alloc] init];
+    nawabariAreaSum = 0;
     for (id venue in venues) {
         CLLocationDegrees lat = [(NSString *)[venue objectForKey:@"lat"] doubleValue];
         CLLocationDegrees lng = [(NSString *)[venue objectForKey:@"lng"] doubleValue];
@@ -191,90 +202,70 @@
         int beenHere = [(NSString *)[venue objectForKey:@"beenHere"] intValue];
         NSString *venueId = (NSString *)[venue objectForKey:@"venueId"];
         
-        [nawabariVenueIds addObject:venueId];
-        
         // Creates a marker in the center of the map.
         GMSMarker* marker = [[GMSMarker alloc] init];
         marker.position = CLLocationCoordinate2DMake(lat, lng);
-        marker.icon = [UIImage imageNamed:@"blue_map_pin_17x32"];
+        marker.icon = [UIImage imageNamed:iconName];
         marker.title   = name;
         marker.snippet = venueId;
         if (isDisplayMarker) {
             marker.map = mapView_;
         }
-
+        
         CLLocationCoordinate2D circleCenter = CLLocationCoordinate2DMake(lat, lng);
         GMSCircle* circ  = [GMSCircle circleWithPosition:circleCenter radius:(kUnitRadius * sqrt(beenHere))];
-        circ.fillColor   = [UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.4];
-        circ.strokeColor = [UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.8];
-//        circ.fillColor   = [UIColor colorWithRed:0 green:0.9 blue:0.2 alpha:0.2];
-//        circ.strokeColor = [UIColor colorWithRed:0 green:0.9 blue:0.2 alpha:0.8];
-        circ.map = mapView_;
-
-/*
-        GMSMutablePath *rect = [GMSMutablePath path];
-        double halfWidth = 0.0002;
-        [rect addCoordinate:CLLocationCoordinate2DMake(lat - halfWidth, lng - halfWidth)];
-        [rect addCoordinate:CLLocationCoordinate2DMake(lat + halfWidth, lng - halfWidth)];
-        [rect addCoordinate:CLLocationCoordinate2DMake(lat + halfWidth, lng + halfWidth)];
-        [rect addCoordinate:CLLocationCoordinate2DMake(lat - halfWidth, lng + halfWidth)];
-        [rect addCoordinate:CLLocationCoordinate2DMake(lat - halfWidth, lng - halfWidth)];
-
-        GMSPolygon *polygon = [GMSPolygon polygonWithPath:rect];
-        polygon.fillColor = [UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.2];
-        polygon.strokeColor = [UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.8];
-        polygon.strokeWidth = 2;
-        polygon.map = mapView_;
-*/
-        NSMutableDictionary* nawabari = [@{
-            @"marker": marker,
-            @"circ": circ,
-            @"defaultRadius": [NSNumber numberWithFloat:circ.radius]
-        } mutableCopy];
-        [nawabaris addObject:nawabari];
-        
-        nawabariAreaSum += pow(circ.radius, 2) * M_PI;
-    }
-}
-
-// 近郊の自分のでないなわばりを描画
-- (void)drawSurroundingNawabaris:(NSArray *)venues {
-    surroundingNawabaris = [[NSMutableArray alloc] init];
-    for (NSDictionary* venue in venues) {
-        CLLocationDegrees lat = [(NSString *)[venue objectForKey:@"lat"] doubleValue];
-        CLLocationDegrees lng = [(NSString *)[venue objectForKey:@"lng"] doubleValue];
-        NSString *name = (NSString *)[venue objectForKey:@"name"];
-        NSString *venueId = (NSString *)[venue objectForKey:@"venueId"];
-        
-        if ([nawabariVenueIds containsObject:venueId]) {
-            continue;
-        }
-        
-        // Creates a marker in the center of the map.
-        GMSMarker* marker = [[GMSMarker alloc] init];
-        marker.position = CLLocationCoordinate2DMake(lat, lng);
-        marker.title   = name;
-        marker.snippet = venueId;
-        marker.map = mapView_;
-        if (isDisplayMarker) {
-            marker.map = mapView_;
-        }
-//        marker.icon = [UIImage imageNamed:@"cat1"];
-        
-        CLLocationCoordinate2D circleCenter = CLLocationCoordinate2DMake(lat, lng);
-        GMSCircle* circ  = [GMSCircle circleWithPosition:circleCenter radius:kUnitRadius];
-        circ.fillColor   = [UIColor colorWithRed:1 green:0 blue:0 alpha:0.2];
-        circ.strokeColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:0.4];
+        circ.fillColor   = fillColor;
+        circ.strokeColor = strokeColor;
+        //        circ.fillColor   = [UIColor colorWithRed:0 green:0.9 blue:0.2 alpha:0.2];
+        //        circ.strokeColor = [UIColor colorWithRed:0 green:0.9 blue:0.2 alpha:0.8];
         circ.map = mapView_;
         
+        /*
+         GMSMutablePath *rect = [GMSMutablePath path];
+         double halfWidth = 0.0002;
+         [rect addCoordinate:CLLocationCoordinate2DMake(lat - halfWidth, lng - halfWidth)];
+         [rect addCoordinate:CLLocationCoordinate2DMake(lat + halfWidth, lng - halfWidth)];
+         [rect addCoordinate:CLLocationCoordinate2DMake(lat + halfWidth, lng + halfWidth)];
+         [rect addCoordinate:CLLocationCoordinate2DMake(lat - halfWidth, lng + halfWidth)];
+         [rect addCoordinate:CLLocationCoordinate2DMake(lat - halfWidth, lng - halfWidth)];
+         
+         GMSPolygon *polygon = [GMSPolygon polygonWithPath:rect];
+         polygon.fillColor = [UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.2];
+         polygon.strokeColor = [UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.8];
+         polygon.strokeWidth = 2;
+         polygon.map = mapView_;
+         */
         NSMutableDictionary* nawabari = [@{
                                          @"marker": marker,
                                          @"circ": circ,
                                          @"defaultRadius": [NSNumber numberWithFloat:circ.radius]
                                          } mutableCopy];
-        [surroundingNawabaris addObject:nawabari];
+        [nawabariArray addObject:nawabari];
+        
+        nawabariAreaSum += pow(circ.radius, 2) * M_PI;
     }
+//    NSLog(@"%@", [nawabariArray description]);
+    return nawabariArray;
 }
+
+// 近郊の自分のでないなわばりを描画
+- (void)drawSurroundingNawabaris:(NSArray *)venues {
+    NSMutableArray *surroundVenues = [NSMutableArray array];
+    for (NSDictionary* venue in venues) {
+        NSString *venueId = (NSString *)[venue objectForKey:@"venueId"];
+        
+        if ([nawabariVenueIds containsObject:venueId]) {
+            continue;
+        }
+        [surroundVenues addObject:venue];
+    }
+    
+    surroundingNawabaris = [NSMutableArray array];
+    surroundingNawabaris = [self drawNawabaris:surroundVenues
+                            withFillColor:[UIColor colorWithRed:1 green:0 blue:0 alpha:0.2]
+                            strokeColor:[UIColor colorWithRed:1 green:0 blue:0 alpha:0.4]
+                            iconName:@""];
+    }
 
 // 領土情報windowを描画
 - (void)drawAreaInfoWindow {
@@ -479,6 +470,8 @@
     [backToMapButton addSubview:titleLabel];
     
     [self.view addSubview:backToMapButton];
+    
+    [self requestUserTeritory:@"5"];
 }
 
 // Mapへ戻るボタンが押された時の処理
@@ -614,4 +607,23 @@
     }
 }
 
+//DBにuserの領土を取ってくるためのrequestを投げる
+- (void)requestUserTeritory:(NSString *)userId {
+    NSString *urlStr = [NSString stringWithFormat:@"http://quiet-wave-3026.herokuapp.com/territories/with_user/%@", userId];
+    NSURL *url = [NSURL URLWithString:urlStr];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    
+    NSHTTPURLResponse *response;
+    NSError *error;
+    NSData *jsonData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+    
+    NSArray *array = [NSJSONSerialization JSONObjectWithData:jsonData
+                                                     options:NSJSONReadingAllowFragments
+                                                                error:&error];
+    NSLog(@"%@", [array description]);
+    enemyNawabaris = [self drawNawabaris:array
+                      withFillColor:[UIColor colorWithRed:1.00 green:0.6314 blue:0.0000 alpha:0.8]
+                      strokeColor:[UIColor colorWithRed:1.00 green:0.6314 blue:0.0000 alpha:0.4]
+                      iconName:@""];
+}
 @end

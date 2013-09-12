@@ -32,6 +32,8 @@
     NSMutableSet* nawabariVenueIds;
     // なわばり(マーカーと領土のArray)
     NSMutableArray* nawabaris;
+    //
+    NSMutableArray* enemyNawabaris;
     // なわばりの合計面積
     CGFloat nawabariAreaSum;
     // なわばり面積のラベル

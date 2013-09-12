@@ -158,7 +158,7 @@
             items = [NSMutableArray array];
             for( id venue in (NSArray *) venues) {
                 NSDictionary * item = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                       @"", @"beenHere",
+                                       @"1", @"beenHere",
                                        (NSArray *)venue, @"venue",
                                        nil];
                 [items insertObject:item atIndex: [items count]];
