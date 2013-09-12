@@ -644,16 +644,20 @@
 
 // データ受信が終わったら呼び出されるメソッド。
 - (void) connectionDidFinishLoading:(NSURLConnection *)connection {
-    NSLog(@"connection");
     // 今回受信したデータはjsonデータ
     NSData *jsonData = receivedData;
-    NSArray *array = [NSJSONSerialization JSONObjectWithData:jsonData
+    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:jsonData
                                                      options:NSJSONReadingAllowFragments
                                                        error:nil];
     
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    otherUsersNawabaris = [self drawNawabaris:array withFillColor:[UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.4]
+    NSString *type = [dict objectForKey:@"type"];
+    if ([type isEqualToString:@"territories"]) {
+        NSLog(type);
+        NSArray *tmpNawabaris = [dict objectForKey:@"territories"];
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        otherUsersNawabaris = [self drawNawabaris:tmpNawabaris withFillColor:[UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.4]
             strokeColor:[UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.4] iconName:@""];
+    }
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
