@@ -428,7 +428,7 @@
 
 // WebAPIをたたいてユーザーの順位と全ユーザー数を取得
 - (NSDictionary *)getRankAndUsersNumById:(NSString *)userId andTerritory:(double)territory {
-    NSString *urlStr = [NSString stringWithFormat:@"http://quiet-wave-3026.herokuapp.com/users/update/%@?territory=%f", userId, territory];
+    NSString *urlStr = [NSString stringWithFormat:@"http://quiet-wave-3026.herokuapp.com/users/update/%@/%f", userId, territory];
     NSURL *url = [NSURL URLWithString:urlStr];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     
