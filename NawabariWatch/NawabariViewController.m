@@ -710,4 +710,8 @@
     }
 }
 
+//DBにuserの領土を取ってくるためのrequestを投げる
+- (void)requestUserTeritory:(NSString *)userId {
+    
+}
 @end
