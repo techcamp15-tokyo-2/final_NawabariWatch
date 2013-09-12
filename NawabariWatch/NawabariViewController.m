@@ -338,7 +338,7 @@
 
 // WebAPIをたたいてユーザーの順位と全ユーザー数を取得
 - (NSDictionary *)getRankAndUsersNumById:(NSString *)userId Name:(NSString *)userName Territory:(double)territory {
-    NSString *urlStr = [NSString stringWithFormat:@"http://quiet-wave-3026.herokuapp.com/users/update/%@/%@/%f", userId, userName, territory];
+    NSString *urlStr = [NSString stringWithFormat:@"http://localhost:3000/users/update/%@/%@/%f", userId, userName, territory];
     NSURL *url = [NSURL URLWithString:urlStr];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     
@@ -444,7 +444,7 @@
 
 // 全国ランキングtop5を取得する
 - (NSArray *)getRankingTopFive {
-    NSString *urlStr = [NSString stringWithFormat:@"http://quiet-wave-3026.herokuapp.com/users/ranking/5"];
+    NSString *urlStr = [NSString stringWithFormat:@"http://localhost:3000/users/ranking/5"];
     NSURL *url = [NSURL URLWithString:urlStr];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     
@@ -499,7 +499,12 @@
         }
     }
     
-    for (NSMutableDictionary *nawabari in surroundingNawabaris) {
+    [self changeDisplayNawabariWithNawabaris:surroundingNawabaris];
+    [self changeDisplayNawabariWithNawabaris:otherUsersNawabaris];
+}
+
+- (void)changeDisplayNawabariWithNawabaris:(NSMutableArray *)nawabaris {
+    for (NSMutableDictionary *nawabari in nawabaris) {
         GMSMarker* marker = [nawabari objectForKey:@"marker"];
         GMSCircle* circ   = [nawabari objectForKey:@"circ"];
         if (isDisplayMarker) {
@@ -612,9 +617,9 @@
     [self backButtonDidPush];
 }
 
-//DBにuserの領土を取ってくるためのrequestを投げる
+// DBにuserの領土を取ってくるためのrequestを投げる
 - (void)requestUserTeritory:(NSString *)userId {
-    NSString *urlStr = [NSString stringWithFormat:@"http://quiet-wave-3026.herokuapp.com/territories/with_user/%@", userId];
+    NSString *urlStr = [NSString stringWithFormat:@"http://localhost:3000/territories/with_user/%@", userId];
     NSURL *url = [NSURL URLWithString:urlStr];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     
@@ -639,16 +644,15 @@
 
 // データ受信が終わったら呼び出されるメソッド。
 - (void) connectionDidFinishLoading:(NSURLConnection *)connection {
-    
-    // 今回受信したデータはHTMLデータなので、NSDataをNSStringに変換する。
+    NSLog(@"connection");
+    // 今回受信したデータはjsonデータ
     NSData *jsonData = receivedData;
     NSArray *array = [NSJSONSerialization JSONObjectWithData:jsonData
                                                      options:NSJSONReadingAllowFragments
                                                        error:nil];
     
-    
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    [self drawNawabaris:array withFillColor:[UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.4]
+    otherUsersNawabaris = [self drawNawabaris:array withFillColor:[UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.4]
             strokeColor:[UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.4] iconName:@""];
 }
 

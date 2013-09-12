@@ -42,6 +42,9 @@
     // 近郊の自分のじゃないなわばり(マーカーと領土のArray)
     NSMutableArray* surroundingNawabaris;
     
+    // 他のユーザーのなわばり
+    NSMutableArray* otherUsersNawabaris;
+    
     // 選択されたチェックイン待ちのvenue
     NSString *tappedVenueId;
     
