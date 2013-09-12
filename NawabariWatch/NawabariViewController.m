@@ -29,6 +29,7 @@
     thirdRankDisplayButton  = [[UIButton alloc] init];
     forthRankDisplayButton  = [[UIButton alloc] init];
     fifthRankDisplayButton  = [[UIButton alloc] init];
+    rankDisplayButtonArray  =  [[NSMutableArray alloc] init];
     
     
 	// ロケーションマネージャーを作成
@@ -375,7 +376,7 @@
     return [NSString stringWithFormat:@"%.0f坪", nawabariAreaSum/3.30578512];
 }
 
-// ランキングページを描画
+// 全国ランキングページを描画
 - (void)drawRankView {
     [areaInfoWindowButton removeFromSuperview];
     [rankInfoWindowButton removeFromSuperview];
@@ -391,83 +392,54 @@
     UIView *rankSubView = [[UIView alloc] initWithFrame:CGRectMake(0, 90, self.view.frame.size.width - 90, self.view.frame.size.height)];
     
     // ランキングタイトル
-    UILabel *titleLabel = [[UILabel alloc] init];
-    titleLabel.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
-    titleLabel.frame = CGRectMake((self.view.frame.size.width - 280)/2,
-                                  0,
-                                  280,
-                                  42);
+    UILabel *titleLabel = [self makeCustomLabelWithFrame:CGRectMake((self.view.frame.size.width - 280)/2, 0, 280, 42)];
     titleLabel.font  = [UIFont boldSystemFontOfSize:40];
     titleLabel.text  = @"全国ランキング";
     titleLabel.textColor = textColorWhite;
     [rankSubView addSubview:titleLabel];
     
     NSArray *rankingTopFive = [self getRankingTopFive];
-    NSArray *rankDisplayButtonArray = @[
-        firstRankDisplayButton,
-        secondRankDisplayButton,
-        thirdRankDisplayButton,
-        forthRankDisplayButton,
-        fifthRankDisplayButton
-    ];
     // 順位ラベル
     for (int i = 0; i < 5; i++) {
         NSDictionary *ranker = [rankingTopFive objectAtIndex:i];
         NSString *name  = [ranker objectForKey:@"name"];
         float area = [[ranker objectForKey:@"area"] floatValue];
         
-        UIButton *tmpButton = [rankDisplayButtonArray objectAtIndex:i];
+        UIButton *tmpButton = [[UIButton alloc] init];
         tmpButton = [self makeCustomButtonWithFrame:CGRectMake(25,
                                                                145 + 32 * i,
                                                                280,
                                                                27)];
-        [tmpButton addTarget:self action:@selector(backButtonDidPush) forControlEvents:UIControlEventTouchUpInside];
         
-        UILabel *titleLabel = [[UILabel alloc] init];
-        titleLabel.frame = CGRectMake(12.5, 1, 116, 69);
-        titleLabel.font  = [UIFont boldSystemFontOfSize:18];
-        titleLabel.text  = @"MAPに戻る";
-        titleLabel.textColor = [UIColor blackColor];
-        titleLabel.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
-        [tmpButton addSubview:titleLabel];
-        [self.view addSubview:tmpButton];
-        
-        UILabel *rankLabel = [[UILabel alloc] init];
-        rankLabel.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
-        rankLabel.frame = CGRectMake(0,
-                                     0,
-                                     52,
-                                     27);
+        UILabel *rankLabel = [self makeCustomLabelWithFrame:CGRectMake(0,
+                                                                       0,
+                                                                       52,
+                                                                       27)];
         rankLabel.font  = [UIFont boldSystemFontOfSize:25];
         rankLabel.text  = [NSString stringWithFormat:@"%d位:", i + 1];
-        rankLabel.textColor = textColorWhite;
         [tmpButton addSubview:rankLabel];
         
-        UILabel *nameLabel = [[UILabel alloc] init];
-        nameLabel.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
-        nameLabel.frame = CGRectMake(55,
-                                     0,
-                                     95,
-                                     27);
+        UILabel *nameLabel = [self makeCustomLabelWithFrame:CGRectMake(55,
+                                                                       0,
+                                                                       95,
+                                                                       27)];
         nameLabel.font  = [UIFont boldSystemFontOfSize:25];
         nameLabel.text  = [NSString stringWithFormat:@"%@", name];
-        nameLabel.textColor = textColorWhite;
         [tmpButton addSubview:nameLabel];
         
-        UILabel *areaLabel = [[UILabel alloc] init];
-        areaLabel.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
-        areaLabel.frame = CGRectMake(153,
-                                     0,
-                                     117,
-                                     27);
-        areaLabel.font  = [UIFont boldSystemFontOfSize:25];
-        areaLabel.text  = [NSString stringWithFormat:@"%.2f万坪", area / 10000 / 3.30578512];
-        areaLabel.textColor = textColorWhite;
-        [tmpButton addSubview:areaLabel];
+        UILabel *tmpAreaLabel = [self makeCustomLabelWithFrame:CGRectMake(153,
+                                                                       0,
+                                                                       117,
+                                                                       27)];
+        tmpAreaLabel.font  = [UIFont boldSystemFontOfSize:25];
+        tmpAreaLabel.text  = [NSString stringWithFormat:@"%.2f万坪", area / 10000 / 3.30578512];
+        [tmpButton addSubview:tmpAreaLabel];
+        
+        [rankDisplayButtonArray addObject:tmpButton];
+        [self.view addSubview:tmpButton];
     }
     
-    UILabel *messageLabel = [[UILabel alloc] init];
-    messageLabel.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
+    UILabel *messageLabel = [self makeCustomLabelWithFrame:CGRectMake(0, 0, 0, 0)];
     messageLabel.font  = [UIFont boldSystemFontOfSize:32];
     messageLabel.text  = @"1位まであと少し。";
     [messageLabel sizeToFit];
@@ -520,6 +492,9 @@
 - (void)backButtonDidPush {
     [rankView removeFromSuperview];
     [backToMapButton removeFromSuperview];
+    for (UIButton *tmpButton in rankDisplayButtonArray) {
+        [tmpButton removeFromSuperview];
+    }
     
     areaInfoWindowButton.enabled = YES;
     [self.view addSubview:areaInfoWindowButton];

@@ -62,6 +62,8 @@
     UIButton *thirdRankDisplayButton;
     UIButton *forthRankDisplayButton;
     UIButton *fifthRankDisplayButton;
+    // 上の5つのボタンを格納するArray
+    NSMutableArray *rankDisplayButtonArray;
     
     // MAPに戻るボタン
     UIButton *backToMapButton;
