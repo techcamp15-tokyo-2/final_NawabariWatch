@@ -308,10 +308,10 @@
 // 順位情報windowを描画
 - (void)drawRankInfoWindowById:(NSString *)userId Name:(NSString *)userName {
     rankInfoWindowButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    rankInfoWindowButton.frame = CGRectMake(190, 4, 124, 70);
-    [rankInfoWindowButton setBackgroundImage:[self createBackgroundImage:backgroundColorWhite withSize:CGSizeMake(122, 70)]
+    rankInfoWindowButton.frame = CGRectMake(190, 4, 125, 70);
+    [rankInfoWindowButton setBackgroundImage:[self createBackgroundImage:backgroundColorWhite withSize:CGSizeMake(125, 70)]
                             forState:UIControlStateNormal];
-    [rankInfoWindowButton setBackgroundImage:[self createBackgroundImage:backgroundColorBlack withSize:CGSizeMake(122, 70)]
+    [rankInfoWindowButton setBackgroundImage:[self createBackgroundImage:backgroundColorBlack withSize:CGSizeMake(125, 70)]
                             forState:(UIControlStateSelected | UIControlStateHighlighted)];
     [rankInfoWindowButton.layer setCornerRadius:10.0];
     [rankInfoWindowButton.layer setBorderColor:[UIColor grayColor].CGColor];
@@ -577,10 +577,10 @@
 // Mapへ戻るボタンを描画
 - (void)drawBackButton {
     backToMapButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    backToMapButton.frame = CGRectMake(192, 4, 122, 70);
-    [backToMapButton setBackgroundImage:[self createBackgroundImage:[UIColor colorWithRed:1 green:1 blue:1 alpha:0.92] withSize:CGSizeMake(122, 70)]
+    backToMapButton.frame = CGRectMake(190, 4, 125, 70);
+    [backToMapButton setBackgroundImage:[self createBackgroundImage:[UIColor colorWithRed:1 green:1 blue:1 alpha:0.92] withSize:CGSizeMake(125, 70)]
                                     forState:UIControlStateNormal];
-    [backToMapButton setBackgroundImage:[self createBackgroundImage:backgroundColorBlack withSize:CGSizeMake(122, 70)]
+    [backToMapButton setBackgroundImage:[self createBackgroundImage:backgroundColorBlack withSize:CGSizeMake(125, 70)]
                                     forState:(UIControlStateSelected | UIControlStateHighlighted)];
     [backToMapButton.layer setCornerRadius:10.0];
     [backToMapButton.layer setBorderColor:[UIColor grayColor].CGColor];
