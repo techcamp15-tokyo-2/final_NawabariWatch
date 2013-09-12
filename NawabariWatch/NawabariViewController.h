@@ -60,6 +60,9 @@
     UIButton *backToMapButton;
     // rankView
     UIView *rankView;
+    
+    //最初の一回だけ位置が更新されたら再描画する
+    BOOL isFirst;
 }
 
 @property(nonatomic,readonly,strong) FoursquareAPI *foursquareAPI;

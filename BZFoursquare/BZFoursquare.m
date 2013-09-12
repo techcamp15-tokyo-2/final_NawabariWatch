@@ -69,6 +69,9 @@
     NSParameterAssert(clientID != nil && callbackURL != nil);
     self = [super init];
     if (self) {
+        NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
+        NSString *accessToken = [userdefault objectForKey:@"access_token"];
+        if( accessToken != nil ) self.accessToken = accessToken;
         self.clientID = clientID;
         self.clientSecret = clientSecret;
         self.callbackURL = callbackURL;
@@ -128,6 +131,9 @@
     self.accessToken = [parameters objectForKey:@"access_token"];
     if (accessToken_) {
         if ([sessionDelegate_ respondsToSelector:@selector(foursquareDidAuthorize:)]) {
+            NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
+            [userdefault setObject:self.accessToken forKey:@"access_token"];
+            [userdefault synchronize];
             [sessionDelegate_ foursquareDidAuthorize:self];
         }
     } else {
