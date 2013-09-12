@@ -643,6 +643,12 @@
     if ([type isEqualToString:@"territories"]) {
         NSArray *tmpNawabaris = [dict objectForKey:@"territories"];
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        for (NSMutableDictionary *nawabari in otherUsersNawabaris) {
+            GMSMarker* marker = [nawabari objectForKey:@"marker"];
+            GMSCircle* circ   = [nawabari objectForKey:@"circ"];
+            marker.map = nil;
+            circ.map   = nil;
+        }
         otherUsersNawabaris = [self drawNawabaris:tmpNawabaris
                                     withFillColor:[UIColor colorWithRed:0 green:0.9 blue:0.2 alpha:0.2]
                                       strokeColor:[UIColor colorWithRed:0 green:0.9 blue:0.2 alpha:0.8] iconName:@"green_pin_s"];
