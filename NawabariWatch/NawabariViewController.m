@@ -81,7 +81,7 @@
     [SVProgressHUD dismiss];
 
     NSArray* venues = (NSArray *)[response objectForKey:@"venues"];
-    NSLog(@"%@", [venues description]);
+
     [self drawNawabaris:venues];
     [self drawAreaInfoWindow];
     [self drawSurroundingNawabarisButton];
@@ -600,11 +600,10 @@
         if (marker.snippet == tappedVenueId) {          
             marker.icon = [UIImage imageNamed:@"blue_pin_s"];
             GMSCircle *circ = [nawabari objectForKey:@"circ"];
-            NSLog([circ description]);
             
             circ.fillColor   = [UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.4];
             circ.strokeColor = [UIColor colorWithRed:0 green:0.5804 blue:0.7843 alpha:0.8];
-            NSLog(@"%f", circ.radius);
+
             nawabariAreaSum += pow(circ.radius, 2) * M_PI;
             
             areaLabel.text = [self makeAreaLabelText];
