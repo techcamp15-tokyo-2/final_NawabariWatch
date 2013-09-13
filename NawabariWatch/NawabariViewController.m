@@ -47,26 +47,16 @@
 		[locationManager startUpdatingLocation];
 	}
     
-    NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
-//    [userDefault removeObjectForKey:@"access_token"];
     
     //foursquareの汎用クラスを作成&認証
     foursquareAPI = [[FoursquareAPI alloc] init];
     foursquareAPI.delegate = self;
-    if(![foursquareAPI isAuthenticated]) {
         
-        NSString* message = [NSString stringWithFormat:@"foursquareの認証が必要です。\n認証をお願いします。"];
-        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:nil message:message delegate:self
-                                              cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        alert.tag = startAuthorization;
-        [alert show];
-    } else {
-        [self loadView];
-        
-        // ローディング開始
-        [SVProgressHUD show];
-        [foursquareAPI requestCheckinHistoryFirst];
-    }
+    NSString* message = [NSString stringWithFormat:@"foursquareの認証が必要です。\n認証をお願いします。"];
+    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:nil message:message delegate:self
+                                          cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    alert.tag = startAuthorization;
+    [alert show];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -89,8 +79,9 @@
 - (void)getVenueHistory:(NSDictionary *)response {
     // ローディング終了
     [SVProgressHUD dismiss];
-    
+
     NSArray* venues = (NSArray *)[response objectForKey:@"venues"];
+    NSLog(@"%@", [venues description]);
     [self drawNawabaris:venues];
     [self drawAreaInfoWindow];
     [self drawSurroundingNawabarisButton];
