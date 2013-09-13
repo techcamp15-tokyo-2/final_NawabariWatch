@@ -607,7 +607,7 @@
     for (NSMutableDictionary *nawabari in surroundingNawabaris) {
         GMSMarker* marker = [nawabari objectForKey:@"marker"];
         if (marker.snippet == tappedVenueId) {          
-            marker.icon = [UIImage imageNamed:@"blue_map_pin_17x32"];
+            marker.icon = [UIImage imageNamed:@"blue_pin_s"];
             GMSCircle *circ = [nawabari objectForKey:@"circ"];
             NSLog([circ description]);
             
